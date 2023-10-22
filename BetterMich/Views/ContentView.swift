@@ -35,7 +35,7 @@ struct ContentView: View {
                     
                 }
             }
-            .navigationTitle("Michelin")
+            .navigationTitle("米台目")
             
             // reset list when pulled to refresh
             .refreshable {

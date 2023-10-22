@@ -29,57 +29,157 @@ struct FilterMenuView: View {
                     isSortedByDist.toggle()
                     
                 } label: {
-                    Image(systemName: isSortedByDist ? "arrow.down" : "arrow.up")
-                    Text("星級")
+                    Image(systemName: isSortedByDist ? "arrowshape.down.fill" : "arrowshape.up.fill")
+                    Text("評鑑等級")
                 }
 
             }
             
             Section("篩選") {
                 
-                // filter 3 star3
-                Button {
+                //MARK: City Filter Submenu
+                Menu {
                     
-                    isFilteredByDist[3].toggle()
-                    filteredRestaurants = distFilter(allRestaurants: restaurants, isFilteredByCity: isFilteredByCity, isFilteredByDist: isFilteredByDist)
-                    filteredRestaurants = cityFilter(allRestaurants: filteredRestaurants, isFilteredByCity: isFilteredByCity, isFilteredByDist: isFilteredByDist)
+                    // filter 台北
+                    Button {
+                        isFilteredByCity[0].toggle()
+                        filteredRestaurants = cityFilter(allRestaurants: restaurants, isFilteredByCity: isFilteredByCity, isFilteredByDist: isFilteredByDist)
+                        filteredRestaurants = distFilter(allRestaurants: filteredRestaurants, isFilteredByCity: isFilteredByCity, isFilteredByDist: isFilteredByDist)
+                        
+                        displayedRestaurants = sortRestaurants(restaurants: filteredRestaurants, isSortedByDist: !isSortedByDist)
+                        
+                    } label: {
+                        Image(systemName: isFilteredByCity[0] ? "checkmark.circle.fill" : "checkmark.circle")
+                        Text("台北")
+                    }
                     
-                    displayedRestaurants = sortRestaurants(restaurants: filteredRestaurants, isSortedByDist: !isSortedByDist)
+                    // filter 台中
+                    Button {
+                        isFilteredByCity[1].toggle()
+                        filteredRestaurants = cityFilter(allRestaurants: restaurants, isFilteredByCity: isFilteredByCity, isFilteredByDist: isFilteredByDist)
+                        filteredRestaurants = distFilter(allRestaurants: filteredRestaurants, isFilteredByCity: isFilteredByCity, isFilteredByDist: isFilteredByDist)
+                        
+                        displayedRestaurants = sortRestaurants(restaurants: filteredRestaurants, isSortedByDist: !isSortedByDist)
+                        
+                    } label: {
+                        Image(systemName: isFilteredByCity[1] ? "checkmark.circle.fill" : "checkmark.circle")
+                        Text("台中")
+                    }
                     
-                } label: {
-                    Image(systemName: isFilteredByDist[3] ? "checkmark.circle.fill" : "checkmark.circle")
-                    Text("三星")
-                    
-                }
-                
-                
-                // filter 2 stars
-                Button {
-                    isFilteredByDist[2].toggle()
-                    filteredRestaurants = distFilter(allRestaurants: restaurants, isFilteredByCity: isFilteredByCity, isFilteredByDist: isFilteredByDist)
-                    filteredRestaurants = cityFilter(allRestaurants: filteredRestaurants, isFilteredByCity: isFilteredByCity, isFilteredByDist: isFilteredByDist)
+                    // filter 台南
+                    Button {
+                        isFilteredByCity[2].toggle()
+                        filteredRestaurants = cityFilter(allRestaurants: restaurants, isFilteredByCity: isFilteredByCity, isFilteredByDist: isFilteredByDist)
+                        filteredRestaurants = distFilter(allRestaurants: filteredRestaurants, isFilteredByCity: isFilteredByCity, isFilteredByDist: isFilteredByDist)
 
-                    displayedRestaurants = sortRestaurants(restaurants: filteredRestaurants, isSortedByDist: !isSortedByDist)
+                        displayedRestaurants = sortRestaurants(restaurants: filteredRestaurants, isSortedByDist: !isSortedByDist)
+                        
+                    } label: {
+                        Image(systemName: isFilteredByCity[2] ? "checkmark.circle.fill" : "checkmark.circle")
+                        Text("台南")
+                    }
                     
-                } label: {
-                    Image(systemName: isFilteredByDist[2] ? "checkmark.circle.fill" : "checkmark.circle")
-                    Text("二星")
-                }
-                
-                
-                // filter 1 star
-                Button {
                     
-                    isFilteredByDist[1].toggle()
-                    filteredRestaurants = distFilter(allRestaurants: restaurants, isFilteredByCity: isFilteredByCity, isFilteredByDist: isFilteredByDist)
-                    filteredRestaurants = cityFilter(allRestaurants: filteredRestaurants, isFilteredByCity: isFilteredByCity, isFilteredByDist: isFilteredByDist)
+                    // filter 高雄
+                    Button {
+                        isFilteredByCity[3].toggle()
+                        filteredRestaurants = cityFilter(allRestaurants: restaurants, isFilteredByCity: isFilteredByCity, isFilteredByDist: isFilteredByDist)
+                        filteredRestaurants = distFilter(allRestaurants: filteredRestaurants, isFilteredByCity: isFilteredByCity, isFilteredByDist: isFilteredByDist)
 
-                    displayedRestaurants = sortRestaurants(restaurants: filteredRestaurants, isSortedByDist: !isSortedByDist)
+                        displayedRestaurants = sortRestaurants(restaurants: filteredRestaurants, isSortedByDist: !isSortedByDist)
+                        
+                    } label: {
+                        Image(systemName: isFilteredByCity[3] ? "checkmark.circle.fill" : "checkmark.circle")
+                        Text("高雄")
+                    }
                     
                 } label: {
-                    Image(systemName: isFilteredByDist[1] ? "checkmark.circle.fill" : "checkmark.circle")
-                    Text("一星")
+                    Text("城市")
+                    Image(systemName: isFilteredByCity.contains(true) ? "building.2.fill" : "building.2")
                 }
+                
+                
+                //MARK: Distinction Filter Submenu
+                Menu {
+                    
+                    // filter 3 star3
+                    Button {
+                        
+                        isFilteredByDist[3].toggle()
+                        filteredRestaurants = distFilter(allRestaurants: restaurants, isFilteredByCity: isFilteredByCity, isFilteredByDist: isFilteredByDist)
+                        filteredRestaurants = cityFilter(allRestaurants: filteredRestaurants, isFilteredByCity: isFilteredByCity, isFilteredByDist: isFilteredByDist)
+                        
+                        displayedRestaurants = sortRestaurants(restaurants: filteredRestaurants, isSortedByDist: !isSortedByDist)
+                        
+                    } label: {
+                        Image(systemName: isFilteredByDist[3] ? "checkmark.circle.fill" : "checkmark.circle")
+                        Text("三星")
+                        
+                    }
+                    
+                    
+                    // filter 2 stars
+                    Button {
+                        isFilteredByDist[2].toggle()
+                        filteredRestaurants = distFilter(allRestaurants: restaurants, isFilteredByCity: isFilteredByCity, isFilteredByDist: isFilteredByDist)
+                        filteredRestaurants = cityFilter(allRestaurants: filteredRestaurants, isFilteredByCity: isFilteredByCity, isFilteredByDist: isFilteredByDist)
+
+                        displayedRestaurants = sortRestaurants(restaurants: filteredRestaurants, isSortedByDist: !isSortedByDist)
+                        
+                    } label: {
+                        Image(systemName: isFilteredByDist[2] ? "checkmark.circle.fill" : "checkmark.circle")
+                        Text("二星")
+                    }
+                    
+                    
+                    // filter 1 star
+                    Button {
+                        
+                        isFilteredByDist[1].toggle()
+                        filteredRestaurants = distFilter(allRestaurants: restaurants, isFilteredByCity: isFilteredByCity, isFilteredByDist: isFilteredByDist)
+                        filteredRestaurants = cityFilter(allRestaurants: filteredRestaurants, isFilteredByCity: isFilteredByCity, isFilteredByDist: isFilteredByDist)
+
+                        displayedRestaurants = sortRestaurants(restaurants: filteredRestaurants, isSortedByDist: !isSortedByDist)
+                        
+                    } label: {
+                        Image(systemName: isFilteredByDist[1] ? "checkmark.circle.fill" : "checkmark.circle")
+                        Text("一星")
+                    }
+                    
+                    // filter bibendum
+                    Button {
+                        
+                        isFilteredByDist[0].toggle()
+                        filteredRestaurants = distFilter(allRestaurants: restaurants, isFilteredByCity: isFilteredByCity, isFilteredByDist: isFilteredByDist)
+                        filteredRestaurants = cityFilter(allRestaurants: filteredRestaurants, isFilteredByCity: isFilteredByCity, isFilteredByDist: isFilteredByDist)
+
+                        displayedRestaurants = sortRestaurants(restaurants: filteredRestaurants, isSortedByDist: !isSortedByDist)
+                        
+                    } label: {
+                        Image(systemName: isFilteredByDist[0] ? "checkmark.circle.fill" : "checkmark.circle")
+                        Text("必比登")
+                    }
+                    
+                    // filter recommend
+                    Button {
+                        
+                        isFilteredByDist[5].toggle()
+                        filteredRestaurants = distFilter(allRestaurants: restaurants, isFilteredByCity: isFilteredByCity, isFilteredByDist: isFilteredByDist)
+                        filteredRestaurants = cityFilter(allRestaurants: filteredRestaurants, isFilteredByCity: isFilteredByCity, isFilteredByDist: isFilteredByDist)
+
+                        displayedRestaurants = sortRestaurants(restaurants: filteredRestaurants, isSortedByDist: !isSortedByDist)
+                        
+                    } label: {
+                        Image(systemName: isFilteredByDist[5] ? "checkmark.circle.fill" : "checkmark.circle")
+                        Text("推薦")
+                    }
+                    
+                } label: {
+                    Text("評鑑等級")
+                    Image(systemName: isFilteredByDist.contains(true) ? "star.bubble.fill" : "star.bubble")
+                }
+                
+                
                 
                 // filter green star
                 Button {
@@ -91,99 +191,15 @@ struct FilterMenuView: View {
                     displayedRestaurants = sortRestaurants(restaurants: filteredRestaurants, isSortedByDist: !isSortedByDist)
                     
                 } label: {
-                    Image(systemName: isFilteredByDist[4] ? "checkmark.circle.fill" : "checkmark.circle")
+                    Image(systemName: isFilteredByDist[4] ? "leaf.fill" : "leaf")
                     Text("綠星")
-                }
-                
-                // filter bibendum
-                Button {
-                    
-                    isFilteredByDist[0].toggle()
-                    filteredRestaurants = distFilter(allRestaurants: restaurants, isFilteredByCity: isFilteredByCity, isFilteredByDist: isFilteredByDist)
-                    filteredRestaurants = cityFilter(allRestaurants: filteredRestaurants, isFilteredByCity: isFilteredByCity, isFilteredByDist: isFilteredByDist)
-
-                    displayedRestaurants = sortRestaurants(restaurants: filteredRestaurants, isSortedByDist: !isSortedByDist)
-                    
-                } label: {
-                    Image(systemName: isFilteredByDist[0] ? "checkmark.circle.fill" : "checkmark.circle")
-                    Text("必比登")
-                }
-                
-                // filter recommend
-                Button {
-                    
-                    isFilteredByDist[5].toggle()
-                    filteredRestaurants = distFilter(allRestaurants: restaurants, isFilteredByCity: isFilteredByCity, isFilteredByDist: isFilteredByDist)
-                    filteredRestaurants = cityFilter(allRestaurants: filteredRestaurants, isFilteredByCity: isFilteredByCity, isFilteredByDist: isFilteredByDist)
-
-                    displayedRestaurants = sortRestaurants(restaurants: filteredRestaurants, isSortedByDist: !isSortedByDist)
-                    
-                } label: {
-                    Image(systemName: isFilteredByDist[5] ? "checkmark.circle.fill" : "checkmark.circle")
-                    Text("推薦")
-                }
-                
-            }
-            
-            Section("城市") {
-                
-                // filter 台北
-                Button {
-                    isFilteredByCity[0].toggle()
-                    filteredRestaurants = cityFilter(allRestaurants: restaurants, isFilteredByCity: isFilteredByCity, isFilteredByDist: isFilteredByDist)
-                    filteredRestaurants = distFilter(allRestaurants: filteredRestaurants, isFilteredByCity: isFilteredByCity, isFilteredByDist: isFilteredByDist)
-                    
-                    displayedRestaurants = sortRestaurants(restaurants: filteredRestaurants, isSortedByDist: !isSortedByDist)
-                    
-                } label: {
-                    Image(systemName: isFilteredByCity[0] ? "checkmark.circle.fill" : "checkmark.circle")
-                    Text("台北")
-                }
-                
-                // filter 台中
-                Button {
-                    isFilteredByCity[1].toggle()
-                    filteredRestaurants = cityFilter(allRestaurants: restaurants, isFilteredByCity: isFilteredByCity, isFilteredByDist: isFilteredByDist)
-                    filteredRestaurants = distFilter(allRestaurants: filteredRestaurants, isFilteredByCity: isFilteredByCity, isFilteredByDist: isFilteredByDist)
-                    
-                    displayedRestaurants = sortRestaurants(restaurants: filteredRestaurants, isSortedByDist: !isSortedByDist)
-                    
-                } label: {
-                    Image(systemName: isFilteredByCity[1] ? "checkmark.circle.fill" : "checkmark.circle")
-                    Text("台中")
-                }
-                
-                // filter 台南
-                Button {
-                    isFilteredByCity[2].toggle()
-                    filteredRestaurants = cityFilter(allRestaurants: restaurants, isFilteredByCity: isFilteredByCity, isFilteredByDist: isFilteredByDist)
-                    filteredRestaurants = distFilter(allRestaurants: filteredRestaurants, isFilteredByCity: isFilteredByCity, isFilteredByDist: isFilteredByDist)
-
-                    displayedRestaurants = sortRestaurants(restaurants: filteredRestaurants, isSortedByDist: !isSortedByDist)
-                    
-                } label: {
-                    Image(systemName: isFilteredByCity[2] ? "checkmark.circle.fill" : "checkmark.circle")
-                    Text("台南")
-                }
-                
-                
-                // filter 高雄
-                Button {
-                    isFilteredByCity[3].toggle()
-                    filteredRestaurants = cityFilter(allRestaurants: restaurants, isFilteredByCity: isFilteredByCity, isFilteredByDist: isFilteredByDist)
-                    filteredRestaurants = distFilter(allRestaurants: filteredRestaurants, isFilteredByCity: isFilteredByCity, isFilteredByDist: isFilteredByDist)
-
-                    displayedRestaurants = sortRestaurants(restaurants: filteredRestaurants, isSortedByDist: !isSortedByDist)
-                    
-                } label: {
-                    Image(systemName: isFilteredByCity[3] ? "checkmark.circle.fill" : "checkmark.circle")
-                    Text("高雄")
                 }
                 
             }
             
             Divider()
             
+            //MARK: Reset Filter Button
             // clear filter and reset restaurant list
             Button(role: .destructive) {
                 
@@ -193,7 +209,7 @@ struct FilterMenuView: View {
                 isSortedByDist = true
                 
             } label: {
-                Image(systemName: "trash")
+                Image(systemName: "arrow.2.circlepath")
                 Text("清除篩選")
             }
             
