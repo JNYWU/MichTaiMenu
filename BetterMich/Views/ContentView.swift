@@ -38,13 +38,6 @@ struct ContentView: View {
             }
             .navigationTitle("米台目")
             
-            // reset list when pulled to refresh
-            .refreshable {
-                displayedRestaurants = Restaurants
-                isFilteredByDist = Array(repeating: false, count: 6)
-                isFilteredByCity = Array(repeating: false, count: 4)
-                isSortedByDist = true
-            }
             .toolbar {
                 ToolbarItem {
                     FilterMenuView(restaurants: $Restaurants, searchText: $searchText, isSortedByDist: $isSortedByDist, isFilteredByDist: $isFilteredByDist, isFilteredByCity: $isFilteredByCity, isFilteredBySus: $isFilteredBySus, sortedRestaurants: $sortedRestaurants, filteredRestaurants: $filteredRestaurants, displayedRestaurants: $displayedRestaurants)
