@@ -10,6 +10,7 @@ struct FilterMenuView: View {
     @Binding var isSortedByDist: Bool
     @Binding var isFilteredByDist: [Bool]
     @Binding var isFilteredByCity: [Bool]
+    @Binding var isFilteredBySus: Bool
     
     @Binding var sortedRestaurants: [Restaurant]
     @Binding var filteredRestaurants: [Restaurant]
@@ -45,6 +46,7 @@ struct FilterMenuView: View {
                         isFilteredByCity[0].toggle()
                         filteredRestaurants = cityFilter(allRestaurants: restaurants, isFilteredByCity: isFilteredByCity, isFilteredByDist: isFilteredByDist)
                         filteredRestaurants = distFilter(allRestaurants: filteredRestaurants, isFilteredByCity: isFilteredByCity, isFilteredByDist: isFilteredByDist)
+                        filteredRestaurants = sustainFilter(Restaurants: filteredRestaurants, isFilteredBySus: isFilteredBySus)
                         
                         displayedRestaurants = sortRestaurants(restaurants: filteredRestaurants, isSortedByDist: !isSortedByDist)
                         
@@ -58,7 +60,8 @@ struct FilterMenuView: View {
                         isFilteredByCity[1].toggle()
                         filteredRestaurants = cityFilter(allRestaurants: restaurants, isFilteredByCity: isFilteredByCity, isFilteredByDist: isFilteredByDist)
                         filteredRestaurants = distFilter(allRestaurants: filteredRestaurants, isFilteredByCity: isFilteredByCity, isFilteredByDist: isFilteredByDist)
-                        
+                        filteredRestaurants = sustainFilter(Restaurants: filteredRestaurants, isFilteredBySus: isFilteredBySus)
+
                         displayedRestaurants = sortRestaurants(restaurants: filteredRestaurants, isSortedByDist: !isSortedByDist)
                         
                     } label: {
@@ -71,6 +74,7 @@ struct FilterMenuView: View {
                         isFilteredByCity[2].toggle()
                         filteredRestaurants = cityFilter(allRestaurants: restaurants, isFilteredByCity: isFilteredByCity, isFilteredByDist: isFilteredByDist)
                         filteredRestaurants = distFilter(allRestaurants: filteredRestaurants, isFilteredByCity: isFilteredByCity, isFilteredByDist: isFilteredByDist)
+                        filteredRestaurants = sustainFilter(Restaurants: filteredRestaurants, isFilteredBySus: isFilteredBySus)
 
                         displayedRestaurants = sortRestaurants(restaurants: filteredRestaurants, isSortedByDist: !isSortedByDist)
                         
@@ -85,6 +89,7 @@ struct FilterMenuView: View {
                         isFilteredByCity[3].toggle()
                         filteredRestaurants = cityFilter(allRestaurants: restaurants, isFilteredByCity: isFilteredByCity, isFilteredByDist: isFilteredByDist)
                         filteredRestaurants = distFilter(allRestaurants: filteredRestaurants, isFilteredByCity: isFilteredByCity, isFilteredByDist: isFilteredByDist)
+                        filteredRestaurants = sustainFilter(Restaurants: filteredRestaurants, isFilteredBySus: isFilteredBySus)
 
                         displayedRestaurants = sortRestaurants(restaurants: filteredRestaurants, isSortedByDist: !isSortedByDist)
                         
@@ -108,7 +113,8 @@ struct FilterMenuView: View {
                         isFilteredByDist[3].toggle()
                         filteredRestaurants = distFilter(allRestaurants: restaurants, isFilteredByCity: isFilteredByCity, isFilteredByDist: isFilteredByDist)
                         filteredRestaurants = cityFilter(allRestaurants: filteredRestaurants, isFilteredByCity: isFilteredByCity, isFilteredByDist: isFilteredByDist)
-                        
+                        filteredRestaurants = sustainFilter(Restaurants: filteredRestaurants, isFilteredBySus: isFilteredBySus)
+
                         displayedRestaurants = sortRestaurants(restaurants: filteredRestaurants, isSortedByDist: !isSortedByDist)
                         
                     } label: {
@@ -123,6 +129,7 @@ struct FilterMenuView: View {
                         isFilteredByDist[2].toggle()
                         filteredRestaurants = distFilter(allRestaurants: restaurants, isFilteredByCity: isFilteredByCity, isFilteredByDist: isFilteredByDist)
                         filteredRestaurants = cityFilter(allRestaurants: filteredRestaurants, isFilteredByCity: isFilteredByCity, isFilteredByDist: isFilteredByDist)
+                        filteredRestaurants = sustainFilter(Restaurants: filteredRestaurants, isFilteredBySus: isFilteredBySus)
 
                         displayedRestaurants = sortRestaurants(restaurants: filteredRestaurants, isSortedByDist: !isSortedByDist)
                         
@@ -138,6 +145,7 @@ struct FilterMenuView: View {
                         isFilteredByDist[1].toggle()
                         filteredRestaurants = distFilter(allRestaurants: restaurants, isFilteredByCity: isFilteredByCity, isFilteredByDist: isFilteredByDist)
                         filteredRestaurants = cityFilter(allRestaurants: filteredRestaurants, isFilteredByCity: isFilteredByCity, isFilteredByDist: isFilteredByDist)
+                        filteredRestaurants = sustainFilter(Restaurants: filteredRestaurants, isFilteredBySus: isFilteredBySus)
 
                         displayedRestaurants = sortRestaurants(restaurants: filteredRestaurants, isSortedByDist: !isSortedByDist)
                         
@@ -152,6 +160,7 @@ struct FilterMenuView: View {
                         isFilteredByDist[0].toggle()
                         filteredRestaurants = distFilter(allRestaurants: restaurants, isFilteredByCity: isFilteredByCity, isFilteredByDist: isFilteredByDist)
                         filteredRestaurants = cityFilter(allRestaurants: filteredRestaurants, isFilteredByCity: isFilteredByCity, isFilteredByDist: isFilteredByDist)
+                        filteredRestaurants = sustainFilter(Restaurants: filteredRestaurants, isFilteredBySus: isFilteredBySus)
 
                         displayedRestaurants = sortRestaurants(restaurants: filteredRestaurants, isSortedByDist: !isSortedByDist)
                         
@@ -163,14 +172,15 @@ struct FilterMenuView: View {
                     // filter recommend
                     Button {
                         
-                        isFilteredByDist[5].toggle()
+                        isFilteredByDist[4].toggle()
                         filteredRestaurants = distFilter(allRestaurants: restaurants, isFilteredByCity: isFilteredByCity, isFilteredByDist: isFilteredByDist)
                         filteredRestaurants = cityFilter(allRestaurants: filteredRestaurants, isFilteredByCity: isFilteredByCity, isFilteredByDist: isFilteredByDist)
+                        filteredRestaurants = sustainFilter(Restaurants: filteredRestaurants, isFilteredBySus: isFilteredBySus)
 
                         displayedRestaurants = sortRestaurants(restaurants: filteredRestaurants, isSortedByDist: !isSortedByDist)
                         
                     } label: {
-                        Image(systemName: isFilteredByDist[5] ? "checkmark.circle.fill" : "checkmark.circle")
+                        Image(systemName: isFilteredByDist[4] ? "checkmark.circle.fill" : "checkmark.circle")
                         Text("推薦")
                     }
                     
@@ -184,14 +194,15 @@ struct FilterMenuView: View {
                 // filter green star
                 Button {
                     
-                    isFilteredByDist[4].toggle()
+                    isFilteredBySus.toggle()
                     filteredRestaurants = distFilter(allRestaurants: restaurants, isFilteredByCity: isFilteredByCity, isFilteredByDist: isFilteredByDist)
                     filteredRestaurants = cityFilter(allRestaurants: filteredRestaurants, isFilteredByCity: isFilteredByCity, isFilteredByDist: isFilteredByDist)
+                    filteredRestaurants = sustainFilter(Restaurants: filteredRestaurants, isFilteredBySus: isFilteredBySus)
 
                     displayedRestaurants = sortRestaurants(restaurants: filteredRestaurants, isSortedByDist: !isSortedByDist)
                     
                 } label: {
-                    Image(systemName: isFilteredByDist[4] ? "leaf.fill" : "leaf")
+                    Image(systemName: isFilteredBySus ? "leaf.fill" : "leaf")
                     Text("綠星")
                 }
                 
@@ -281,7 +292,7 @@ private func distFilter(allRestaurants: [Restaurant], isFilteredByCity: [Bool], 
     
     var outputList: [Restaurant] = []
     
-    for filterOption in 0...5 {
+    for filterOption in 0...4 {
         if isFilteredByDist[filterOption] {
             switch filterOption {
             case 0:
@@ -289,9 +300,6 @@ private func distFilter(allRestaurants: [Restaurant], isFilteredByCity: [Bool], 
 
             case 1...3:
                 outputList += allRestaurants.filter({ $0.Distinction == filterOption })
-
-            case 4:
-                outputList += allRestaurants.filter({ $0.Sustainable == true })
 
             default:
                 outputList += allRestaurants.filter({ $0.Distinction == 0 && $0.Bibendum == false })
@@ -309,4 +317,15 @@ private func distFilter(allRestaurants: [Restaurant], isFilteredByCity: [Bool], 
     return outputList
 }
 
-
+private func sustainFilter(Restaurants: [Restaurant], isFilteredBySus: Bool) -> [Restaurant] {
+    
+    var outputList: [Restaurant] = []
+    
+    outputList = Restaurants.filter({ $0.Sustainable == true })
+    
+    if !isFilteredBySus {
+        return Restaurants
+    }
+    
+    return outputList
+}

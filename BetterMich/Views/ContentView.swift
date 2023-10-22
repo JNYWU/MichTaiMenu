@@ -5,9 +5,10 @@ struct ContentView: View {
     @State var Restaurants: [Restaurant]
     
     @State var searchText = ""
-    @State var isSortedByDist: Bool = true
-    @State var isFilteredByDist = Array(repeating: false, count: 6)
+    @State var isSortedByDist = true
+    @State var isFilteredByDist = Array(repeating: false, count: 5)
     @State var isFilteredByCity = Array(repeating: false, count: 4)
+    @State var isFilteredBySus = false
 
     
     @State var sortedRestaurants: [Restaurant] = []
@@ -46,7 +47,7 @@ struct ContentView: View {
             }
             .toolbar {
                 ToolbarItem {
-                    FilterMenuView(restaurants: $Restaurants, searchText: $searchText, isSortedByDist: $isSortedByDist, isFilteredByDist: $isFilteredByDist, isFilteredByCity: $isFilteredByCity,sortedRestaurants: $sortedRestaurants, filteredRestaurants: $filteredRestaurants, displayedRestaurants: $displayedRestaurants)
+                    FilterMenuView(restaurants: $Restaurants, searchText: $searchText, isSortedByDist: $isSortedByDist, isFilteredByDist: $isFilteredByDist, isFilteredByCity: $isFilteredByCity, isFilteredBySus: $isFilteredBySus, sortedRestaurants: $sortedRestaurants, filteredRestaurants: $filteredRestaurants, displayedRestaurants: $displayedRestaurants)
                     
                 }
             }
