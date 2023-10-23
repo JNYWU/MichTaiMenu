@@ -9,7 +9,7 @@ struct ContentView: View {
     @State var isFilteredByDist = Array(repeating: false, count: 5)
     @State var isFilteredByCity = Array(repeating: false, count: 4)
     @State var isFilteredBySus = false
-
+    @State var showAboutSheet = false
     
     @State var sortedRestaurants: [Restaurant] = []
     @State var filteredRestaurants: [Restaurant] = []
@@ -38,9 +38,15 @@ struct ContentView: View {
             }
             .navigationTitle("米台目")
             
+            .sheet(isPresented: $showAboutSheet) {
+                AboutView()
+            }
+            
             .toolbar {
                 ToolbarItem {
-                    FilterMenuView(restaurants: $Restaurants, searchText: $searchText, isSortedByDist: $isSortedByDist, isFilteredByDist: $isFilteredByDist, isFilteredByCity: $isFilteredByCity, isFilteredBySus: $isFilteredBySus, sortedRestaurants: $sortedRestaurants, filteredRestaurants: $filteredRestaurants, displayedRestaurants: $displayedRestaurants)
+
+                    // filter menu button
+                    FilterMenuView(restaurants: $Restaurants, searchText: $searchText, isSortedByDist: $isSortedByDist, isFilteredByDist: $isFilteredByDist, isFilteredByCity: $isFilteredByCity, isFilteredBySus: $isFilteredBySus, showAboutSheet: $showAboutSheet, sortedRestaurants: $sortedRestaurants, filteredRestaurants: $filteredRestaurants, displayedRestaurants: $displayedRestaurants)
                     
                 }
             }

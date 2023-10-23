@@ -11,6 +11,7 @@ struct FilterMenuView: View {
     @Binding var isFilteredByDist: [Bool]
     @Binding var isFilteredByCity: [Bool]
     @Binding var isFilteredBySus: Bool
+    @Binding var showAboutSheet: Bool
     
     @Binding var sortedRestaurants: [Restaurant]
     @Binding var filteredRestaurants: [Restaurant]
@@ -19,6 +20,16 @@ struct FilterMenuView: View {
     
     var body: some View {
         Menu {
+            
+            Section("資訊") {
+                Button {
+                    showAboutSheet = true
+                } label: {
+                    Image(systemName: "info.circle")
+                    Text("關於米台目")
+                }
+            }
+            
             Section("排序") {
                 
                 // sort by distinction

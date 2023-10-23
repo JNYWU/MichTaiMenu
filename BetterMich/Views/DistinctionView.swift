@@ -12,45 +12,42 @@ struct DistinctionView: View {
         HStack {
             switch distinction {
             case 1:
-                Image("1star")
+                Image(.onestar)
                     .resizable()
                     .scaledToFill()
                     .frame(width: 15, height: 12)
                 
             case 2:
-                Image("2stars")
+                Image(.twostars)
                     .resizable()
                     .scaledToFill()
                     .frame(width: 35, height: 12)
                 
             case 3:
-                Image("3stars")
+                Image(.threestars)
                     .resizable()
                     .scaledToFill()
                     .frame(width: 55, height: 12)
                 
             case 0:
                 if bibendum == true {
-                    Image("bib")
+                    Image(.bib)
                         .resizable()
                         .scaledToFill()
                         .frame(width: 17, height: 12)
                 } else {
-                    Image("plate")
+                    Image(.plate)
                         .resizable()
                         .scaledToFill()
                         .frame(width: 21, height: 12)
                 }
                 
             default:
-                Image("plate")
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 20, height: 12)
+                Text("")
             }
             
             if sustainable {
-                Image("greenstar")
+                Image(.greenstar)
                     .resizable()
                     .scaledToFill()
                     .frame(width: 17, height: 12)
