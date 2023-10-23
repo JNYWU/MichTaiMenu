@@ -12,34 +12,39 @@ struct DistinctionView: View {
         HStack {
             switch distinction {
             case 1:
-                Image(.onestar)
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 15, height: 12)
+                Image(.star)
+                    .foregroundStyle(.red)
                 
             case 2:
-                Image(.twostars)
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 35, height: 12)
+                HStack {
+                    Image(.star)
+                        .foregroundStyle(.red)
+                        .padding(.trailing, -13)
+                    Image(.star)
+                        .foregroundStyle(.red)
+                }
                 
             case 3:
-                Image(.threestars)
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 55, height: 12)
+                HStack {
+                    Image(.star)
+                        .foregroundStyle(.red)
+                        .padding(.trailing, -13)
+                    Image(.star)
+                        .foregroundStyle(.red)
+                        .padding()
+                        .padding(.trailing, -13)
+                    Image(.star)
+                        .foregroundStyle(.red)
+                }
                 
             case 0:
                 if bibendum == true {
-                    Image(.bib)
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: 17, height: 12)
+                    Image(.bibendum)
+                        .foregroundStyle(.red)
+                    
                 } else {
                     Image(.plate)
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: 21, height: 12)
+                        .foregroundStyle(.red)
                 }
                 
             default:
@@ -48,15 +53,19 @@ struct DistinctionView: View {
             
             if sustainable {
                 Image(.greenstar)
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 17, height: 12)
+                    .foregroundColor(.green)
             }
         }
     }
 }
 
 #Preview {
-    DistinctionView(distinction: 1, bibendum: false, sustainable: true)
+    VStack(spacing: 10) {
+        DistinctionView(distinction: 3, bibendum: false, sustainable: false)
+        DistinctionView(distinction: 2, bibendum: false, sustainable: false)
+        DistinctionView(distinction: 1, bibendum: false, sustainable: true)
+        DistinctionView(distinction: 0, bibendum: true, sustainable: true)
+        DistinctionView(distinction: 0, bibendum: false, sustainable: true)
+    }
 }
 
