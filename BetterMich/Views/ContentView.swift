@@ -31,12 +31,24 @@ struct ContentView: View {
             
             List {
                 ForEach (searchText.isEmpty ? displayedRestaurants : searchedRestaurants) { restaurant in
-                               
+                    
                     RestaurantRowView(restaurant: restaurant)
                     
                 }
+                
             }
+            
+            .overlay(
+                VStack {
+                    if displayedRestaurants.isEmpty || searchedRestaurants.isEmpty {
+                        EmptyListView(searchText: $searchText, displayedRestaurants: $displayedRestaurants, searchedRestaurants: searchedRestaurants, isFilteredByDist: $isFilteredByDist, isFilteredByCity: $isFilteredByCity, isFilteredBySus: $isFilteredBySus)
+                    }
+                }
+            )
+            
             .navigationTitle("米台目")
+            
+            
             
             .sheet(isPresented: $showAboutSheet) {
                 AboutView()
@@ -51,7 +63,7 @@ struct ContentView: View {
                 }
             }
         }
-        .searchable(text: $searchText)
+        .searchable(text: $searchText, prompt: "搜尋餐廳、城市、類型")
         .scrollDismissesKeyboard(.immediately)
     }
     
