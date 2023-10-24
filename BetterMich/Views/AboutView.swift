@@ -18,10 +18,6 @@ struct AboutView: View {
    
                 Image(.taiwanMich)
                     .resizable()
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 18)
-                            .stroke(.secondary, lineWidth: 1.8)
-                    )
                     .frame(width: 100, height: 100)
                     .padding(.top, 30)
                 
@@ -82,8 +78,9 @@ struct AboutView: View {
                     .font(.subheadline)
                     .padding(.bottom, 3)
                 
-                Link("台灣米其林官網", destination: URL(string: "https://guide.michelin.com/tw/zh_TW/selection/taiwan/restaurants")!)
+                Link("台灣米其林官網\(Image(systemName: "arrow.up.forward.app.fill"))", destination: URL(string: "https://guide.michelin.com/tw/zh_TW/selection/taiwan/restaurants")!)
                     .font(.headline)
+                
                 
                 Spacer()
                 
