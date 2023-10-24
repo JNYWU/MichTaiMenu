@@ -9,7 +9,7 @@ struct RestaurantRowView: View {
         
         HStack {
             
-            VStack(alignment: .leading) {
+            VStack(alignment: .leading, spacing: 8) {
                 Text(restaurant.Name)
                     .font(.headline)
                 
