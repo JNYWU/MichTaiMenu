@@ -54,6 +54,7 @@ struct DistinctionView: View {
             
             if sustainable {
                 Image(.greenstar)
+                    .padding(.leading, 0.5)
                     .foregroundColor(.green)
             }
         }

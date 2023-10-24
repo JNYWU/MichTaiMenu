@@ -37,8 +37,9 @@ struct AboutView: View {
                 
                 Text("圖例")
                     .font(.title)
+                    .padding(.bottom, 5)
                 
-                VStack(alignment: .leading) {
+                VStack(alignment: .leading, spacing: 7) {
                     HStack {
                         DistinctionView(distinction: 3, bibendum: false, sustainable: false)
                         Spacer()
@@ -57,9 +58,7 @@ struct AboutView: View {
                     
                     HStack {
                         Image(.greenstar)
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: 17, height: 12)
+                            .foregroundStyle(.green)
                         Spacer()
                         Text("綠星")
                     }
@@ -74,7 +73,8 @@ struct AboutView: View {
                         Text("推薦")
                     }
                 }
-                .frame(maxWidth: 138)
+                .padding(.trailing, 120)
+                .padding(.leading, 120)
                 
                 Divider().padding()
 
