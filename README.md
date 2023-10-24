@@ -1,5 +1,7 @@
 # 米台目
 一個台灣米其林餐廳清單 App
+目前在 TestFlight 測試中
+https://testflight.apple.com/join/bQ0Y5nrV
 
 ## 主要功能
 - 迅速查看餐廳評鑑等級、所在城市、以及餐廳類型
