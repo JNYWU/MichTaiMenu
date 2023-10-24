@@ -1,10 +1,3 @@
-//
-//  EmptyListView.swift
-//  BetterMich
-//
-//  Created by 吳求元 on 2023/10/24.
-//
-
 import SwiftUI
 
 struct EmptyListView: View {
@@ -24,6 +17,7 @@ struct EmptyListView: View {
     var body: some View {
         
         VStack {
+            // empty list with only filter, no searching
             if searchText.isEmpty && displayedRestaurants.isEmpty {
                 Text("沒有餐廳符合篩選條件：")
                 
@@ -31,6 +25,7 @@ struct EmptyListView: View {
                     if isFilteredByCity.contains(true) {
                         Text("位於")
                         
+                        // show filtered cities
                         ForEach(0 ..< 3) { city in
                             if isFilteredByCity[city] {
                                 Text(cityList[city])
@@ -41,6 +36,7 @@ struct EmptyListView: View {
                         Text("的")
                     }
                     
+                    // show filtered distinction
                     ForEach(0 ..< 4) { dist in
                         if isFilteredByDist[dist] {
                             Text(distList[dist])
@@ -56,13 +52,16 @@ struct EmptyListView: View {
                 
             }
             
+            // empty list with searching, and maybe also filter
             if !searchText.isEmpty && searchedRestaurants.isEmpty {
                 
                 HStack {
+                    // if filtered with any filter option
                     if isFilteredByCity.contains(true) || isFilteredByDist.contains(true) || isFilteredBySus {
                         if isFilteredByCity.contains(true) {
                             Text("位於")
                             
+                            // show filtered cities
                             ForEach(0 ..< 3) { city in
                                 if isFilteredByCity[city] {
                                     Text(cityList[city])
@@ -73,6 +72,7 @@ struct EmptyListView: View {
                             Text("的")
                         }
                         
+                        // show filtered distinction
                         ForEach(0 ..< 4) { dist in
                             if isFilteredByDist[dist] {
                                 Text(distList[dist])
@@ -90,6 +90,7 @@ struct EmptyListView: View {
                     
                 }
                 
+                // show searched text
                 Text("沒有餐廳符合搜尋內容：")
                 Text(searchText)
             }

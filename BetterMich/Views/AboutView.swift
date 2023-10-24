@@ -1,10 +1,3 @@
-//
-//  AboutView.swift
-//  BetterMich
-//
-//  Created by 吳求元 on 2023/10/23.
-//
-
 import SwiftUI
 
 struct AboutView: View {

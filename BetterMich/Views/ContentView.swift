@@ -29,44 +29,45 @@ struct ContentView: View {
         
         NavigationStack {
             
-            List {
-                ForEach (searchText.isEmpty ? displayedRestaurants : searchedRestaurants) { restaurant in
-                    
-                    RestaurantRowView(restaurant: restaurant)
+            // ZStack for showing current filters
+            ZStack(alignment: .bottom) {
+                
+                List {
+                    ForEach (searchText.isEmpty ? displayedRestaurants : searchedRestaurants) { restaurant in
+                        RestaurantRowView(restaurant: restaurant)
+                    }
                     
                 }
-                
-            }
-            
-            .overlay(
-                VStack {
-                    if displayedRestaurants.isEmpty || searchedRestaurants.isEmpty {
-                        EmptyListView(searchText: $searchText, displayedRestaurants: $displayedRestaurants, searchedRestaurants: searchedRestaurants, isFilteredByDist: $isFilteredByDist, isFilteredByCity: $isFilteredByCity, isFilteredBySus: $isFilteredBySus)
+                // show empty list view
+                .overlay(
+                    VStack {
+                        if displayedRestaurants.isEmpty || searchedRestaurants.isEmpty {
+                            EmptyListView(searchText: $searchText, displayedRestaurants: $displayedRestaurants, searchedRestaurants: searchedRestaurants, isFilteredByDist: $isFilteredByDist, isFilteredByCity: $isFilteredByCity, isFilteredBySus: $isFilteredBySus)
+                        }
+                    }
+                )
+                .navigationTitle("米台目")
+                // show about view
+                .sheet(isPresented: $showAboutSheet) {
+                    AboutView()
+                }
+                .toolbar {
+                    ToolbarItem {
+                        // filter menu button
+                        FilterMenuView(restaurants: $Restaurants, searchText: $searchText, isSortedByDist: $isSortedByDist, isFilteredByDist: $isFilteredByDist, isFilteredByCity: $isFilteredByCity, isFilteredBySus: $isFilteredBySus, showAboutSheet: $showAboutSheet, sortedRestaurants: $sortedRestaurants, filteredRestaurants: $filteredRestaurants, displayedRestaurants: $displayedRestaurants)
+                        
                     }
                 }
-            )
-            
-            .navigationTitle("米台目")
-            
-            
-            
-            .sheet(isPresented: $showAboutSheet) {
-                AboutView()
-            }
-            
-            .toolbar {
-                ToolbarItem {
-
-                    // filter menu button
-                    FilterMenuView(restaurants: $Restaurants, searchText: $searchText, isSortedByDist: $isSortedByDist, isFilteredByDist: $isFilteredByDist, isFilteredByCity: $isFilteredByCity, isFilteredBySus: $isFilteredBySus, showAboutSheet: $showAboutSheet, sortedRestaurants: $sortedRestaurants, filteredRestaurants: $filteredRestaurants, displayedRestaurants: $displayedRestaurants)
+                if isFilteredByDist.contains(true) || isFilteredByCity.contains(true) || isFilteredBySus {
                     
+                    CurrentlyFilteringView(isFilteredByDist: $isFilteredByDist, isFilteredByCity: $isFilteredByCity, isFilteredBySus: $isFilteredBySus)
                 }
+                
             }
         }
         .searchable(text: $searchText, prompt: "搜尋餐廳、城市、類型")
         .scrollDismissesKeyboard(.immediately)
     }
-    
     
 }
 

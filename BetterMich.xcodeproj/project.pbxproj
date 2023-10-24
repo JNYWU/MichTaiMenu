@@ -16,6 +16,7 @@
 		829E46802ADE68A800FC64B4 /* RestaurantRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 829E467F2ADE68A800FC64B4 /* RestaurantRowView.swift */; };
 		829E46822ADE6AC600FC64B4 /* FilterMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 829E46812ADE6AC600FC64B4 /* FilterMenuView.swift */; };
 		829E6D702AE7F1330026451B /* EmptyListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 829E6D6F2AE7F1330026451B /* EmptyListView.swift */; };
+		829E6D722AE80FEF0026451B /* CurrentlyFilteringView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 829E6D712AE80FEF0026451B /* CurrentlyFilteringView.swift */; };
 		82EA6BBC2AD7D9BF00D137E9 /* BetterMichApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82EA6BBB2AD7D9BF00D137E9 /* BetterMichApp.swift */; };
 		82EA6BBE2AD7D9BF00D137E9 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82EA6BBD2AD7D9BF00D137E9 /* ContentView.swift */; };
 		82EA6BC02AD7D9C000D137E9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 82EA6BBF2AD7D9C000D137E9 /* Assets.xcassets */; };
@@ -34,6 +35,7 @@
 		829E467F2ADE68A800FC64B4 /* RestaurantRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantRowView.swift; sourceTree = "<group>"; };
 		829E46812ADE6AC600FC64B4 /* FilterMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterMenuView.swift; sourceTree = "<group>"; };
 		829E6D6F2AE7F1330026451B /* EmptyListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyListView.swift; sourceTree = "<group>"; };
+		829E6D712AE80FEF0026451B /* CurrentlyFilteringView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentlyFilteringView.swift; sourceTree = "<group>"; };
 		82EA6BB82AD7D9BF00D137E9 /* BetterMich.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BetterMich.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		82EA6BBB2AD7D9BF00D137E9 /* BetterMichApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BetterMichApp.swift; sourceTree = "<group>"; };
 		82EA6BBD2AD7D9BF00D137E9 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -121,6 +123,7 @@
 				825F48182AE573AB002BEE20 /* FilterMenuButtonView.swift */,
 				827BF62A2AE6343E0010FDCC /* AboutView.swift */,
 				829E6D6F2AE7F1330026451B /* EmptyListView.swift */,
+				829E6D712AE80FEF0026451B /* CurrentlyFilteringView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -208,6 +211,7 @@
 				82EA6BD32AD7E3D100D137E9 /* handleCSV.swift in Sources */,
 				827BF62B2AE6343E0010FDCC /* AboutView.swift in Sources */,
 				829E6D702AE7F1330026451B /* EmptyListView.swift in Sources */,
+				829E6D722AE80FEF0026451B /* CurrentlyFilteringView.swift in Sources */,
 				829E46822ADE6AC600FC64B4 /* FilterMenuView.swift in Sources */,
 				82EA6BCF2AD7DB3600D137E9 /* Restaurant.swift in Sources */,
 				825F481B2AE57804002BEE20 /* FilterFunctions.swift in Sources */,
