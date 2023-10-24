@@ -1,6 +1,6 @@
 # 米台目
-一個台灣米其林餐廳清單 App\n
-目前在 TestFlight 測試中\n
+一個台灣米其林餐廳清單 App  
+目前在 TestFlight 測試中  
 https://testflight.apple.com/join/bQ0Y5nrV
 
 ## 主要功能
