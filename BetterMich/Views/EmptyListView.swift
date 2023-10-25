@@ -35,7 +35,7 @@ struct EmptyListView: View {
                             }
                         }
                         
-                        if isFilteredByDist.contains(true) {
+                        if isFilteredByDist.contains(true) || isFilteredBySus {
                             Text("的")
                         }
                     }
@@ -71,8 +71,9 @@ struct EmptyListView: View {
                                 }
                             }
                             
-                            Text("的")
-                        }
+                            if isFilteredByDist.contains(true) || isFilteredBySus {
+                                Text("的")
+                            }                        }
                         
                         // show filtered distinction
                         ForEach(0 ..< 4) { dist in
@@ -96,6 +97,7 @@ struct EmptyListView: View {
                     .font(.headline)
             }
             
+            // show reset filter button
             if isFilteredByCity.contains(true) || isFilteredByDist.contains(true) || isFilteredBySus {
                 Button(role: .destructive) {
                     

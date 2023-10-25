@@ -1,10 +1,3 @@
-//
-//  CurrentlyFilteringView.swift
-//  BetterMich
-//
-//  Created by 吳求元 on 2023/10/24.
-//
-
 import SwiftUI
 
 struct CurrentlyFilteringView: View {

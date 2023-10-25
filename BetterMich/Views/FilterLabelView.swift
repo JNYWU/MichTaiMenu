@@ -1,10 +1,3 @@
-//
-//  FilterLabelView.swift
-//  BetterMich
-//
-//  Created by 吳求元 on 2023/10/25.
-//
-
 import SwiftUI
 
 struct FilterLabelView: View {

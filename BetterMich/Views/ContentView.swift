@@ -60,8 +60,11 @@ struct ContentView: View {
                     
                     ToolbarItemGroup(placement: .bottomBar) {
                         
+                        // don't show current filters when list is empty
                         if searchText.isEmpty || (!searchText.isEmpty && !searchedRestaurants.isEmpty) {
-                            if (isFilteredByDist.contains(true) || isFilteredByCity.contains(true) || isFilteredBySus) {
+                            if (isFilteredByDist.contains(true) || isFilteredByCity.contains(true) || isFilteredBySus)
+                                && !displayedRestaurants.isEmpty {
+                                // show current filters as labels on bottom tab
                                 CurrentlyFilteringView(isFilteredByDist: $isFilteredByDist, isFilteredByCity: $isFilteredByCity, isFilteredBySus: $isFilteredBySus)
                             }
                         }
