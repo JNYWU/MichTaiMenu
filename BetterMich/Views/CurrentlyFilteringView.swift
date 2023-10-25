@@ -19,36 +19,32 @@ struct CurrentlyFilteringView: View {
     var body: some View {
         VStack(spacing: 3) {
             
-            Text("篩選中：")
                 // show filtered cities
                 HStack {
-                    ForEach(0 ..< 3) { city in
+                    Text("篩選中：")
+                        .padding(.top, 8)
+
+                    ForEach(0 ..< 4) { city in
                         if isFilteredByCity[city] {
-                            Text(cityList[city])
-                                .foregroundStyle(.teal)
+                            FilterLabelView(filterLabel: cityList[city], labelColor: .teal)
                         }
                     }
                 }
                 // show filtered distinction
                 HStack {
-                    ForEach(0 ..< 4) { dist in
+                    ForEach(0 ..< 5) { dist in
                         if isFilteredByDist[dist] {
-                            Text(distList[dist])
-                                .foregroundStyle(.red)
+                            FilterLabelView(filterLabel: distList[dist], labelColor: .red)
+
                         }
                     }
                     
                     if isFilteredBySus {
-                        Text("綠星")
-                            .foregroundStyle(.green)
+                        FilterLabelView(filterLabel: "綠星", labelColor: .green)
                     }
                 }
             
         }
-            
-        .padding(10)
-        .background(.regularMaterial)
-        .cornerRadius(10)
-        .padding(10)
+
     }
 }

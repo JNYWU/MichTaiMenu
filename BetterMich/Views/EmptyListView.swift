@@ -28,8 +28,7 @@ struct EmptyListView: View {
                         // show filtered cities
                         ForEach(0 ..< 3) { city in
                             if isFilteredByCity[city] {
-                                Text(cityList[city])
-                                    .foregroundStyle(.teal)
+                                FilterLabelView(filterLabel: cityList[city], labelColor: .teal)
                             }
                         }
                         
@@ -39,14 +38,12 @@ struct EmptyListView: View {
                     // show filtered distinction
                     ForEach(0 ..< 4) { dist in
                         if isFilteredByDist[dist] {
-                            Text(distList[dist])
-                                .foregroundStyle(.red)
+                            FilterLabelView(filterLabel: distList[dist], labelColor: .red)
                         }
                     }
                     
                     if isFilteredBySus {
-                        Text("綠星")
-                            .foregroundStyle(.green)
+                        FilterLabelView(filterLabel: "綠星", labelColor: .green)
                     }
                 }
                 
@@ -64,8 +61,8 @@ struct EmptyListView: View {
                             // show filtered cities
                             ForEach(0 ..< 3) { city in
                                 if isFilteredByCity[city] {
-                                    Text(cityList[city])
-                                        .foregroundStyle(.teal)
+                                    FilterLabelView(filterLabel: cityList[city], labelColor: .teal)
+
                                 }
                             }
                             
@@ -75,14 +72,12 @@ struct EmptyListView: View {
                         // show filtered distinction
                         ForEach(0 ..< 4) { dist in
                             if isFilteredByDist[dist] {
-                                Text(distList[dist])
-                                    .foregroundStyle(.red)
+                                FilterLabelView(filterLabel: distList[dist], labelColor: .red)
                             }
                         }
                         
                         if isFilteredBySus {
-                            Text("綠星")
-                                .foregroundStyle(.green)
+                            FilterLabelView(filterLabel: "綠星", labelColor: .green)
                         }
                         
                         Text("篩選條件下")

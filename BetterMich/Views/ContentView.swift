@@ -52,15 +52,17 @@ struct ContentView: View {
                     AboutView()
                 }
                 .toolbar {
-                    ToolbarItem {
+                    ToolbarItemGroup(placement: .topBarTrailing) {
                         // filter menu button
                         FilterMenuView(restaurants: $Restaurants, searchText: $searchText, isSortedByDist: $isSortedByDist, isFilteredByDist: $isFilteredByDist, isFilteredByCity: $isFilteredByCity, isFilteredBySus: $isFilteredBySus, showAboutSheet: $showAboutSheet, sortedRestaurants: $sortedRestaurants, filteredRestaurants: $filteredRestaurants, displayedRestaurants: $displayedRestaurants)
                         
                     }
-                }
-                if isFilteredByDist.contains(true) || isFilteredByCity.contains(true) || isFilteredBySus {
                     
-                    CurrentlyFilteringView(isFilteredByDist: $isFilteredByDist, isFilteredByCity: $isFilteredByCity, isFilteredBySus: $isFilteredBySus)
+                    ToolbarItemGroup(placement: .bottomBar) {
+                        if isFilteredByDist.contains(true) || isFilteredByCity.contains(true) || isFilteredBySus {
+                            CurrentlyFilteringView(isFilteredByDist: $isFilteredByDist, isFilteredByCity: $isFilteredByCity, isFilteredBySus: $isFilteredBySus)
+                        }
+                    }
                 }
                 
             }
