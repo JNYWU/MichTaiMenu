@@ -4,7 +4,7 @@ import Algorithms
 // dropdown menu for Sorting and filtering
 struct FilterMenuView: View {
     
-    @Binding var restaurants: [Restaurant]
+    @Binding var Restaurants: [Restaurant]
     
     @Binding var searchText: String
     @Binding var isSortedByDist: Bool
@@ -53,7 +53,7 @@ struct FilterMenuView: View {
                 Menu {
                     
                     ForEach(0 ..< 4) { filterOption in
-                        FilterMenuButtonView(isSortedByDist: $isSortedByDist, isFilteredByCity: $isFilteredByCity, isFilteredByDist: $isFilteredByDist, isFilteredBySus: $isFilteredBySus, filteredRestaurants: $filteredRestaurants, restaurants: $restaurants, displayedRestaurants: $displayedRestaurants, filterCity: true, filterOption: filterOption)
+                        FilterMenuButtonView(isSortedByDist: $isSortedByDist, isFilteredByCity: $isFilteredByCity, isFilteredByDist: $isFilteredByDist, isFilteredBySus: $isFilteredBySus, filteredRestaurants: $filteredRestaurants, restaurants: $Restaurants, displayedRestaurants: $displayedRestaurants, filterCity: true, filterOption: filterOption)
                     }
  
                 } label: {
@@ -66,7 +66,7 @@ struct FilterMenuView: View {
                 Menu {
                     
                     ForEach(0 ..< 5) { filterOption in
-                        FilterMenuButtonView(isSortedByDist: $isSortedByDist, isFilteredByCity: $isFilteredByCity, isFilteredByDist: $isFilteredByDist, isFilteredBySus: $isFilteredBySus, filteredRestaurants: $filteredRestaurants, restaurants: $restaurants, displayedRestaurants: $displayedRestaurants, filterCity: false, filterOption: filterOption)
+                        FilterMenuButtonView(isSortedByDist: $isSortedByDist, isFilteredByCity: $isFilteredByCity, isFilteredByDist: $isFilteredByDist, isFilteredBySus: $isFilteredBySus, filteredRestaurants: $filteredRestaurants, restaurants: $Restaurants, displayedRestaurants: $displayedRestaurants, filterCity: false, filterOption: filterOption)
                     }
                     
                 } label: {
@@ -78,7 +78,7 @@ struct FilterMenuView: View {
                 Button {
                     
                     isFilteredBySus.toggle()
-                    filteredRestaurants = distFilter(allRestaurants: restaurants, isFilteredByCity: isFilteredByCity, isFilteredByDist: isFilteredByDist)
+                    filteredRestaurants = distFilter(allRestaurants: Restaurants, isFilteredByCity: isFilteredByCity, isFilteredByDist: isFilteredByDist)
                     filteredRestaurants = cityFilter(allRestaurants: filteredRestaurants, isFilteredByCity: isFilteredByCity, isFilteredByDist: isFilteredByDist)
                     filteredRestaurants = sustainFilter(Restaurants: filteredRestaurants, isFilteredBySus: isFilteredBySus)
 
@@ -96,12 +96,11 @@ struct FilterMenuView: View {
             //MARK: Reset Filter Button
             // clear filter and reset restaurant list
             Button(role: .destructive) {
-                
-                displayedRestaurants = restaurants
+                                
+                displayedRestaurants = sortRestaurants(restaurants: Restaurants, isSortedByDist: !isSortedByDist)
                 isFilteredByDist = Array(repeating: false, count: 5)
                 isFilteredByCity = Array(repeating: false, count: 4)
                 isFilteredBySus = false
-                isSortedByDist = true
                 
             } label: {
                 Image(systemName: "arrow.2.circlepath")

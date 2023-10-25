@@ -27,6 +27,7 @@ struct CurrentlyFilteringView: View {
                     ForEach(0 ..< 4) { city in
                         if isFilteredByCity[city] {
                             FilterLabelView(filterLabel: cityList[city], labelColor: .teal)
+                                .padding(.top, 8)
                         }
                     }
                 }

@@ -4,6 +4,7 @@ struct EmptyListView: View {
     
     @Binding var searchText: String
     
+    @Binding var Restaurants: [Restaurant]
     @Binding var displayedRestaurants: [Restaurant]
     var searchedRestaurants: [Restaurant]
         
@@ -11,12 +12,14 @@ struct EmptyListView: View {
     @Binding var isFilteredByCity: [Bool]
     @Binding var isFilteredBySus: Bool
     
+    @Binding var isSortedByDist: Bool
+    
     let distList = ["三星", "二星", "一星", "必比登", "推薦"]
     let cityList = ["台北", "台中", "台南", "高雄"]
     
     var body: some View {
         
-        VStack {
+        VStack(spacing: 5) {
             // empty list with only filter, no searching
             if searchText.isEmpty && displayedRestaurants.isEmpty {
                 Text("沒有餐廳符合篩選條件：")
@@ -32,7 +35,9 @@ struct EmptyListView: View {
                             }
                         }
                         
-                        Text("的")
+                        if isFilteredByDist.contains(true) {
+                            Text("的")
+                        }
                     }
                     
                     // show filtered distinction
@@ -88,8 +93,23 @@ struct EmptyListView: View {
                 // show searched text
                 Text("沒有餐廳符合搜尋內容：")
                 Text(searchText)
+                    .font(.headline)
             }
             
+            if isFilteredByCity.contains(true) || isFilteredByDist.contains(true) || isFilteredBySus {
+                Button(role: .destructive) {
+                    
+                    displayedRestaurants = sortRestaurants(restaurants: Restaurants, isSortedByDist: !isSortedByDist)
+                    isFilteredByDist = Array(repeating: false, count: 5)
+                    isFilteredByCity = Array(repeating: false, count: 4)
+                    isFilteredBySus = false
+                    
+                } label: {
+                    Text("清除篩選")
+                    Image(systemName: "arrow.2.circlepath")
+                }
+                .padding(.top, 15)
+            }
         }
     }
 }

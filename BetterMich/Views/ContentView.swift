@@ -42,7 +42,7 @@ struct ContentView: View {
                 .overlay(
                     VStack {
                         if displayedRestaurants.isEmpty || searchedRestaurants.isEmpty {
-                            EmptyListView(searchText: $searchText, displayedRestaurants: $displayedRestaurants, searchedRestaurants: searchedRestaurants, isFilteredByDist: $isFilteredByDist, isFilteredByCity: $isFilteredByCity, isFilteredBySus: $isFilteredBySus)
+                            EmptyListView(searchText: $searchText, Restaurants: $Restaurants, displayedRestaurants: $displayedRestaurants,  searchedRestaurants: searchedRestaurants, isFilteredByDist: $isFilteredByDist, isFilteredByCity: $isFilteredByCity, isFilteredBySus: $isFilteredBySus, isSortedByDist: $isSortedByDist)
                         }
                     }
                 )
@@ -54,14 +54,18 @@ struct ContentView: View {
                 .toolbar {
                     ToolbarItemGroup(placement: .topBarTrailing) {
                         // filter menu button
-                        FilterMenuView(restaurants: $Restaurants, searchText: $searchText, isSortedByDist: $isSortedByDist, isFilteredByDist: $isFilteredByDist, isFilteredByCity: $isFilteredByCity, isFilteredBySus: $isFilteredBySus, showAboutSheet: $showAboutSheet, sortedRestaurants: $sortedRestaurants, filteredRestaurants: $filteredRestaurants, displayedRestaurants: $displayedRestaurants)
+                        FilterMenuView(Restaurants: $Restaurants, searchText: $searchText, isSortedByDist: $isSortedByDist, isFilteredByDist: $isFilteredByDist, isFilteredByCity: $isFilteredByCity, isFilteredBySus: $isFilteredBySus, showAboutSheet: $showAboutSheet, sortedRestaurants: $sortedRestaurants, filteredRestaurants: $filteredRestaurants, displayedRestaurants: $displayedRestaurants)
                         
                     }
                     
                     ToolbarItemGroup(placement: .bottomBar) {
-                        if isFilteredByDist.contains(true) || isFilteredByCity.contains(true) || isFilteredBySus {
-                            CurrentlyFilteringView(isFilteredByDist: $isFilteredByDist, isFilteredByCity: $isFilteredByCity, isFilteredBySus: $isFilteredBySus)
+                        
+                        if searchText.isEmpty || (!searchText.isEmpty && !searchedRestaurants.isEmpty) {
+                            if (isFilteredByDist.contains(true) || isFilteredByCity.contains(true) || isFilteredBySus) {
+                                CurrentlyFilteringView(isFilteredByDist: $isFilteredByDist, isFilteredByCity: $isFilteredByCity, isFilteredBySus: $isFilteredBySus)
+                            }
                         }
+                        
                     }
                 }
                 

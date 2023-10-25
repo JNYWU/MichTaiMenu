@@ -14,7 +14,8 @@ struct FilterLabelView: View {
     
     var body: some View {
         Text(filterLabel)
-            .foregroundStyle(.white)
+            .font(.headline)
+            .foregroundStyle(.launchScreenBackground)
             .padding(2.5)
             .background(labelColor)
             .clipShape(RoundedRectangle(cornerRadius: 5))
@@ -23,5 +24,10 @@ struct FilterLabelView: View {
 
 
 #Preview {
-    FilterLabelView(filterLabel: "台北", labelColor: .teal)
+    VStack {
+        FilterLabelView(filterLabel: "台北", labelColor: .teal)
+        FilterLabelView(filterLabel: "三星", labelColor: .red)
+        FilterLabelView(filterLabel: "綠星", labelColor: .green)
+
+    }
 }
