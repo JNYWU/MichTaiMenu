@@ -119,16 +119,32 @@
 			isa = PBXGroup;
 			children = (
 				82EA6BBD2AD7D9BF00D137E9 /* ContentView.swift */,
-				829E467F2ADE68A800FC64B4 /* RestaurantRowView.swift */,
-				829E46792ADA8E5100FC64B4 /* DistinctionView.swift */,
-				829E46812ADE6AC600FC64B4 /* FilterMenuView.swift */,
-				825F48182AE573AB002BEE20 /* FilterMenuButtonView.swift */,
 				827BF62A2AE6343E0010FDCC /* AboutView.swift */,
-				829E6D6F2AE7F1330026451B /* EmptyListView.swift */,
-				829E6D712AE80FEF0026451B /* CurrentlyFilteringView.swift */,
-				82B6EFE42AE8EC0500725927 /* FilterLabelView.swift */,
+				82ECCAD22AEA586700A7841B /* Subview */,
+				82ECCAD12AEA583F00A7841B /* Filter */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		82ECCAD12AEA583F00A7841B /* Filter */ = {
+			isa = PBXGroup;
+			children = (
+				829E46812ADE6AC600FC64B4 /* FilterMenuView.swift */,
+				825F48182AE573AB002BEE20 /* FilterMenuButtonView.swift */,
+				829E6D712AE80FEF0026451B /* CurrentlyFilteringView.swift */,
+			);
+			path = Filter;
+			sourceTree = "<group>";
+		};
+		82ECCAD22AEA586700A7841B /* Subview */ = {
+			isa = PBXGroup;
+			children = (
+				829E46792ADA8E5100FC64B4 /* DistinctionView.swift */,
+				82B6EFE42AE8EC0500725927 /* FilterLabelView.swift */,
+				829E467F2ADE68A800FC64B4 /* RestaurantRowView.swift */,
+				829E6D6F2AE7F1330026451B /* EmptyListView.swift */,
+			);
+			path = Subview;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
