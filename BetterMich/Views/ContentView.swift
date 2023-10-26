@@ -66,6 +66,16 @@ struct ContentView: View {
                                 && !displayedRestaurants.isEmpty {
                                 // show current filters as labels on bottom tab
                                 CurrentlyFilteringView(isFilteredByDist: $isFilteredByDist, isFilteredByCity: $isFilteredByCity, isFilteredBySus: $isFilteredBySus)
+                                
+                                Button {
+                                    displayedRestaurants = sortRestaurants(restaurants: Restaurants, isSortedByDist: !isSortedByDist)
+                                    isFilteredByDist = Array(repeating: false, count: 5)
+                                    isFilteredByCity = Array(repeating: false, count: 4)
+                                    isFilteredBySus = false
+                                } label: {
+                                    Image(systemName: "arrow.2.circlepath")
+                                        .foregroundStyle(.red)
+                                }
                             }
                         }
                         

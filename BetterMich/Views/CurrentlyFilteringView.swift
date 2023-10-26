@@ -10,7 +10,7 @@ struct CurrentlyFilteringView: View {
     let cityList = ["台北", "台中", "台南", "高雄"]
     
     var body: some View {
-        VStack(spacing: 3) {
+        VStack(alignment: .leading, spacing: 3) {
             
                 // show filtered cities
                 HStack {
