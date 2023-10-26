@@ -9,9 +9,9 @@ struct FilterLabelView: View {
         Text(filterLabel)
             .font(.headline)
             .foregroundStyle(.launchScreenBackground)
-            .padding(2.5)
+            .padding(3)
             .background(labelColor)
-            .clipShape(RoundedRectangle(cornerRadius: 5))
+            .clipShape(RoundedRectangle(cornerRadius: 6))
     }
 }
 

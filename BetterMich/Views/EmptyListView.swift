@@ -111,6 +111,8 @@ struct EmptyListView: View {
                     Image(systemName: "arrow.2.circlepath")
                 }
                 .padding(.top, 15)
+                .buttonStyle(.bordered)
+
             }
         }
     }

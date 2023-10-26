@@ -18,24 +18,22 @@ struct CurrentlyFilteringView: View {
                         .padding(.top, 8)
 
                     ForEach(0 ..< 4) { city in
-                        if isFilteredByCity[city] {
-                            FilterLabelView(filterLabel: cityList[city], labelColor: .teal)
-                                .padding(.top, 8)
-                        }
+                        
+                        FilterLabelView(filterLabel: cityList[city], labelColor: isFilteredByCity[city] ? .teal : Color(UIColor.systemGray5))
+                            .padding(.top, 8)
+                        
                     }
                 }
                 // show filtered distinction
                 HStack {
                     ForEach(0 ..< 5) { dist in
-                        if isFilteredByDist[dist] {
-                            FilterLabelView(filterLabel: distList[dist], labelColor: .red)
+                        
+                        FilterLabelView(filterLabel: distList[dist], labelColor: isFilteredByDist[dist] ? .red : Color(UIColor.systemGray5))
 
-                        }
                     }
                     
-                    if isFilteredBySus {
-                        FilterLabelView(filterLabel: "綠星", labelColor: .green)
-                    }
+                    FilterLabelView(filterLabel: "綠星", labelColor: isFilteredBySus ? .green : Color(UIColor.systemGray5))
+                    
                 }
             
         }
