@@ -139,10 +139,10 @@
 		82ECCAD22AEA586700A7841B /* Subview */ = {
 			isa = PBXGroup;
 			children = (
-				829E46792ADA8E5100FC64B4 /* DistinctionView.swift */,
-				82B6EFE42AE8EC0500725927 /* FilterLabelView.swift */,
 				829E467F2ADE68A800FC64B4 /* RestaurantRowView.swift */,
+				829E46792ADA8E5100FC64B4 /* DistinctionView.swift */,
 				829E6D6F2AE7F1330026451B /* EmptyListView.swift */,
+				82B6EFE42AE8EC0500725927 /* FilterLabelView.swift */,
 			);
 			path = Subview;
 			sourceTree = "<group>";
