@@ -23,7 +23,9 @@ struct EmptyListView: View {
             // empty list with only filter, no searching
             if searchText.isEmpty && displayedRestaurants.isEmpty {
                 Text("沒有餐廳符合篩選條件：")
+            }
                 
+            if searchText.isEmpty && displayedRestaurants.isEmpty || !searchText.isEmpty && searchedRestaurants.isEmpty {
                 HStack {
                     if isFilteredByCity.contains(true) {
                         Text("位於")
@@ -53,44 +55,13 @@ struct EmptyListView: View {
                 }
                 
             }
+                            
             
             // empty list with searching, and maybe also filter
             if !searchText.isEmpty && searchedRestaurants.isEmpty {
                 
-                HStack {
-                    // if filtered with any filter option
-                    if isFilteredByCity.contains(true) || isFilteredByDist.contains(true) || isFilteredBySus {
-                        if isFilteredByCity.contains(true) {
-                            Text("位於")
-                            
-                            // show filtered cities
-                            ForEach(0 ..< 3) { city in
-                                if isFilteredByCity[city] {
-                                    FilterLabelView(filterLabel: cityList[city], labelColor: .teal)
-
-                                }
-                            }
-                            
-                            if isFilteredByDist.contains(true) || isFilteredBySus {
-                                Text("的")
-                            }                        }
-                        
-                        // show filtered distinction
-                        ForEach(0 ..< 4) { dist in
-                            if isFilteredByDist[dist] {
-                                FilterLabelView(filterLabel: distList[dist], labelColor: .red)
-                            }
-                        }
-                        
-                        if isFilteredBySus {
-                            FilterLabelView(filterLabel: "綠星", labelColor: .green)
-                        }
-                        
-                        Text("篩選條件下")
-                    }
-                    
-                }
-                
+                Text("篩選條件下")
+          
                 // show searched text
                 Text("沒有餐廳符合搜尋內容：")
                 Text(searchText)
