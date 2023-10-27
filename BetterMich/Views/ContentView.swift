@@ -47,7 +47,7 @@ struct ContentView: View {
                             .presentationDetents([.medium, .large])
                             .presentationDragIndicator(.automatic)
                             .presentationCornerRadius(30)
-                            .presentationBackground(.thinMaterial)
+                            .presentationBackground(.thickMaterial)
                     }
                     
                 }
