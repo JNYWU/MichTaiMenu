@@ -19,6 +19,7 @@ struct Restaurant: Hashable, Identifiable {
     var hasPhone: Bool
     var IMG: String
     var Address: String
+    var Description: String
     
     init(raw:[String]) {
         self.id = Int(raw[0])!
@@ -34,6 +35,7 @@ struct Restaurant: Hashable, Identifiable {
         self.Phone = raw[9]
         self.hasPhone = true
         self.IMG = raw[10]
-        self.Address = String(raw[11].dropFirst())
+        self.Address = raw[11]
+        self.Description = raw[12]
     }
 }

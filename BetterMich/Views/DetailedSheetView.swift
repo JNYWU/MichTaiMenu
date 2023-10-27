@@ -6,9 +6,22 @@ struct DetailedSheetView: View {
 
     var body: some View {
         ScrollView {
-            Text(restaurant.Name)
-                .font(.title)
-                .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
+            VStack(spacing: 8) {
+                Text(restaurant.Name)
+                    .font(.title)
+                    .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
+                    .padding(.top)
+                
+                HStack {
+                    DistinctionView(distinction: restaurant.Distinction, bibendum: restaurant.Bibendum, sustainable: restaurant.Sustainable)
+                        .font(.title2)
+                    
+                    Text(restaurant.RestaurantType)
+                        .font(.title2)
+                }
+            }
+            
+           
             
             AsyncImage(url: URL(string: restaurant.IMG)) { phase in
                 if let image = phase.image {
@@ -27,9 +40,9 @@ struct DetailedSheetView: View {
             }
             .cornerRadius(20)
             .padding()
-
         }
         .padding(.top)
+
     }
 }
 

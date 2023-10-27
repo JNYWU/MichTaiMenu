@@ -62,7 +62,7 @@ struct DistinctionView: View {
 }
 
 #Preview {
-    VStack(alignment: .leading, spacing: 10) {
+    VStack(spacing: 10) {
         DistinctionView(distinction: 3, bibendum: false, sustainable: false)
         DistinctionView(distinction: 2, bibendum: false, sustainable: false)
         DistinctionView(distinction: 1, bibendum: false, sustainable: true)
