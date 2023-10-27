@@ -109,7 +109,16 @@ struct FilterMenuView: View {
             
         } label: {
             // filter menu button label
-            Image(systemName: isFilteredByDist.contains(true) || isFilteredByCity.contains(true) || isFilteredBySus ? "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
+            Image(systemName: "line.3.horizontal.decrease")
+                .font(.caption)
+                .fontWeight(.bold)
+                .foregroundStyle(isFilteredByDist.contains(true) || isFilteredByCity.contains(true) || isFilteredBySus ? .launchScreenBackground : .blue)
+                .padding(8)
+                .background(isFilteredByDist.contains(true) || isFilteredByCity.contains(true) || isFilteredBySus ? .blue : Color(UIColor.systemGray5))
+                .clipShape(Circle())
+
         }
+        
+
     }
 }

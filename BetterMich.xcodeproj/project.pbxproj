@@ -24,6 +24,7 @@
 		82EA6BC32AD7D9C000D137E9 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 82EA6BC22AD7D9C000D137E9 /* Preview Assets.xcassets */; };
 		82EA6BCF2AD7DB3600D137E9 /* Restaurant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82EA6BCE2AD7DB3600D137E9 /* Restaurant.swift */; };
 		82EA6BD32AD7E3D100D137E9 /* handleCSV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82EA6BD22AD7E3D100D137E9 /* handleCSV.swift */; };
+		82ECCAD62AEB9E4000A7841B /* DetailedSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82ECCAD52AEB9E4000A7841B /* DetailedSheetView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,6 +46,7 @@
 		82EA6BC22AD7D9C000D137E9 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		82EA6BCE2AD7DB3600D137E9 /* Restaurant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Restaurant.swift; sourceTree = "<group>"; };
 		82EA6BD22AD7E3D100D137E9 /* handleCSV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = handleCSV.swift; sourceTree = "<group>"; };
+		82ECCAD52AEB9E4000A7841B /* DetailedSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailedSheetView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -119,6 +121,7 @@
 			isa = PBXGroup;
 			children = (
 				82EA6BBD2AD7D9BF00D137E9 /* ContentView.swift */,
+				82ECCAD52AEB9E4000A7841B /* DetailedSheetView.swift */,
 				827BF62A2AE6343E0010FDCC /* AboutView.swift */,
 				82ECCAD22AEA586700A7841B /* Subview */,
 				82ECCAD12AEA583F00A7841B /* Filter */,
@@ -232,6 +235,7 @@
 				827BF62B2AE6343E0010FDCC /* AboutView.swift in Sources */,
 				829E6D702AE7F1330026451B /* EmptyListView.swift in Sources */,
 				829E6D722AE80FEF0026451B /* CurrentlyFilteringView.swift in Sources */,
+				82ECCAD62AEB9E4000A7841B /* DetailedSheetView.swift in Sources */,
 				829E46822ADE6AC600FC64B4 /* FilterMenuView.swift in Sources */,
 				82EA6BCF2AD7DB3600D137E9 /* Restaurant.swift in Sources */,
 				825F481B2AE57804002BEE20 /* FilterFunctions.swift in Sources */,

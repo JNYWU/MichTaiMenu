@@ -12,6 +12,7 @@ struct RestaurantRowView: View {
             VStack(alignment: .leading, spacing: 8) {
                 Text(restaurant.Name)
                     .font(.headline)
+                    .foregroundStyle(.buttonRowText)
                 
                 HStack {
                     
@@ -20,9 +21,11 @@ struct RestaurantRowView: View {
                     
                     Text(restaurant.City)
                         .font(.subheadline)
+                        .foregroundStyle(.buttonRowText)
                     
                     Text(restaurant.RestaurantType)
                         .font(.subheadline)
+                        .foregroundStyle(.buttonRowText)
                 }
             }
             
