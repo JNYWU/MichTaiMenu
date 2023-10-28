@@ -19,7 +19,7 @@ struct AboutView: View {
                     .padding(.bottom, 2)
 
                 
-                Text("Version 1.0.2")
+                Text("Version 1.1")
                     .font(.subheadline)
                     .foregroundStyle(Color(.secondaryLabel))
                 
