@@ -18,6 +18,7 @@
 		829E6D702AE7F1330026451B /* EmptyListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 829E6D6F2AE7F1330026451B /* EmptyListView.swift */; };
 		829E6D722AE80FEF0026451B /* CurrentlyFilteringView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 829E6D712AE80FEF0026451B /* CurrentlyFilteringView.swift */; };
 		82B6EFE52AE8EC0500725927 /* FilterLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82B6EFE42AE8EC0500725927 /* FilterLabelView.swift */; };
+		82BAE2312AECE52B0015E9D3 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82BAE2302AECE52B0015E9D3 /* MapView.swift */; };
 		82EA6BBC2AD7D9BF00D137E9 /* BetterMichApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82EA6BBB2AD7D9BF00D137E9 /* BetterMichApp.swift */; };
 		82EA6BBE2AD7D9BF00D137E9 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82EA6BBD2AD7D9BF00D137E9 /* ContentView.swift */; };
 		82EA6BC02AD7D9C000D137E9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 82EA6BBF2AD7D9C000D137E9 /* Assets.xcassets */; };
@@ -39,6 +40,7 @@
 		829E6D6F2AE7F1330026451B /* EmptyListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyListView.swift; sourceTree = "<group>"; };
 		829E6D712AE80FEF0026451B /* CurrentlyFilteringView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentlyFilteringView.swift; sourceTree = "<group>"; };
 		82B6EFE42AE8EC0500725927 /* FilterLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterLabelView.swift; sourceTree = "<group>"; };
+		82BAE2302AECE52B0015E9D3 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		82EA6BB82AD7D9BF00D137E9 /* BetterMich.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BetterMich.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		82EA6BBB2AD7D9BF00D137E9 /* BetterMichApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BetterMichApp.swift; sourceTree = "<group>"; };
 		82EA6BBD2AD7D9BF00D137E9 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -146,6 +148,7 @@
 				829E46792ADA8E5100FC64B4 /* DistinctionView.swift */,
 				829E6D6F2AE7F1330026451B /* EmptyListView.swift */,
 				82B6EFE42AE8EC0500725927 /* FilterLabelView.swift */,
+				82BAE2302AECE52B0015E9D3 /* MapView.swift */,
 			);
 			path = Subview;
 			sourceTree = "<group>";
@@ -234,6 +237,7 @@
 				82EA6BD32AD7E3D100D137E9 /* handleCSV.swift in Sources */,
 				827BF62B2AE6343E0010FDCC /* AboutView.swift in Sources */,
 				829E6D702AE7F1330026451B /* EmptyListView.swift in Sources */,
+				82BAE2312AECE52B0015E9D3 /* MapView.swift in Sources */,
 				829E6D722AE80FEF0026451B /* CurrentlyFilteringView.swift in Sources */,
 				82ECCAD62AEB9E4000A7841B /* DetailedSheetView.swift in Sources */,
 				829E46822ADE6AC600FC64B4 /* FilterMenuView.swift in Sources */,

@@ -6,8 +6,10 @@ struct DetailedSheetView: View {
     
     var body: some View {
         ScrollView {
+            // HStack for photo and title VStack
             HStack {
                 
+                // show image
                 AsyncImage(url: URL(string: restaurant.IMG)) { phase in
                     if let image = phase.image {
                         image
@@ -27,6 +29,7 @@ struct DetailedSheetView: View {
                 .cornerRadius(20)
                 .padding(.trailing, 20)
                 
+                // Vstack for name, type, distinction
                 VStack(alignment: .leading, spacing: 8) {
                     Text(restaurant.Name)
                         .font(.largeTitle.bold())
@@ -48,6 +51,7 @@ struct DetailedSheetView: View {
             Divider()
                 .padding(.horizontal)
             
+            // VStack for description, phone, address
             VStack(alignment: .leading, spacing: 5) {
                 Label("餐廳簡介", systemImage: "doc.append")
                     .font(.headline)
@@ -64,6 +68,7 @@ struct DetailedSheetView: View {
                         if restaurant.Phone.first == "+" {
                             Text(restaurant.Phone)
                             
+                            // call button
                             Button {
                                 let formattedphone = FormatPhoneNumber(phone: restaurant.Phone)
                                 guard let url = URL(string: formattedphone) else { return }
@@ -81,6 +86,7 @@ struct DetailedSheetView: View {
                             .foregroundStyle(.green)
                             .buttonStyle(.bordered)
                             .padding(.horizontal, 5)
+                            
                         } else {
                             Text("無號碼")
                         }
@@ -100,6 +106,11 @@ struct DetailedSheetView: View {
                 }
             }
             .padding()
+            
+             Divider()
+                .padding(.horizontal)
+            
+            
       
         }
         .padding(.top)
