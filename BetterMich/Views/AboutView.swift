@@ -15,12 +15,13 @@ struct AboutView: View {
                     .padding(.top, 30)
                 
                 Text("米台目")
-                    .font(.largeTitle)
+                    .font(.largeTitle.bold())
                     .padding(.bottom, 2)
 
                 
                 Text("Version 1.0.2")
                     .font(.subheadline)
+                    .foregroundStyle(Color(.secondaryLabel))
                 
                 Divider().padding()
                 

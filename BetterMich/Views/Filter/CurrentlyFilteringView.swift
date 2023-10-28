@@ -19,7 +19,7 @@ struct CurrentlyFilteringView: View {
 
                     ForEach(0 ..< 4) { city in
                         
-                        FilterLabelView(filterLabel: cityList[city], labelColor: isFilteredByCity[city] ? .teal : Color(UIColor.systemGray5))
+                        FilterLabelView(filterLabel: cityList[city], labelColor: isFilteredByCity[city] ? .teal : Color(.systemGray5))
                             .padding(.top, 8)
                         
                     }
@@ -28,11 +28,11 @@ struct CurrentlyFilteringView: View {
                 HStack {
                     ForEach(0 ..< 5) { dist in
                         
-                        FilterLabelView(filterLabel: distList[dist], labelColor: isFilteredByDist[dist] ? .red : Color(UIColor.systemGray5))
+                        FilterLabelView(filterLabel: distList[dist], labelColor: isFilteredByDist[dist] ? .red : Color(.systemGray5))
 
                     }
                     
-                    FilterLabelView(filterLabel: "綠星", labelColor: isFilteredBySus ? .green : Color(UIColor.systemGray5))
+                    FilterLabelView(filterLabel: "綠星", labelColor: isFilteredBySus ? .green : Color(.systemGray5))
                     
                 }
             

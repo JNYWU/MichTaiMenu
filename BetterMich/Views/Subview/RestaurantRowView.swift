@@ -64,9 +64,11 @@ struct RestaurantRowView: View {
             
         }
         .padding()
-        .background(Color(UIColor.tertiarySystemBackground))
+        .background(Color(.tertiarySystemBackground))
         .clipShape(RoundedRectangle(cornerRadius: 15))
+        .shadow(color: .black.opacity(0.15), radius: 8, x: 5, y: 10)
         .padding(.horizontal)
+        .padding(.bottom, 4)
 
     }
 }
@@ -125,14 +127,17 @@ func FormatPhoneNumber(phone: String) -> String {
 }
 
 #Preview {
-    ScrollView {
-        
-        let Restaurants = loadCSVData()
-        
-        ForEach (Restaurants) { restaurant in
-            RestaurantRowView(restaurant: restaurant)
+    NavigationStack {
+        ScrollView {
+            
+            let Restaurants = loadCSVData()
+            
+            ForEach (Restaurants) { restaurant in
+                RestaurantRowView(restaurant: restaurant)
+            }
         }
+        .navigationTitle("米台目")
+        .frame(maxWidth: .infinity)
+        .background(Color(UIColor.systemGroupedBackground))
     }
-    .frame(maxWidth: .infinity)
-    .background(Color(UIColor.systemGroupedBackground))
 }

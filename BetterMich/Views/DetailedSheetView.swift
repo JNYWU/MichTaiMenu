@@ -17,7 +17,7 @@ struct DetailedSheetView: View {
                         Image(systemName: "exclamationmark.icloud")
                     } else {
                         ZStack {
-                            Color(UIColor.systemGray4)
+                            Color(.systemGray4)
                             ProgressView()
                         }
                     }
@@ -29,11 +29,11 @@ struct DetailedSheetView: View {
                 
                 VStack(alignment: .leading, spacing: 8) {
                     Text(restaurant.Name)
-                        .font(.largeTitle)
-                        .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
+                        .font(.largeTitle.bold())
                     
                     Text(restaurant.RestaurantType)
                         .font(.title3)
+                        .foregroundStyle(Color(.secondaryLabel))
                                         
                     DistinctionView(distinction: restaurant.Distinction, bibendum: restaurant.Bibendum, sustainable: restaurant.Sustainable)
                         .font(.title2)
@@ -49,7 +49,7 @@ struct DetailedSheetView: View {
                 .padding(.horizontal)
             
             VStack(alignment: .leading, spacing: 5) {
-                Text("餐廳簡介")
+                Label("餐廳簡介", systemImage: "doc.append")
                     .font(.headline)
                 Text(restaurant.Description)
                 
@@ -58,7 +58,7 @@ struct DetailedSheetView: View {
                 
                 HStack(alignment: .top) {
                     VStack(alignment: .leading, spacing: 6) {
-                        Text("電話")
+                        Label("電話", systemImage: "phone")
                             .font(.headline)
                         
                         if restaurant.Phone.first == "+" {
@@ -73,7 +73,7 @@ struct DetailedSheetView: View {
                                 
                             } label: {
                                 HStack {
-                                    Image(systemName: "phone.fill")
+                                    Image(systemName: "phone.arrow.up.right.fill")
                                     Text("撥號")
                                 }
                                 .frame(minWidth: 0, maxWidth: .infinity)
@@ -91,7 +91,7 @@ struct DetailedSheetView: View {
                     Divider()
                     
                     VStack(alignment: .leading, spacing: 6) {
-                        Text("地址")
+                        Label("地址", systemImage: "map")
                             .font(.headline)
                         Text(restaurant.Address)
                     }
