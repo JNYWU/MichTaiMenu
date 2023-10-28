@@ -1,4 +1,5 @@
 import SwiftUI
+import MapKit
 
 struct DetailedSheetView: View {
     
@@ -110,12 +111,32 @@ struct DetailedSheetView: View {
              Divider()
                 .padding(.horizontal)
             
-            
+            MapView(restaurant: restaurant)
       
         }
         .padding(.top)
         
     }
+}
+
+func getCoordinate (address: String) -> CLLocationCoordinate2D {
+    let geocoder = CLGeocoder()
+    var coord = CLLocationCoordinate2D()
+    
+    geocoder.geocodeAddressString(address, completionHandler: { placemarks, error in
+        if let error = error {
+            print(error.localizedDescription)
+            return
+        }
+        
+        guard let placemarks = placemarks,
+              let location = placemarks[0].location else {
+            return
+        }
+        coord = location.coordinate
+    })
+    
+    return coord
 }
 
 #Preview {
