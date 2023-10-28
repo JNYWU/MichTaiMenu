@@ -33,7 +33,7 @@ struct ContentView: View {
             // ZStack for showing current filters
             ZStack(alignment: .bottom) {
                 
-                List {
+                ScrollView {
                     ForEach (searchText.isEmpty ? displayedRestaurants : searchedRestaurants) { restaurant in
                         Button {
                             selectedRestaurant = restaurant
@@ -51,6 +51,9 @@ struct ContentView: View {
                     }
                     
                 }
+                .frame(maxWidth: .infinity)
+                .background(Color(UIColor.systemGroupedBackground))
+                
                 // show empty list view
                 .overlay(
                     VStack {

@@ -9,7 +9,7 @@ struct DistinctionView: View {
     var sustainable: Bool
     
     var body: some View {
-        HStack {
+        HStack(spacing: 7) {
             switch distinction {
             case 1:
                 Image(.star)
@@ -54,7 +54,6 @@ struct DistinctionView: View {
             
             if sustainable {
                 Image(.greenstar)
-                    .padding(.leading, 0.5)
                     .foregroundColor(.green)
             }
         }
@@ -62,7 +61,7 @@ struct DistinctionView: View {
 }
 
 #Preview {
-    VStack(spacing: 10) {
+    VStack(alignment: .leading, spacing: 10) {
         DistinctionView(distinction: 3, bibendum: false, sustainable: false)
         DistinctionView(distinction: 2, bibendum: false, sustainable: false)
         DistinctionView(distinction: 1, bibendum: false, sustainable: true)

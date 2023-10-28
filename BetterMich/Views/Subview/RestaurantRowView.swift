@@ -63,6 +63,11 @@ struct RestaurantRowView: View {
             .clipShape(Circle())
             
         }
+        .padding()
+        .background(Color(UIColor.tertiarySystemBackground))
+        .clipShape(RoundedRectangle(cornerRadius: 15))
+        .padding(.horizontal)
+
     }
 }
 
@@ -120,7 +125,14 @@ func FormatPhoneNumber(phone: String) -> String {
 }
 
 #Preview {
-    List(0 ..< 10) { item in
-        RestaurantRowView(restaurant: loadCSVData()[item])
+    ScrollView {
+        
+        let Restaurants = loadCSVData()
+        
+        ForEach (Restaurants) { restaurant in
+            RestaurantRowView(restaurant: restaurant)
+        }
     }
+    .frame(maxWidth: .infinity)
+    .background(Color(UIColor.systemGroupedBackground))
 }
