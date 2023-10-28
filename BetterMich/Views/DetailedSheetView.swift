@@ -100,7 +100,7 @@ struct DetailedSheetView: View {
                     VStack(alignment: .leading, spacing: 6) {
                         Label("地址", systemImage: "map")
                             .font(.headline)
-                        Text(restaurant.Address)
+                        Text(FormatAddress(address: restaurant.Address))
                     }
                     .frame(minWidth: /*@START_MENU_TOKEN@*/0/*@END_MENU_TOKEN@*/, maxWidth: .infinity, alignment: .leading)
                     
@@ -117,6 +117,19 @@ struct DetailedSheetView: View {
         .padding(.top)
         
     }
+}
+
+func FormatAddress(address: String) -> String {
+    
+    var formattedAddress: String = address
+    
+    formattedAddress = formattedAddress.replacingOccurrences(of: "Taipei", with: "台北市")
+    formattedAddress = formattedAddress.replacingOccurrences(of: "Taichung", with: "台中市")
+    formattedAddress = formattedAddress.replacingOccurrences(of: "Tainan", with: "台南市")
+    formattedAddress = formattedAddress.replacingOccurrences(of: "Kaohsiung", with: "高雄市")
+
+        
+    return formattedAddress
 }
 
 func getCoordinate (address: String) -> CLLocationCoordinate2D {

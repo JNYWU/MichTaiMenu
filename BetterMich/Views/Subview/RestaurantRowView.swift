@@ -53,7 +53,7 @@ struct RestaurantRowView: View {
             Button {
                 
                 // function to open Apple Maps with input address
-                openMap(Address: restaurant.Address)
+                openMap(Address: FormatAddress(address: restaurant.Address))
                 
             } label: {
                 Image(systemName: "map.fill")
