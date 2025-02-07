@@ -69,9 +69,23 @@ struct ContentView: View {
                 }
                 .toolbar {
                     ToolbarItemGroup(placement: .topBarTrailing) {
-                        // filter menu button
-                        FilterMenuView(Restaurants: $Restaurants, searchText: $searchText, isSortedByDist: $isSortedByDist, isFilteredByDist: $isFilteredByDist, isFilteredByCity: $isFilteredByCity, isFilteredBySus: $isFilteredBySus, showAboutSheet: $showAboutSheet, sortedRestaurants: $sortedRestaurants, filteredRestaurants: $filteredRestaurants, displayedRestaurants: $displayedRestaurants)
-                        
+                        HStack(spacing: 6) {
+                            // info button
+                            Button {
+                                showAboutSheet.toggle()
+                            } label: {
+                                Image(systemName: "info")
+                                    .font(.caption)
+                                    .fontWeight(.bold)
+                                    .foregroundStyle(.blue)
+                                    .padding(8)
+                                    .background(Color(UIColor.systemGray5))
+                                    .clipShape(Circle())
+                            }
+                            
+                            // filter menu button
+                            FilterMenuView(Restaurants: $Restaurants, searchText: $searchText, isSortedByDist: $isSortedByDist, isFilteredByDist: $isFilteredByDist, isFilteredByCity: $isFilteredByCity, isFilteredBySus: $isFilteredBySus, showAboutSheet: $showAboutSheet, sortedRestaurants: $sortedRestaurants, filteredRestaurants: $filteredRestaurants, displayedRestaurants: $displayedRestaurants)
+                        }
                     }
                     
                     ToolbarItemGroup(placement: .bottomBar) {
