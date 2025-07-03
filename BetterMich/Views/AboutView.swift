@@ -22,6 +22,10 @@ struct AboutView: View {
                     .font(.subheadline)
                     .foregroundStyle(Color(.secondaryLabel))
 
+                Text("資料年份：2023")
+                    .font(.subheadline)
+                    .foregroundStyle(Color(.secondaryLabel))
+
                 Divider().padding()
 
                 Text("圖例")
