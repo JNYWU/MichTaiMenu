@@ -33,7 +33,7 @@ struct EmptyListView: View {
                         // show filtered cities
                         ForEach(0 ..< 3) { city in
                             if isFilteredByCity[city] {
-                                FilterLabelView(filterLabel: cityList[city], labelColor: .teal)
+                                FilterLabelView(filterLabel: cityList[city], labelColor: .teal, isFiltered: true)
                             }
                         }
                         
@@ -45,12 +45,12 @@ struct EmptyListView: View {
                     // show filtered distinction
                     ForEach(0 ..< 4) { dist in
                         if isFilteredByDist[dist] {
-                            FilterLabelView(filterLabel: distList[dist], labelColor: .red)
+                            FilterLabelView(filterLabel: distList[dist], labelColor: .red, isFiltered: true)
                         }
                     }
                     
                     if isFilteredBySus {
-                        FilterLabelView(filterLabel: "綠星", labelColor: .green)
+                        FilterLabelView(filterLabel: "綠星", labelColor: .green, isFiltered: true)
                     }
                 }
                 
@@ -88,4 +88,3 @@ struct EmptyListView: View {
         }
     }
 }
-

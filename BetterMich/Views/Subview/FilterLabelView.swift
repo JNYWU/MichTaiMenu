@@ -1,14 +1,15 @@
 import SwiftUI
 
 struct FilterLabelView: View {
+    @Environment(\.colorScheme) private var colorScheme
     
     var filterLabel: String
     var labelColor: Color
+    var isFiltered: Bool = true
     
     var body: some View {
         Text(filterLabel)
             .font(.headline)
-            .foregroundStyle(.launchScreenBackground)
             .padding(3)
             .background(labelColor)
             .clipShape(RoundedRectangle(cornerRadius: 6))
@@ -18,9 +19,9 @@ struct FilterLabelView: View {
 
 #Preview {
     VStack {
-        FilterLabelView(filterLabel: "台北", labelColor: .teal)
-        FilterLabelView(filterLabel: "三星", labelColor: .red)
-        FilterLabelView(filterLabel: "綠星", labelColor: .green)
-
+        FilterLabelView(filterLabel: "台北", labelColor: .teal, isFiltered: true)
+        FilterLabelView(filterLabel: "三星", labelColor: .red, isFiltered: true)
+        FilterLabelView(filterLabel: "綠星", labelColor: .green, isFiltered: true)
+        FilterLabelView(filterLabel: "三星", labelColor: Color(.systemGray5), isFiltered: false)
     }
 }

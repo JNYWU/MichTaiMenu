@@ -62,41 +62,15 @@ struct ContentView: View {
                         }
                     }
                 )
-                .navigationTitle("米台目")
-                // show about view
-                .sheet(isPresented: $showAboutSheet) {
-                    AboutView()
-                }
-                .toolbar {
-                    ToolbarItemGroup(placement: .topBarTrailing) {
-                        HStack(spacing: 6) {
-                            // info button
-                            Button {
-                                showAboutSheet.toggle()
-                            } label: {
-                                Image(systemName: "info")
-                                    .font(.caption)
-                                    .fontWeight(.bold)
-                                    .foregroundStyle(.blue)
-                                    .padding(8)
-                                    .background(Color(UIColor.systemGray5))
-                                    .clipShape(Circle())
-                            }
-                            
-                            // filter menu button
-                            FilterMenuView(Restaurants: $Restaurants, searchText: $searchText, isSortedByDist: $isSortedByDist, isFilteredByDist: $isFilteredByDist, isFilteredByCity: $isFilteredByCity, isFilteredBySus: $isFilteredBySus, showAboutSheet: $showAboutSheet, sortedRestaurants: $sortedRestaurants, filteredRestaurants: $filteredRestaurants, displayedRestaurants: $displayedRestaurants)
-                        }
-                    }
-                    
-                    ToolbarItemGroup(placement: .bottomBar) {
-                        
-                        // don't show current filters when list is empty
-                        if searchText.isEmpty || (!searchText.isEmpty && !searchedRestaurants.isEmpty) {
-                            if (isFilteredByDist.contains(true) || isFilteredByCity.contains(true) || isFilteredBySus)
-                                && !displayedRestaurants.isEmpty {
-                                // show current filters as labels on bottom tab
+                
+                if (isFilteredByDist.contains(true) || isFilteredByCity.contains(true) || isFilteredBySus)
+                    && !displayedRestaurants.isEmpty {
+                    if #available(iOS 26.0, *) {
+                        VStack {
+                            HStack(alignment: .center, spacing: 8) {
                                 CurrentlyFilteringView(isFilteredByDist: $isFilteredByDist, isFilteredByCity: $isFilteredByCity, isFilteredBySus: $isFilteredBySus)
-                                
+                                    .contentShape(Rectangle())
+                                    .onTapGesture {}
                                 Button {
                                     displayedRestaurants = sortRestaurants(restaurants: Restaurants, isSortedByDist: !isSortedByDist)
                                     isFilteredByDist = Array(repeating: false, count: 5)
@@ -105,13 +79,68 @@ struct ContentView: View {
                                 } label: {
                                     Image(systemName: "arrow.2.circlepath")
                                         .foregroundStyle(.red)
+                                        .imageScale(.medium)
+                                        .padding(6)
+                                }
+                            }
+                            .frame(maxWidth: .infinity)
+                            .padding(.bottom, 2)
+                            .adaptiveGlass(cornerRadius: 18)
+                            .cornerRadius(18)
+                            .padding(.horizontal, 16)
+                            .padding(.bottom, 8)
+                        }
+                    }
+                }
+            }
+            .navigationTitle("米台目")
+            .sheet(isPresented: $showAboutSheet) {
+                AboutView()
+            }
+            .toolbar {
+                ToolbarItemGroup(placement: .topBarTrailing) {
+                    HStack(spacing: 6) {
+                        Button {
+                            showAboutSheet.toggle()
+                        } label: {
+                            Image(systemName: "info")
+                                .font(.caption)
+                                .fontWeight(.bold)
+                                .foregroundStyle(.blue)
+                                .padding(8)
+                                .background(Color(UIColor.systemGray5))
+                                .clipShape(Circle())
+                        }
+                        FilterMenuView(Restaurants: $Restaurants, searchText: $searchText, isSortedByDist: $isSortedByDist, isFilteredByDist: $isFilteredByDist, isFilteredByCity: $isFilteredByCity, isFilteredBySus: $isFilteredBySus, showAboutSheet: $showAboutSheet, sortedRestaurants: $sortedRestaurants, filteredRestaurants: $filteredRestaurants, displayedRestaurants: $displayedRestaurants)
+                    }
+                }
+                ToolbarItemGroup(placement: .topBarLeading) {
+                    // Removed CurrentlyFilteringView and reset button here as per instructions
+                }
+                ToolbarItemGroup(placement: .bottomBar) {
+                    if #unavailable(iOS 26.0) {
+                        if (isFilteredByDist.contains(true) || isFilteredByCity.contains(true) || isFilteredBySus)
+                            && !displayedRestaurants.isEmpty {
+                            HStack(alignment: .center, spacing: 8) {
+                                CurrentlyFilteringView(isFilteredByDist: $isFilteredByDist, isFilteredByCity: $isFilteredByCity, isFilteredBySus: $isFilteredBySus)
+                                    .contentShape(Rectangle())
+                                    .onTapGesture {}
+                                Spacer(minLength: 8)
+                                Button {
+                                    displayedRestaurants = sortRestaurants(restaurants: Restaurants, isSortedByDist: !isSortedByDist)
+                                    isFilteredByDist = Array(repeating: false, count: 5)
+                                    isFilteredByCity = Array(repeating: false, count: 4)
+                                    isFilteredBySus = false
+                                } label: {
+                                    Image(systemName: "arrow.2.circlepath")
+                                        .foregroundStyle(.red)
+                                        .imageScale(.medium)
+                                        .padding(6)
                                 }
                             }
                         }
-                        
                     }
                 }
-                
             }
         }
         .searchable(text: $searchText, prompt: "搜尋餐廳、城市、類型")
@@ -124,4 +153,16 @@ struct ContentView: View {
     ContentView(Restaurants: loadCSVData(), displayedRestaurants: loadCSVData())
 }
 
-
+fileprivate extension View {
+    @ViewBuilder
+    func adaptiveGlass(cornerRadius: CGFloat) -> some View {
+        if #available(iOS 26.0, *) {
+            self.glassEffect(.regular, in: .rect(cornerRadius: cornerRadius))
+        } else {
+            self.background(
+                .ultraThinMaterial,
+                in: RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+            )
+        }
+    }
+}
