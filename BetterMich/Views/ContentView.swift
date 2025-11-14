@@ -65,31 +65,29 @@ struct ContentView: View {
                 
                 if (isFilteredByDist.contains(true) || isFilteredByCity.contains(true) || isFilteredBySus)
                     && !displayedRestaurants.isEmpty {
-                    if #available(iOS 26.0, *) {
-                        VStack {
-                            HStack(alignment: .center, spacing: 8) {
-                                CurrentlyFilteringView(isFilteredByDist: $isFilteredByDist, isFilteredByCity: $isFilteredByCity, isFilteredBySus: $isFilteredBySus)
-                                    .contentShape(Rectangle())
-                                    .onTapGesture {}
-                                Button {
-                                    displayedRestaurants = sortRestaurants(restaurants: Restaurants, isSortedByDist: !isSortedByDist)
-                                    isFilteredByDist = Array(repeating: false, count: 5)
-                                    isFilteredByCity = Array(repeating: false, count: 4)
-                                    isFilteredBySus = false
-                                } label: {
-                                    Image(systemName: "arrow.2.circlepath")
-                                        .foregroundStyle(.red)
-                                        .imageScale(.medium)
-                                        .padding(6)
-                                }
+                    VStack {
+                        HStack(alignment: .center, spacing: 8) {
+                            CurrentlyFilteringView(isFilteredByDist: $isFilteredByDist, isFilteredByCity: $isFilteredByCity, isFilteredBySus: $isFilteredBySus)
+                                .contentShape(Rectangle())
+                                .onTapGesture {}
+                            Button {
+                                displayedRestaurants = sortRestaurants(restaurants: Restaurants, isSortedByDist: !isSortedByDist)
+                                isFilteredByDist = Array(repeating: false, count: 5)
+                                isFilteredByCity = Array(repeating: false, count: 4)
+                                isFilteredBySus = false
+                            } label: {
+                                Image(systemName: "arrow.2.circlepath")
+                                    .foregroundStyle(.red)
+                                    .imageScale(.medium)
+                                    .padding(6)
                             }
-                            .frame(maxWidth: .infinity)
-                            .padding(.bottom, 2)
-                            .adaptiveGlass(cornerRadius: 18)
-                            .cornerRadius(18)
-                            .padding(.horizontal, 16)
-                            .padding(.bottom, 8)
                         }
+                        .frame(maxWidth: .infinity)
+                        .padding(.bottom, 2)
+                        .adaptiveGlass(cornerRadius: 18)
+                        .cornerRadius(18)
+                        .padding(.horizontal, 16)
+                        .padding(.bottom, 8)
                     }
                 }
             }
@@ -117,30 +115,6 @@ struct ContentView: View {
                 ToolbarItemGroup(placement: .topBarLeading) {
                     // Removed CurrentlyFilteringView and reset button here as per instructions
                 }
-                ToolbarItemGroup(placement: .bottomBar) {
-                    if #unavailable(iOS 26.0) {
-                        if (isFilteredByDist.contains(true) || isFilteredByCity.contains(true) || isFilteredBySus)
-                            && !displayedRestaurants.isEmpty {
-                            HStack(alignment: .center, spacing: 8) {
-                                CurrentlyFilteringView(isFilteredByDist: $isFilteredByDist, isFilteredByCity: $isFilteredByCity, isFilteredBySus: $isFilteredBySus)
-                                    .contentShape(Rectangle())
-                                    .onTapGesture {}
-                                Spacer(minLength: 8)
-                                Button {
-                                    displayedRestaurants = sortRestaurants(restaurants: Restaurants, isSortedByDist: !isSortedByDist)
-                                    isFilteredByDist = Array(repeating: false, count: 5)
-                                    isFilteredByCity = Array(repeating: false, count: 4)
-                                    isFilteredBySus = false
-                                } label: {
-                                    Image(systemName: "arrow.2.circlepath")
-                                        .foregroundStyle(.red)
-                                        .imageScale(.medium)
-                                        .padding(6)
-                                }
-                            }
-                        }
-                    }
-                }
             }
         }
         .searchable(text: $searchText, prompt: "搜尋餐廳、城市、類型")
@@ -166,3 +140,4 @@ fileprivate extension View {
         }
     }
 }
+
