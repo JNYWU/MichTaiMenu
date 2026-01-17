@@ -129,10 +129,12 @@ private func parseDistinction(award: [String]?, badge: String?) -> (stars: Int, 
 
 private func parseCity(from address: String?) -> String {
     let text = (address ?? "").lowercased()
+    if containsAny(text, ["新北", "new taipei"]) { return "新北" }
     if containsAny(text, ["台北", "臺北", "taipei"]) { return "台北" }
     if containsAny(text, ["台中", "臺中", "taichung"]) { return "台中" }
     if containsAny(text, ["台南", "臺南", "tainan"]) { return "台南" }
     if containsAny(text, ["高雄", "kaohsiung"]) { return "高雄" }
+    if containsAny(text, ["新竹", "hsinchu city", "hsinchu county"]) { return "新竹" }
     return "其他"
 }
 
