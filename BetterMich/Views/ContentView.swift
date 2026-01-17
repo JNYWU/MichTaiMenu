@@ -5,7 +5,7 @@ struct ContentView: View {
     @EnvironmentObject private var dataStore: MichelinDataStore
     
     @State var searchText = ""
-    @State var isSortedByDist = true
+    @State var isSortedByDist = false
     @State var isFilteredByDist = Array(repeating: false, count: 5)
     @State var isFilteredByCity = Array(repeating: false, count: 4)
     @State var isFilteredBySus = false
