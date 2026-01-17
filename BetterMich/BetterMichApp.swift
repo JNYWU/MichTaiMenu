@@ -11,7 +11,7 @@ import SwiftUI
 struct BetterMichApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView(Restaurants: loadCSVData(), displayedRestaurants: loadCSVData())
+            ContentView()
         }
     }
 }

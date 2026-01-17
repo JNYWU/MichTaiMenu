@@ -2,7 +2,7 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @State var Restaurants: [Restaurant]
+    @State private var Restaurants: [Restaurant] = []
     
     @State var searchText = ""
     @State var isSortedByDist = true
@@ -14,7 +14,11 @@ struct ContentView: View {
     
     @State var sortedRestaurants: [Restaurant] = []
     @State var filteredRestaurants: [Restaurant] = []
-    @State var displayedRestaurants: [Restaurant]
+    @State private var displayedRestaurants: [Restaurant] = []
+
+    @State private var isLoading = false
+    @State private var loadError: String?
+    @State private var hasLoaded = false
         
     var searchedRestaurants: [Restaurant] {
         // if search field is empty, return original list
@@ -119,12 +123,39 @@ struct ContentView: View {
         }
         .searchable(text: $searchText, prompt: "搜尋餐廳、城市、類型")
         .scrollDismissesKeyboard(.immediately)
+        .task {
+            if !hasLoaded {
+                hasLoaded = true
+                await loadRemoteRestaurants()
+            }
+        }
+        .overlay {
+            if isLoading && Restaurants.isEmpty {
+                ProgressView("載入資料中…")
+            }
+        }
+        .alert("載入失敗", isPresented: Binding(get: { loadError != nil }, set: { _ in loadError = nil })) {
+            Button("確定", role: .cancel) {}
+        } message: {
+            Text(loadError ?? "未知錯誤")
+        }
     }
     
+    private func loadRemoteRestaurants() async {
+        isLoading = true
+        defer { isLoading = false }
+        do {
+            let restaurants = try await fetchRemoteRestaurants()
+            Restaurants = restaurants
+            displayedRestaurants = sortRestaurants(restaurants: restaurants, isSortedByDist: isSortedByDist)
+        } catch {
+            loadError = error.localizedDescription
+        }
+    }
 }
 
 #Preview {
-    ContentView(Restaurants: loadCSVData(), displayedRestaurants: loadCSVData())
+    ContentView()
 }
 
 fileprivate extension View {
