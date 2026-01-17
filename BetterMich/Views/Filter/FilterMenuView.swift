@@ -34,14 +34,12 @@ struct FilterMenuView: View {
                 
                 // sort by distinction
                 Button {
-                        
-                    sortedRestaurants = sortRestaurants(restaurants: displayedRestaurants, isSortedByDist: isSortedByDist)
-                        
-                    displayedRestaurants = sortedRestaurants
                     isSortedByDist.toggle()
+                    sortedRestaurants = sortRestaurants(restaurants: displayedRestaurants, isSortedByDist: isSortedByDist)
+                    displayedRestaurants = sortedRestaurants
                     
                 } label: {
-                    Image(systemName: isSortedByDist ? "arrowshape.down.fill" : "arrowshape.up.fill")
+                    Image(systemName: isSortedByDist ? "arrowshape.up.fill" : "arrowshape.down.fill")
                     Text("評鑑等級")
                 }
 
@@ -82,7 +80,7 @@ struct FilterMenuView: View {
                     filteredRestaurants = cityFilter(allRestaurants: filteredRestaurants, isFilteredByCity: isFilteredByCity, isFilteredByDist: isFilteredByDist)
                     filteredRestaurants = sustainFilter(Restaurants: filteredRestaurants, isFilteredBySus: isFilteredBySus)
 
-                    displayedRestaurants = sortRestaurants(restaurants: filteredRestaurants, isSortedByDist: !isSortedByDist)
+                    displayedRestaurants = sortRestaurants(restaurants: filteredRestaurants, isSortedByDist: isSortedByDist)
                     
                 } label: {
                     Image(systemName: isFilteredBySus ? "leaf.fill" : "leaf")
@@ -97,7 +95,7 @@ struct FilterMenuView: View {
             // clear filter and reset restaurant list
             Button(role: .destructive) {
                                 
-                displayedRestaurants = sortRestaurants(restaurants: Restaurants, isSortedByDist: !isSortedByDist)
+                displayedRestaurants = sortRestaurants(restaurants: Restaurants, isSortedByDist: isSortedByDist)
                 isFilteredByDist = Array(repeating: false, count: 5)
                 isFilteredByCity = Array(repeating: false, count: 4)
                 isFilteredBySus = false

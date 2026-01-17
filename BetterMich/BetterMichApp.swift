@@ -9,9 +9,12 @@ import SwiftUI
 
 @main
 struct BetterMichApp: App {
+    @StateObject private var dataStore = MichelinDataStore()
+
     var body: some Scene {
         WindowGroup {
-            ContentView(Restaurants: loadCSVData(), displayedRestaurants: loadCSVData())
+            ContentView()
+                .environmentObject(dataStore)
         }
     }
 }

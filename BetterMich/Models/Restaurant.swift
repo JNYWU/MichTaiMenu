@@ -20,6 +20,21 @@ struct Restaurant: Hashable, Identifiable {
     var IMG: String
     var Address: String
     var Description: String
+
+    init(id: Int, name: String, distinction: Int, sustainable: Bool, bibendum: Bool, city: String, restaurantType: String, phone: String, img: String, address: String, description: String) {
+        self.id = id
+        self.Name = name
+        self.Distinction = distinction
+        self.Sustainable = sustainable
+        self.Bibendum = bibendum
+        self.City = city
+        self.RestaurantType = restaurantType
+        self.Phone = phone
+        self.hasPhone = phone.first == "+"
+        self.IMG = img
+        self.Address = address
+        self.Description = description
+    }
     
     init(raw:[String]) {
         self.id = Int(raw[0])!

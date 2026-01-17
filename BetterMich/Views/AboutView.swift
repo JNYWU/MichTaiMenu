@@ -1,34 +1,56 @@
 import SwiftUI
 
 struct AboutView: View {
-            
+
     @Environment(\.dismiss) var dismiss
+    @EnvironmentObject private var dataStore: MichelinDataStore
 
     var body: some View {
-        
+
         NavigationStack {
             ScrollView {
-   
+
                 Image(.taiwanMich)
                     .resizable()
                     .frame(width: 100, height: 100)
                     .padding(.top, 30)
-                
+
                 Text("米台目")
                     .font(.largeTitle.bold())
                     .padding(.bottom, 2)
 
-                
-                Text("Version 1.1")
+                Text("Version \(Version)")
                     .font(.subheadline)
                     .foregroundStyle(Color(.secondaryLabel))
-                
+
+                Text("資料月份：\(dataStore.latestYearMonth ?? "未知")")
+                    .font(.subheadline)
+                    .foregroundStyle(Color(.secondaryLabel))
+
+                if dataStore.isLoading {
+                    ProgressView()
+                        .padding(.top, 4)
+                } else if dataStore.isLatest {
+                    Text("已是最新資料")
+                        .font(.caption)
+                        .foregroundStyle(Color(.secondaryLabel))
+                        .padding(.top, 4)
+                } else {
+                    Button {
+                        Task { await dataStore.refresh() }
+                    } label: {
+                        Text("抓取最新資料")
+                            .font(.caption)
+                    }
+                    .padding(.top, 4)
+                }
+
                 Divider().padding()
-                
+
                 Text("圖例")
                     .font(.title)
                     .padding(.bottom, 5)
-                
+
                 VStack(alignment: .leading, spacing: 7) {
                     HStack {
                         DistinctionView(distinction: 3, bibendum: false, sustainable: false)
@@ -45,7 +67,7 @@ struct AboutView: View {
                         Spacer()
                         Text("一星")
                     }
-                    
+
                     HStack {
                         Image(.greenstar)
                             .foregroundStyle(.green)
@@ -65,27 +87,31 @@ struct AboutView: View {
                 }
                 .padding(.trailing, 120)
                 .padding(.leading, 120)
-                
+
                 Divider().padding()
 
                 Text("本 App 所提供的所有資訊皆來自：")
                     .font(.subheadline)
                     .padding(.bottom, 3)
-                
-                Link("台灣米其林官網\(Image(systemName: "arrow.up.forward.app.fill"))", destination: URL(string: "https://guide.michelin.com/tw/zh_TW/selection/taiwan/restaurants")!)
-                    .font(.headline)
-                
-                
+
+                Link(
+                    "台灣米其林官網\(Image(systemName: "arrow.up.forward.app.fill"))",
+                    destination: URL(
+                        string: MichelinURL)!
+                )
+                .font(.headline)
+
                 Spacer()
-                
+
             }
-            .navigationBarItems(trailing: Button("完成") {
-                dismiss()
-            })
+            .navigationBarItems(
+                trailing: Button("完成") {
+                    dismiss()
+                })
         }
 
     }
-    
+
 }
 
 #Preview {

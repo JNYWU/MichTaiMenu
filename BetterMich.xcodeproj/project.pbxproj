@@ -7,8 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		820240732AE124F40088A684 /* Michelin.csv in Resources */ = {isa = PBXBuildFile; fileRef = 820240722AE124F40088A684 /* Michelin.csv */; };
 		820240792AE1B44F0088A684 /* Algorithms in Frameworks */ = {isa = PBXBuildFile; productRef = 820240782AE1B44F0088A684 /* Algorithms */; };
+		83A1B0A12F01000100AA0001 /* MichelinDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A1B0A02F01000100AA0001 /* MichelinDataStore.swift */; };
+		8300A0022F00000100AA0001 /* RemoteDataLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8300A0012F00000100AA0001 /* RemoteDataLoader.swift */; };
+		8248DF372D55EC0800AA4752 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8248DF362D55EC0300AA4752 /* Config.swift */; };
 		825F48192AE573AB002BEE20 /* FilterMenuButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 825F48182AE573AB002BEE20 /* FilterMenuButtonView.swift */; };
 		825F481B2AE57804002BEE20 /* FilterFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 825F481A2AE57804002BEE20 /* FilterFunctions.swift */; };
 		827BF62B2AE6343E0010FDCC /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 827BF62A2AE6343E0010FDCC /* AboutView.swift */; };
@@ -29,7 +31,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		820240722AE124F40088A684 /* Michelin.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Michelin.csv; sourceTree = "<group>"; };
+		83A1B0A02F01000100AA0001 /* MichelinDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MichelinDataStore.swift; sourceTree = "<group>"; };
+		8300A0012F00000100AA0001 /* RemoteDataLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteDataLoader.swift; sourceTree = "<group>"; };
+		8248DF362D55EC0300AA4752 /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		825F48182AE573AB002BEE20 /* FilterMenuButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterMenuButtonView.swift; sourceTree = "<group>"; };
 		825F481A2AE57804002BEE20 /* FilterFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterFunctions.swift; sourceTree = "<group>"; };
 		827BF62A2AE6343E0010FDCC /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
@@ -104,7 +108,7 @@
 		82EA6BC92AD7D9D000D137E9 /* Data */ = {
 			isa = PBXGroup;
 			children = (
-				820240722AE124F40088A684 /* Michelin.csv */,
+				8248DF362D55EC0300AA4752 /* Config.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -112,7 +116,9 @@
 		82EA6BCC2AD7DB0300D137E9 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				83A1B0A02F01000100AA0001 /* MichelinDataStore.swift */,
 				82EA6BCE2AD7DB3600D137E9 /* Restaurant.swift */,
+				8300A0012F00000100AA0001 /* RemoteDataLoader.swift */,
 				82EA6BD22AD7E3D100D137E9 /* handleCSV.swift */,
 				825F481A2AE57804002BEE20 /* FilterFunctions.swift */,
 			);
@@ -217,7 +223,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				820240732AE124F40088A684 /* Michelin.csv in Resources */,
 				82EA6BC32AD7D9C000D137E9 /* Preview Assets.xcassets in Resources */,
 				82EA6BC02AD7D9C000D137E9 /* Assets.xcassets in Resources */,
 			);
@@ -231,6 +236,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				829E46802ADE68A800FC64B4 /* RestaurantRowView.swift in Sources */,
+				83A1B0A12F01000100AA0001 /* MichelinDataStore.swift in Sources */,
+				8300A0022F00000100AA0001 /* RemoteDataLoader.swift in Sources */,
 				82EA6BBE2AD7D9BF00D137E9 /* ContentView.swift in Sources */,
 				82B6EFE52AE8EC0500725927 /* FilterLabelView.swift in Sources */,
 				82EA6BBC2AD7D9BF00D137E9 /* BetterMichApp.swift in Sources */,
@@ -243,6 +250,7 @@
 				829E46822ADE6AC600FC64B4 /* FilterMenuView.swift in Sources */,
 				82EA6BCF2AD7DB3600D137E9 /* Restaurant.swift in Sources */,
 				825F481B2AE57804002BEE20 /* FilterFunctions.swift in Sources */,
+				8248DF372D55EC0800AA4752 /* Config.swift in Sources */,
 				829E467A2ADA8E5100FC64B4 /* DistinctionView.swift in Sources */,
 				825F48192AE573AB002BEE20 /* FilterMenuButtonView.swift in Sources */,
 			);
@@ -393,7 +401,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jnywu.BetterMich;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -425,7 +433,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jnywu.BetterMich;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
