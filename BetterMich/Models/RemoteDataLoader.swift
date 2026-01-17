@@ -4,13 +4,13 @@ struct SignedURLResponse: Decodable {
     let url: String
 }
 
-struct MichelinPayload: Decodable {
+struct MichelinPayload: Codable {
     let etl_dtm: String
     let count: Int
     let restaurants: [RestaurantDTO]
 }
 
-struct RestaurantDTO: Decodable {
+struct RestaurantDTO: Codable {
     let name: String
     let phone: String?
     let badge: String?
@@ -33,16 +33,35 @@ enum RemoteDataError: Error {
     case emptyPayload
 }
 
-func fetchRemoteRestaurants() async throws -> [Restaurant] {
+func fetchRemotePayload() async throws -> MichelinPayload {
     let signedURL = try await fetchSignedURL()
     let (data, _) = try await URLSession.shared.data(from: signedURL)
     let payload = try JSONDecoder().decode(MichelinPayload.self, from: data)
     if payload.restaurants.isEmpty {
         throw RemoteDataError.emptyPayload
     }
-    return payload.restaurants.enumerated().map { index, dto in
+    return payload
+}
+
+func restaurantsFromPayload(_ payload: MichelinPayload) -> [Restaurant] {
+    payload.restaurants.enumerated().map { index, dto in
         mapRestaurant(dto: dto, id: index + 1)
     }
+}
+
+func yearMonthString(from isoString: String) -> String? {
+    let formatter = ISO8601DateFormatter()
+    if let date = formatter.date(from: isoString) {
+        let calendar = Calendar(identifier: .gregorian)
+        let year = calendar.component(.year, from: date)
+        let month = calendar.component(.month, from: date)
+        return String(format: "%04d/%02d", year, month)
+    }
+    let parts = isoString.split(separator: "-")
+    if parts.count >= 2 {
+        return String(format: "%04d/%02d", Int(parts[0]) ?? 0, Int(parts[1]) ?? 0)
+    }
+    return nil
 }
 
 private func fetchSignedURL() async throws -> URL {

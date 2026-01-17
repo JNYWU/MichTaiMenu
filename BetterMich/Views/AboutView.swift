@@ -3,6 +3,7 @@ import SwiftUI
 struct AboutView: View {
 
     @Environment(\.dismiss) var dismiss
+    @EnvironmentObject private var dataStore: MichelinDataStore
 
     var body: some View {
 
@@ -22,9 +23,27 @@ struct AboutView: View {
                     .font(.subheadline)
                     .foregroundStyle(Color(.secondaryLabel))
 
-                Text("資料年份：2023")
+                Text("資料月份：\(dataStore.latestYearMonth ?? "未知")")
                     .font(.subheadline)
                     .foregroundStyle(Color(.secondaryLabel))
+
+                if dataStore.isLoading {
+                    ProgressView()
+                        .padding(.top, 4)
+                } else if dataStore.isLatest {
+                    Text("已是最新資料")
+                        .font(.caption)
+                        .foregroundStyle(Color(.secondaryLabel))
+                        .padding(.top, 4)
+                } else {
+                    Button {
+                        Task { await dataStore.refresh() }
+                    } label: {
+                        Text("抓取最新資料")
+                            .font(.caption)
+                    }
+                    .padding(.top, 4)
+                }
 
                 Divider().padding()
 

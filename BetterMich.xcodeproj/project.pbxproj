@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		820240792AE1B44F0088A684 /* Algorithms in Frameworks */ = {isa = PBXBuildFile; productRef = 820240782AE1B44F0088A684 /* Algorithms */; };
+		83A1B0A12F01000100AA0001 /* MichelinDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A1B0A02F01000100AA0001 /* MichelinDataStore.swift */; };
 		8300A0022F00000100AA0001 /* RemoteDataLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8300A0012F00000100AA0001 /* RemoteDataLoader.swift */; };
 		8248DF372D55EC0800AA4752 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8248DF362D55EC0300AA4752 /* Config.swift */; };
 		825F48192AE573AB002BEE20 /* FilterMenuButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 825F48182AE573AB002BEE20 /* FilterMenuButtonView.swift */; };
@@ -30,6 +31,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		83A1B0A02F01000100AA0001 /* MichelinDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MichelinDataStore.swift; sourceTree = "<group>"; };
 		8300A0012F00000100AA0001 /* RemoteDataLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteDataLoader.swift; sourceTree = "<group>"; };
 		8248DF362D55EC0300AA4752 /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		825F48182AE573AB002BEE20 /* FilterMenuButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterMenuButtonView.swift; sourceTree = "<group>"; };
@@ -114,6 +116,7 @@
 		82EA6BCC2AD7DB0300D137E9 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				83A1B0A02F01000100AA0001 /* MichelinDataStore.swift */,
 				82EA6BCE2AD7DB3600D137E9 /* Restaurant.swift */,
 				8300A0012F00000100AA0001 /* RemoteDataLoader.swift */,
 				82EA6BD22AD7E3D100D137E9 /* handleCSV.swift */,
@@ -233,6 +236,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				829E46802ADE68A800FC64B4 /* RestaurantRowView.swift in Sources */,
+				83A1B0A12F01000100AA0001 /* MichelinDataStore.swift in Sources */,
 				8300A0022F00000100AA0001 /* RemoteDataLoader.swift in Sources */,
 				82EA6BBE2AD7D9BF00D137E9 /* ContentView.swift in Sources */,
 				82B6EFE52AE8EC0500725927 /* FilterLabelView.swift in Sources */,

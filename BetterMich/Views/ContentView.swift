@@ -2,7 +2,7 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @State private var Restaurants: [Restaurant] = []
+    @EnvironmentObject private var dataStore: MichelinDataStore
     
     @State var searchText = ""
     @State var isSortedByDist = true
@@ -16,8 +16,6 @@ struct ContentView: View {
     @State var filteredRestaurants: [Restaurant] = []
     @State private var displayedRestaurants: [Restaurant] = []
 
-    @State private var isLoading = false
-    @State private var loadError: String?
     @State private var hasLoaded = false
         
     var searchedRestaurants: [Restaurant] {
@@ -26,7 +24,12 @@ struct ContentView: View {
             return displayedRestaurants
         } else {
             // filter restaurant name, city, and type
-            return displayedRestaurants.filter { $0.Name.localizedCaseInsensitiveContains(searchText) || $0.City.localizedCaseInsensitiveContains(searchText) || $0.RestaurantType.localizedCaseInsensitiveContains(searchText) }
+            return displayedRestaurants.filter { restaurant in
+                let nameMatch = restaurant.Name.localizedCaseInsensitiveContains(searchText)
+                let cityMatch = restaurant.City.localizedCaseInsensitiveContains(searchText)
+                let typeMatch = restaurant.RestaurantType.localizedCaseInsensitiveContains(searchText)
+                return nameMatch || cityMatch || typeMatch
+            }
         }
     }
     
@@ -61,8 +64,9 @@ struct ContentView: View {
                 // show empty list view
                 .overlay(
                     VStack {
-                        if displayedRestaurants.isEmpty || searchedRestaurants.isEmpty {
-                            EmptyListView(searchText: $searchText, Restaurants: $Restaurants, displayedRestaurants: $displayedRestaurants,  searchedRestaurants: searchedRestaurants, isFilteredByDist: $isFilteredByDist, isFilteredByCity: $isFilteredByCity, isFilteredBySus: $isFilteredBySus, isSortedByDist: $isSortedByDist)
+                        if dataStore.hasLoaded && !dataStore.isLoading
+                            && (displayedRestaurants.isEmpty || searchedRestaurants.isEmpty) {
+                            EmptyListView(searchText: $searchText, Restaurants: $dataStore.restaurants, displayedRestaurants: $displayedRestaurants,  searchedRestaurants: searchedRestaurants, isFilteredByDist: $isFilteredByDist, isFilteredByCity: $isFilteredByCity, isFilteredBySus: $isFilteredBySus, isSortedByDist: $isSortedByDist)
                         }
                     }
                 )
@@ -75,7 +79,7 @@ struct ContentView: View {
                                 .contentShape(Rectangle())
                                 .onTapGesture {}
                             Button {
-                                displayedRestaurants = sortRestaurants(restaurants: Restaurants, isSortedByDist: !isSortedByDist)
+                                displayedRestaurants = sortRestaurants(restaurants: dataStore.restaurants, isSortedByDist: !isSortedByDist)
                                 isFilteredByDist = Array(repeating: false, count: 5)
                                 isFilteredByCity = Array(repeating: false, count: 4)
                                 isFilteredBySus = false
@@ -113,7 +117,7 @@ struct ContentView: View {
                                 .background(Color(UIColor.systemGray5))
                                 .clipShape(Circle())
                         }
-                        FilterMenuView(Restaurants: $Restaurants, searchText: $searchText, isSortedByDist: $isSortedByDist, isFilteredByDist: $isFilteredByDist, isFilteredByCity: $isFilteredByCity, isFilteredBySus: $isFilteredBySus, showAboutSheet: $showAboutSheet, sortedRestaurants: $sortedRestaurants, filteredRestaurants: $filteredRestaurants, displayedRestaurants: $displayedRestaurants)
+                        FilterMenuView(Restaurants: $dataStore.restaurants, searchText: $searchText, isSortedByDist: $isSortedByDist, isFilteredByDist: $isFilteredByDist, isFilteredByCity: $isFilteredByCity, isFilteredBySus: $isFilteredBySus, showAboutSheet: $showAboutSheet, sortedRestaurants: $sortedRestaurants, filteredRestaurants: $filteredRestaurants, displayedRestaurants: $displayedRestaurants)
                     }
                 }
                 ToolbarItemGroup(placement: .topBarLeading) {
@@ -126,30 +130,25 @@ struct ContentView: View {
         .task {
             if !hasLoaded {
                 hasLoaded = true
-                await loadRemoteRestaurants()
+                await dataStore.loadIfNeeded()
+                displayedRestaurants = sortRestaurants(restaurants: dataStore.restaurants, isSortedByDist: isSortedByDist)
+            }
+        }
+        .onChange(of: dataStore.restaurants) { _, newValue in
+            if displayedRestaurants.isEmpty && !newValue.isEmpty {
+                displayedRestaurants = sortRestaurants(restaurants: newValue, isSortedByDist: isSortedByDist)
             }
         }
         .overlay {
-            if isLoading && Restaurants.isEmpty {
+            let needsInitialLoad = !dataStore.hasLoaded && dataStore.restaurants.isEmpty
+            if (dataStore.isLoading || needsInitialLoad) && displayedRestaurants.isEmpty {
                 ProgressView("載入資料中…")
             }
         }
-        .alert("載入失敗", isPresented: Binding(get: { loadError != nil }, set: { _ in loadError = nil })) {
+        .alert("載入失敗", isPresented: Binding(get: { dataStore.loadError != nil }, set: { _ in dataStore.loadError = nil })) {
             Button("確定", role: .cancel) {}
         } message: {
-            Text(loadError ?? "未知錯誤")
-        }
-    }
-    
-    private func loadRemoteRestaurants() async {
-        isLoading = true
-        defer { isLoading = false }
-        do {
-            let restaurants = try await fetchRemoteRestaurants()
-            Restaurants = restaurants
-            displayedRestaurants = sortRestaurants(restaurants: restaurants, isSortedByDist: isSortedByDist)
-        } catch {
-            loadError = error.localizedDescription
+            Text(dataStore.loadError ?? "未知錯誤")
         }
     }
 }
