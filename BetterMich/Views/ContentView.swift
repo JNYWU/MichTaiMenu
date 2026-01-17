@@ -79,7 +79,7 @@ struct ContentView: View {
                                 .contentShape(Rectangle())
                                 .onTapGesture {}
                             Button {
-                                displayedRestaurants = sortRestaurants(restaurants: dataStore.restaurants, isSortedByDist: !isSortedByDist)
+                                displayedRestaurants = sortRestaurants(restaurants: dataStore.restaurants, isSortedByDist: isSortedByDist)
                                 isFilteredByDist = Array(repeating: false, count: 5)
                                 isFilteredByCity = Array(repeating: false, count: 4)
                                 isFilteredBySus = false

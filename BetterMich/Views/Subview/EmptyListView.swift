@@ -72,7 +72,7 @@ struct EmptyListView: View {
             if isFilteredByCity.contains(true) || isFilteredByDist.contains(true) || isFilteredBySus {
                 Button(role: .destructive) {
                     
-                    displayedRestaurants = sortRestaurants(restaurants: Restaurants, isSortedByDist: !isSortedByDist)
+                    displayedRestaurants = sortRestaurants(restaurants: Restaurants, isSortedByDist: isSortedByDist)
                     isFilteredByDist = Array(repeating: false, count: 5)
                     isFilteredByCity = Array(repeating: false, count: 4)
                     isFilteredBySus = false
