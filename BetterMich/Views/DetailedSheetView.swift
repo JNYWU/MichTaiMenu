@@ -8,8 +8,9 @@ struct DetailedSheetView: View {
     private let sectionVerticalPadding: CGFloat = 8
     
     var body: some View {
-        ScrollView {
-            VStack(spacing: 0) {
+        VStack(spacing: 0) {
+            ScrollView {
+                VStack(spacing: 0) {
                 // HStack for photo and title VStack
                 HStack {
                 
@@ -116,7 +117,8 @@ struct DetailedSheetView: View {
                 .padding(.horizontal, sectionHorizontalPadding)
                 .padding(.vertical, sectionVerticalPadding)
             
-                MapView(restaurant: restaurant)
+                    MapView(restaurant: restaurant)
+                }
             }
         }
         .navigationTitle(restaurant.Name)
