@@ -4,11 +4,14 @@ import MapKit
 struct DetailedSheetView: View {
     
     var restaurant: Restaurant
+    private let sectionHorizontalPadding: CGFloat = 12
+    private let sectionVerticalPadding: CGFloat = 8
     
     var body: some View {
         ScrollView {
-            // HStack for photo and title VStack
-            HStack {
+            VStack(spacing: 0) {
+                // HStack for photo and title VStack
+                HStack {
                 
                 // show image
                 AsyncImage(url: URL(string: restaurant.IMG)) { phase in
@@ -30,14 +33,13 @@ struct DetailedSheetView: View {
                 .cornerRadius(20)
                 .padding(.trailing, 20)
                 
-                // Vstack for name, type, distinction
-                VStack(alignment: .leading, spacing: 8) {
-                    Text(restaurant.Name)
-                        .font(.largeTitle.bold())
-                    
+                // Vstack for city, type, distinction
+                VStack(alignment: .leading, spacing: 6) {
+                    Text(restaurant.City)
+                        .font(.title3)
+
                     Text(restaurant.RestaurantType)
                         .font(.title3)
-                        .foregroundStyle(Color(.secondaryLabel))
                                         
                     DistinctionView(distinction: restaurant.Distinction, bibendum: restaurant.Bibendum, sustainable: restaurant.Sustainable)
                         .font(.title2)
@@ -46,11 +48,12 @@ struct DetailedSheetView: View {
                 }
                 .frame(minWidth: /*@START_MENU_TOKEN@*/0/*@END_MENU_TOKEN@*/, maxWidth: .infinity, alignment: .leading)
             }
-            .padding(.horizontal)
-            .padding(.top)
+            .padding(.horizontal, sectionHorizontalPadding)
+            .padding(.vertical, sectionVerticalPadding)
             
             Divider()
-                .padding(.horizontal)
+                .padding(.horizontal, sectionHorizontalPadding)
+                .padding(.vertical, sectionVerticalPadding)
             
             // VStack for description, phone, address
             VStack(alignment: .leading, spacing: 5) {
@@ -59,7 +62,7 @@ struct DetailedSheetView: View {
                 Text(restaurant.Description)
                 
                 Divider()
-                    .padding(.bottom)
+                    .padding(.vertical, 12)
                 
                 HStack(alignment: .top) {
                     VStack(alignment: .leading, spacing: 6) {
@@ -106,15 +109,18 @@ struct DetailedSheetView: View {
                     
                 }
             }
-            .padding()
+            .padding(.horizontal, sectionHorizontalPadding)
+            .padding(.vertical, sectionVerticalPadding)
             
              Divider()
-                .padding(.horizontal)
+                .padding(.horizontal, sectionHorizontalPadding)
+                .padding(.vertical, sectionVerticalPadding)
             
-            MapView(restaurant: restaurant)
-      
+                MapView(restaurant: restaurant)
+            }
         }
-        .padding(.top)
+        .navigationTitle(restaurant.Name)
+        .navigationBarTitleDisplayMode(.inline)
         
     }
 }
@@ -162,7 +168,7 @@ func getCoordinate (address: String) -> CLLocationCoordinate2D {
         city: "台北",
         restaurantType: "現代料理",
         phone: "+886 2 1234 5678",
-        img: "https://example.com/image.jpg",
+        img: "https://axwwgrkdco.cloudimg.io/v7/__gmpics3__/a2d64509aac140db8f1dee827c7ffa1c.jpeg?width=1000",
         address: "台北市中正區",
         description: "示範用餐廳描述"
     ))

@@ -52,6 +52,18 @@ struct AnnotatedItem: Identifiable {
 }
 
 #Preview {
-    MapView(restaurant: loadCSVData().first!)
+    MapView(restaurant: Restaurant(
+        id: 1,
+        name: "示範餐廳",
+        distinction: 1,
+        sustainable: false,
+        bibendum: false,
+        city: "台北",
+        restaurantType: "現代料理",
+        phone: "+886 2 1234 5678",
+        img: "https://example.com/image.jpg",
+        address: "台北市中正區",
+        description: "示範用餐廳描述"
+    ))
 }
 

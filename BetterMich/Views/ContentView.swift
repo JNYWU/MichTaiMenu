@@ -10,7 +10,6 @@ struct ContentView: View {
     @State var isFilteredByCity = Array(repeating: false, count: 4)
     @State var isFilteredBySus = false
     @State var showAboutSheet = false
-    @State var selectedRestaurant: Restaurant?
     
     @State var sortedRestaurants: [Restaurant] = []
     @State var filteredRestaurants: [Restaurant] = []
@@ -41,22 +40,11 @@ struct ContentView: View {
             ZStack(alignment: .bottom) {
                 
                 ScrollView {
-                    ForEach (searchText.isEmpty ? displayedRestaurants : searchedRestaurants) { restaurant in
-                        Button {
-                            selectedRestaurant = restaurant
-                        } label: {
+                    ForEach(searchText.isEmpty ? displayedRestaurants : searchedRestaurants) { restaurant in
+                        NavigationLink(value: restaurant) {
                             RestaurantRowView(restaurant: restaurant)
                         }
                     }
-                    
-                    .sheet(item: $selectedRestaurant) { restaurant in
-                        DetailedSheetView(restaurant: restaurant)
-                            .presentationDetents([.medium, .large])
-                            .presentationDragIndicator(.automatic)
-                            .presentationCornerRadius(30)
-                            .presentationBackground(.thickMaterial)
-                    }
-                    
                 }
                 .frame(maxWidth: .infinity)
                 .background(Color(UIColor.systemGroupedBackground))
@@ -124,6 +112,9 @@ struct ContentView: View {
                     // Removed CurrentlyFilteringView and reset button here as per instructions
                 }
             }
+            .navigationDestination(for: Restaurant.self) { restaurant in
+                DetailedSheetView(restaurant: restaurant)
+            }
         }
         .searchable(text: $searchText, prompt: "搜尋餐廳、城市、類型")
         .scrollDismissesKeyboard(.immediately)
@@ -155,6 +146,7 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
+        .environmentObject(MichelinDataStore())
 }
 
 fileprivate extension View {

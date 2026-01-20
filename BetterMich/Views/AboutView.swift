@@ -116,4 +116,5 @@ struct AboutView: View {
 
 #Preview {
     AboutView()
+        .environmentObject(MichelinDataStore())
 }
