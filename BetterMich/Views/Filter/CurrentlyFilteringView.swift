@@ -8,7 +8,7 @@ struct CurrentlyFilteringView: View {
     @Binding var isFilteredByNew: Bool
     
     let distList = ["三星", "二星", "一星", "必比登", "推薦"]
-    let cityList = ["台北", "台中", "台南", "高雄"]
+    let cityList = ["台北", "新北", "台中", "台南", "高雄", "新竹"]
     
     var body: some View {
         VStack(alignment: .leading, spacing: 3) {
@@ -18,26 +18,26 @@ struct CurrentlyFilteringView: View {
                     Text("篩選中：")
                         .padding(.top, 8)
 
-                    ForEach(0 ..< 4) { city in
+                    ForEach(cityList.indices, id: \.self) { city in
                         
                         FilterLabelView(
                             filterLabel: cityList[city],
-                            labelColor: isFilteredByCity[city] ? .teal : Color(.systemGray5)
+                            labelColor: city < isFilteredByCity.count && isFilteredByCity[city] ? .teal : Color(.systemGray5)
                         )
-                        .foregroundStyle(isFilteredByCity[city] ? .launchScreenBackground : .primary)
+                        .foregroundStyle(city < isFilteredByCity.count && isFilteredByCity[city] ? .launchScreenBackground : .primary)
                         .padding(.top, 8)
                         
                     }
                 }
                 // show filtered distinction
                 HStack {
-                    ForEach(0 ..< 5) { dist in
+                    ForEach(distList.indices, id: \.self) { dist in
                         
                         FilterLabelView(
                             filterLabel: distList[dist],
-                            labelColor: isFilteredByDist[dist] ? .red : Color(.systemGray5)
+                            labelColor: dist < isFilteredByDist.count && isFilteredByDist[dist] ? .red : Color(.systemGray5)
                         )
-                        .foregroundStyle(isFilteredByDist[dist] ? .launchScreenBackground : .primary)
+                        .foregroundStyle(dist < isFilteredByDist.count && isFilteredByDist[dist] ? .launchScreenBackground : .primary)
 
                     }
                     
@@ -64,7 +64,7 @@ struct CurrentlyFilteringView: View {
 #Preview {
     CurrentlyFilteringView(
         isFilteredByDist: .constant([true, false, true, false, true]),
-        isFilteredByCity: .constant([true, false, true, false]),
+        isFilteredByCity: .constant([true, false, true, false, false, false]),
         isFilteredBySus: .constant(true),
         isFilteredByNew: .constant(true)
     )

@@ -7,10 +7,11 @@ struct ContentView: View {
     @State var searchText = ""
     @State var isSortedByDist = false
     @State var isFilteredByDist = Array(repeating: false, count: 5)
-    @State var isFilteredByCity = Array(repeating: false, count: 4)
+    @State var isFilteredByCity = Array(repeating: false, count: 6)
     @State var isFilteredBySus = false
     @State var isFilteredByNew = false
     @State var showAboutSheet = false
+    @State private var showFilterSheet = false
     
     @State var sortedRestaurants: [Restaurant] = []
     @State var filteredRestaurants: [Restaurant] = []
@@ -59,7 +60,7 @@ struct ContentView: View {
                             Button {
                                 displayedRestaurants = sortRestaurants(restaurants: dataStore.restaurants, isSortedByDist: isSortedByDist)
                                 isFilteredByDist = Array(repeating: false, count: 5)
-                                isFilteredByCity = Array(repeating: false, count: 4)
+                                isFilteredByCity = Array(repeating: false, count: 6)
                                 isFilteredBySus = false
                                 isFilteredByNew = false
                             } label: {
@@ -82,6 +83,20 @@ struct ContentView: View {
             .sheet(isPresented: $showAboutSheet) {
                 AboutView()
             }
+            .sheet(isPresented: $showFilterSheet) {
+                FilterSheetView(
+                    Restaurants: $dataStore.restaurants,
+                    isSortedByDist: $isSortedByDist,
+                    isFilteredByDist: $isFilteredByDist,
+                    isFilteredByCity: $isFilteredByCity,
+                    isFilteredBySus: $isFilteredBySus,
+                    isFilteredByNew: $isFilteredByNew,
+                    sortedRestaurants: $sortedRestaurants,
+                    filteredRestaurants: $filteredRestaurants,
+                    displayedRestaurants: $displayedRestaurants,
+                    isPresented: $showFilterSheet
+                )
+            }
             .toolbar {
                 ToolbarItemGroup(placement: .topBarTrailing) {
                     HStack(spacing: 6) {
@@ -96,7 +111,17 @@ struct ContentView: View {
                                 .background(Color(UIColor.systemGray5))
                                 .clipShape(Circle())
                         }
-                        FilterMenuView(Restaurants: $dataStore.restaurants, searchText: $searchText, isSortedByDist: $isSortedByDist, isFilteredByDist: $isFilteredByDist, isFilteredByCity: $isFilteredByCity, isFilteredBySus: $isFilteredBySus, isFilteredByNew: $isFilteredByNew, showAboutSheet: $showAboutSheet, sortedRestaurants: $sortedRestaurants, filteredRestaurants: $filteredRestaurants, displayedRestaurants: $displayedRestaurants)
+                        Button {
+                            showFilterSheet = true
+                        } label: {
+                            Image(systemName: "line.3.horizontal.decrease")
+                                .font(.caption)
+                                .fontWeight(.bold)
+                                .foregroundStyle(isFilteredByDist.contains(true) || isFilteredByCity.contains(true) || isFilteredBySus || isFilteredByNew ? .launchScreenBackground : .blue)
+                                .padding(8)
+                                .background(isFilteredByDist.contains(true) || isFilteredByCity.contains(true) || isFilteredBySus || isFilteredByNew ? .blue : Color(UIColor.systemGray5))
+                                .clipShape(Circle())
+                        }
                     }
                 }
                 ToolbarItemGroup(placement: .topBarLeading) {

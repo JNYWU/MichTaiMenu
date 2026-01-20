@@ -16,7 +16,7 @@ struct EmptyListView: View {
     @Binding var isSortedByDist: Bool
     
     let distList = ["三星", "二星", "一星", "必比登", "推薦"]
-    let cityList = ["台北", "台中", "台南", "高雄"]
+    let cityList = ["台北", "新北", "台中", "台南", "高雄", "新竹"]
     
     var body: some View {
         
@@ -32,8 +32,8 @@ struct EmptyListView: View {
                         Text("位於")
                         
                         // show filtered cities
-                        ForEach(0 ..< 3) { city in
-                            if isFilteredByCity[city] {
+                        ForEach(0 ..< cityList.count) { city in
+                            if city < isFilteredByCity.count, isFilteredByCity[city] {
                                 FilterLabelView(filterLabel: cityList[city], labelColor: .teal, isFiltered: true)
                             }
                         }
@@ -44,8 +44,8 @@ struct EmptyListView: View {
                     }
                     
                     // show filtered distinction
-                    ForEach(0 ..< 4) { dist in
-                        if isFilteredByDist[dist] {
+                    ForEach(0 ..< distList.count) { dist in
+                        if dist < isFilteredByDist.count, isFilteredByDist[dist] {
                             FilterLabelView(filterLabel: distList[dist], labelColor: .red, isFiltered: true)
                         }
                     }
@@ -78,7 +78,7 @@ struct EmptyListView: View {
                     
                     displayedRestaurants = sortRestaurants(restaurants: Restaurants, isSortedByDist: isSortedByDist)
                     isFilteredByDist = Array(repeating: false, count: 5)
-                    isFilteredByCity = Array(repeating: false, count: 4)
+                    isFilteredByCity = Array(repeating: false, count: 6)
                     isFilteredBySus = false
                     isFilteredByNew = false
                     

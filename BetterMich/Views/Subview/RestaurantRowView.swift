@@ -21,7 +21,7 @@ struct RestaurantRowView: View {
                             Text("新入選")
                         }
                         .font(.subheadline.bold())
-                        .foregroundStyle(.buttonRowText)
+                        .foregroundStyle(.white)
                         .padding(.horizontal, 8)
                         .padding(.trailing, 4)
                         .padding(.vertical, 2)

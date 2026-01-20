@@ -51,7 +51,7 @@ struct FilterMenuView: View {
                 //MARK: City Filter Submenu
                 Menu {
                     
-                    ForEach(0 ..< 4) { filterOption in
+                    ForEach(0 ..< 6) { filterOption in
                         FilterMenuButtonView(isSortedByDist: $isSortedByDist, isFilteredByCity: $isFilteredByCity, isFilteredByDist: $isFilteredByDist, isFilteredBySus: $isFilteredBySus, isFilteredByNew: $isFilteredByNew, filteredRestaurants: $filteredRestaurants, restaurants: $Restaurants, displayedRestaurants: $displayedRestaurants, filterCity: true, filterOption: filterOption)
                     }
  
@@ -115,7 +115,7 @@ struct FilterMenuView: View {
                                 
                 displayedRestaurants = sortRestaurants(restaurants: Restaurants, isSortedByDist: isSortedByDist)
                 isFilteredByDist = Array(repeating: false, count: 5)
-                isFilteredByCity = Array(repeating: false, count: 4)
+                isFilteredByCity = Array(repeating: false, count: 6)
                 isFilteredBySus = false
                 isFilteredByNew = false
                 

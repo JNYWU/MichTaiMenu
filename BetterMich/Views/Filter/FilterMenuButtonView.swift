@@ -16,7 +16,7 @@ struct FilterMenuButtonView: View {
     var filterOption: Int
     
     let distList = ["三星", "二星", "一星", "必比登", "推薦"]
-    let cityList = ["台北", "台中", "台南", "高雄"]
+    let cityList = ["台北", "新北", "台中", "台南", "高雄", "新竹"]
     
     var body: some View {
         Button {

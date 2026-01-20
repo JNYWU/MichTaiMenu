@@ -33,19 +33,11 @@ func sortRestaurants(restaurants: [Restaurant], isSortedByDist: Bool) -> [Restau
 func cityFilter(allRestaurants: [Restaurant], isFilteredByCity: [Bool], isFilteredByDist: [Bool]) -> [Restaurant] {
     
     var outputList: [Restaurant] = []
+    let cityList = ["台北", "新北", "台中", "台南", "高雄", "新竹"]
     
-    for filterOption in 0...3 {
-        if isFilteredByCity[filterOption] {
-            switch filterOption {
-            case 0:
-                outputList += allRestaurants.filter({ $0.City == "台北" })
-            case 1:
-                outputList += allRestaurants.filter({ $0.City == "台中" })
-            case 2:
-                outputList += allRestaurants.filter({ $0.City == "台南" })
-            default:
-                outputList += allRestaurants.filter({ $0.City == "高雄" })
-            }
+    for (index, city) in cityList.enumerated() {
+        if index < isFilteredByCity.count, isFilteredByCity[index] {
+            outputList += allRestaurants.filter({ $0.City == city })
         }
     }
     
