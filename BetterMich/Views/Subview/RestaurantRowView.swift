@@ -4,15 +4,31 @@ import MapKit
 struct RestaurantRowView: View {
     
     var restaurant: Restaurant
+    @Environment(\.colorScheme) private var colorScheme
     
     var body: some View {
         
         HStack {
             
             VStack(alignment: .leading, spacing: 8) {
-                Text(restaurant.Name)
-                    .font(.headline)
-                    .foregroundStyle(.buttonRowText)
+                HStack(spacing: 6) {
+                    Text(restaurant.Name)
+                        .font(.headline)
+                        .foregroundStyle(.buttonRowText)
+                    if restaurant.IsNew {
+                        HStack(spacing: 4) {
+                            Image(systemName: "sparkles.2")
+                            Text("新入選")
+                        }
+                        .font(.subheadline.bold())
+                        .foregroundStyle(.buttonRowText)
+                        .padding(.horizontal, 8)
+                        .padding(.trailing, 4)
+                        .padding(.vertical, 2)
+                        .background(Color.red)
+                        .clipShape(Capsule())
+                    }
+                }
                 
                 HStack {
                     
@@ -137,6 +153,7 @@ func FormatPhoneNumber(phone: String) -> String {
                     distinction: 1,
                     sustainable: false,
                     bibendum: false,
+                    isNew: true,
                     city: "台北",
                     restaurantType: "現代料理",
                     phone: "+886 2 1234 5678",

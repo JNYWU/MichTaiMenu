@@ -11,6 +11,7 @@ struct FilterMenuView: View {
     @Binding var isFilteredByDist: [Bool]
     @Binding var isFilteredByCity: [Bool]
     @Binding var isFilteredBySus: Bool
+    @Binding var isFilteredByNew: Bool
     @Binding var showAboutSheet: Bool
     
     @Binding var sortedRestaurants: [Restaurant]
@@ -51,7 +52,7 @@ struct FilterMenuView: View {
                 Menu {
                     
                     ForEach(0 ..< 4) { filterOption in
-                        FilterMenuButtonView(isSortedByDist: $isSortedByDist, isFilteredByCity: $isFilteredByCity, isFilteredByDist: $isFilteredByDist, isFilteredBySus: $isFilteredBySus, filteredRestaurants: $filteredRestaurants, restaurants: $Restaurants, displayedRestaurants: $displayedRestaurants, filterCity: true, filterOption: filterOption)
+                        FilterMenuButtonView(isSortedByDist: $isSortedByDist, isFilteredByCity: $isFilteredByCity, isFilteredByDist: $isFilteredByDist, isFilteredBySus: $isFilteredBySus, isFilteredByNew: $isFilteredByNew, filteredRestaurants: $filteredRestaurants, restaurants: $Restaurants, displayedRestaurants: $displayedRestaurants, filterCity: true, filterOption: filterOption)
                     }
  
                 } label: {
@@ -64,7 +65,7 @@ struct FilterMenuView: View {
                 Menu {
                     
                     ForEach(0 ..< 5) { filterOption in
-                        FilterMenuButtonView(isSortedByDist: $isSortedByDist, isFilteredByCity: $isFilteredByCity, isFilteredByDist: $isFilteredByDist, isFilteredBySus: $isFilteredBySus, filteredRestaurants: $filteredRestaurants, restaurants: $Restaurants, displayedRestaurants: $displayedRestaurants, filterCity: false, filterOption: filterOption)
+                        FilterMenuButtonView(isSortedByDist: $isSortedByDist, isFilteredByCity: $isFilteredByCity, isFilteredByDist: $isFilteredByDist, isFilteredBySus: $isFilteredBySus, isFilteredByNew: $isFilteredByNew, filteredRestaurants: $filteredRestaurants, restaurants: $Restaurants, displayedRestaurants: $displayedRestaurants, filterCity: false, filterOption: filterOption)
                     }
                     
                 } label: {
@@ -79,12 +80,29 @@ struct FilterMenuView: View {
                     filteredRestaurants = distFilter(allRestaurants: Restaurants, isFilteredByCity: isFilteredByCity, isFilteredByDist: isFilteredByDist)
                     filteredRestaurants = cityFilter(allRestaurants: filteredRestaurants, isFilteredByCity: isFilteredByCity, isFilteredByDist: isFilteredByDist)
                     filteredRestaurants = sustainFilter(Restaurants: filteredRestaurants, isFilteredBySus: isFilteredBySus)
+                    filteredRestaurants = newFilter(Restaurants: filteredRestaurants, isFilteredByNew: isFilteredByNew)
 
                     displayedRestaurants = sortRestaurants(restaurants: filteredRestaurants, isSortedByDist: isSortedByDist)
                     
                 } label: {
                     Image(systemName: isFilteredBySus ? "leaf.fill" : "leaf")
                     Text("綠星")
+                }
+                
+                // filter new restaurants
+                Button {
+                    
+                    isFilteredByNew.toggle()
+                    filteredRestaurants = distFilter(allRestaurants: Restaurants, isFilteredByCity: isFilteredByCity, isFilteredByDist: isFilteredByDist)
+                    filteredRestaurants = cityFilter(allRestaurants: filteredRestaurants, isFilteredByCity: isFilteredByCity, isFilteredByDist: isFilteredByDist)
+                    filteredRestaurants = sustainFilter(Restaurants: filteredRestaurants, isFilteredBySus: isFilteredBySus)
+                    filteredRestaurants = newFilter(Restaurants: filteredRestaurants, isFilteredByNew: isFilteredByNew)
+
+                    displayedRestaurants = sortRestaurants(restaurants: filteredRestaurants, isSortedByDist: isSortedByDist)
+                    
+                } label: {
+                    Image(systemName: isFilteredByNew ? "sparkles.2" : "sparkles.2")
+                    Text("新入選")
                 }
                 
             }
@@ -99,6 +117,7 @@ struct FilterMenuView: View {
                 isFilteredByDist = Array(repeating: false, count: 5)
                 isFilteredByCity = Array(repeating: false, count: 4)
                 isFilteredBySus = false
+                isFilteredByNew = false
                 
             } label: {
                 Image(systemName: "arrow.2.circlepath")
@@ -110,9 +129,9 @@ struct FilterMenuView: View {
             Image(systemName: "line.3.horizontal.decrease")
                 .font(.caption)
                 .fontWeight(.bold)
-                .foregroundStyle(isFilteredByDist.contains(true) || isFilteredByCity.contains(true) || isFilteredBySus ? .launchScreenBackground : .blue)
+                .foregroundStyle(isFilteredByDist.contains(true) || isFilteredByCity.contains(true) || isFilteredBySus || isFilteredByNew ? .launchScreenBackground : .blue)
                 .padding(8)
-                .background(isFilteredByDist.contains(true) || isFilteredByCity.contains(true) || isFilteredBySus ? .blue : Color(UIColor.systemGray5))
+                .background(isFilteredByDist.contains(true) || isFilteredByCity.contains(true) || isFilteredBySus || isFilteredByNew ? .blue : Color(UIColor.systemGray5))
                 .clipShape(Circle())
 
         }

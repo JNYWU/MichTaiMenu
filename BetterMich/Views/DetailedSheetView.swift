@@ -42,8 +42,23 @@ struct DetailedSheetView: View {
                     Text(restaurant.RestaurantType)
                         .font(.title3)
                                         
-                    DistinctionView(distinction: restaurant.Distinction, bibendum: restaurant.Bibendum, sustainable: restaurant.Sustainable)
-                        .font(.title2)
+                    HStack(spacing: 6) {
+                        DistinctionView(distinction: restaurant.Distinction, bibendum: restaurant.Bibendum, sustainable: restaurant.Sustainable)
+                            .font(.title2)
+                        if restaurant.IsNew {
+                            HStack(spacing: 4) {
+                                Image(systemName: "sparkles.2")
+                                Text("新入選")
+                            }
+                            .font(.subheadline.bold())
+                            .foregroundStyle(.buttonRowText)
+                            .padding(.horizontal, 8)
+                            .padding(.trailing, 4)
+                            .padding(.vertical, 2)
+                            .background(Color.red)
+                            .clipShape(Capsule())
+                        }
+                    }
                     
                     
                 }
@@ -167,6 +182,7 @@ func getCoordinate (address: String) -> CLLocationCoordinate2D {
         distinction: 1,
         sustainable: false,
         bibendum: false,
+        isNew: true,
         city: "台北",
         restaurantType: "現代料理",
         phone: "+886 2 1234 5678",

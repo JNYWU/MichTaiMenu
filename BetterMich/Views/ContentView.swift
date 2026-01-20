@@ -9,6 +9,7 @@ struct ContentView: View {
     @State var isFilteredByDist = Array(repeating: false, count: 5)
     @State var isFilteredByCity = Array(repeating: false, count: 4)
     @State var isFilteredBySus = false
+    @State var isFilteredByNew = false
     @State var showAboutSheet = false
     
     @State var sortedRestaurants: [Restaurant] = []
@@ -33,6 +34,7 @@ struct ContentView: View {
                             }
                         }
                     }
+                    .padding(.bottom, 100)
                 }
                 .frame(maxWidth: .infinity)
                 .background(Color(UIColor.systemGroupedBackground))
@@ -42,7 +44,7 @@ struct ContentView: View {
                     VStack {
                         if dataStore.hasLoaded && !dataStore.isLoading
                             && (displayedRestaurants.isEmpty || searchResults.isEmpty) {
-                            EmptyListView(searchText: $searchText, Restaurants: $dataStore.restaurants, displayedRestaurants: $displayedRestaurants,  searchedRestaurants: searchResults, isFilteredByDist: $isFilteredByDist, isFilteredByCity: $isFilteredByCity, isFilteredBySus: $isFilteredBySus, isSortedByDist: $isSortedByDist)
+                            EmptyListView(searchText: $searchText, Restaurants: $dataStore.restaurants, displayedRestaurants: $displayedRestaurants,  searchedRestaurants: searchResults, isFilteredByDist: $isFilteredByDist, isFilteredByCity: $isFilteredByCity, isFilteredBySus: $isFilteredBySus, isFilteredByNew: $isFilteredByNew, isSortedByDist: $isSortedByDist)
                         }
                     }
                 )
@@ -51,7 +53,7 @@ struct ContentView: View {
                     && !displayedRestaurants.isEmpty {
                     VStack {
                         HStack(alignment: .center, spacing: 8) {
-                            CurrentlyFilteringView(isFilteredByDist: $isFilteredByDist, isFilteredByCity: $isFilteredByCity, isFilteredBySus: $isFilteredBySus)
+                            CurrentlyFilteringView(isFilteredByDist: $isFilteredByDist, isFilteredByCity: $isFilteredByCity, isFilteredBySus: $isFilteredBySus, isFilteredByNew: $isFilteredByNew)
                                 .contentShape(Rectangle())
                                 .onTapGesture {}
                             Button {
@@ -59,6 +61,7 @@ struct ContentView: View {
                                 isFilteredByDist = Array(repeating: false, count: 5)
                                 isFilteredByCity = Array(repeating: false, count: 4)
                                 isFilteredBySus = false
+                                isFilteredByNew = false
                             } label: {
                                 Image(systemName: "arrow.2.circlepath")
                                     .foregroundStyle(.red)
@@ -93,7 +96,7 @@ struct ContentView: View {
                                 .background(Color(UIColor.systemGray5))
                                 .clipShape(Circle())
                         }
-                        FilterMenuView(Restaurants: $dataStore.restaurants, searchText: $searchText, isSortedByDist: $isSortedByDist, isFilteredByDist: $isFilteredByDist, isFilteredByCity: $isFilteredByCity, isFilteredBySus: $isFilteredBySus, showAboutSheet: $showAboutSheet, sortedRestaurants: $sortedRestaurants, filteredRestaurants: $filteredRestaurants, displayedRestaurants: $displayedRestaurants)
+                        FilterMenuView(Restaurants: $dataStore.restaurants, searchText: $searchText, isSortedByDist: $isSortedByDist, isFilteredByDist: $isFilteredByDist, isFilteredByCity: $isFilteredByCity, isFilteredBySus: $isFilteredBySus, isFilteredByNew: $isFilteredByNew, showAboutSheet: $showAboutSheet, sortedRestaurants: $sortedRestaurants, filteredRestaurants: $filteredRestaurants, displayedRestaurants: $displayedRestaurants)
                     }
                 }
                 ToolbarItemGroup(placement: .topBarLeading) {

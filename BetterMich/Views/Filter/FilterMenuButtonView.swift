@@ -7,6 +7,7 @@ struct FilterMenuButtonView: View {
     @Binding var isFilteredByDist: [Bool]
     
     @Binding var isFilteredBySus: Bool
+    @Binding var isFilteredByNew: Bool
     @Binding var filteredRestaurants: [Restaurant]
     @Binding var restaurants: [Restaurant]
     @Binding var displayedRestaurants: [Restaurant]
@@ -28,6 +29,7 @@ struct FilterMenuButtonView: View {
             filteredRestaurants = cityFilter(allRestaurants: restaurants, isFilteredByCity: isFilteredByCity, isFilteredByDist: isFilteredByDist)
             filteredRestaurants = distFilter(allRestaurants: filteredRestaurants, isFilteredByCity: isFilteredByCity, isFilteredByDist: isFilteredByDist)
             filteredRestaurants = sustainFilter(Restaurants: filteredRestaurants, isFilteredBySus: isFilteredBySus)
+            filteredRestaurants = newFilter(Restaurants: filteredRestaurants, isFilteredByNew: isFilteredByNew)
             
             displayedRestaurants = sortRestaurants(restaurants: filteredRestaurants, isSortedByDist: isSortedByDist)
             

@@ -5,6 +5,7 @@ struct CurrentlyFilteringView: View {
     @Binding var isFilteredByDist: [Bool]
     @Binding var isFilteredByCity: [Bool]
     @Binding var isFilteredBySus: Bool
+    @Binding var isFilteredByNew: Bool
     
     let distList = ["三星", "二星", "一星", "必比登", "推薦"]
     let cityList = ["台北", "台中", "台南", "高雄"]
@@ -46,6 +47,12 @@ struct CurrentlyFilteringView: View {
                     )
                     .foregroundStyle(isFilteredBySus ? .launchScreenBackground : .primary)
                     
+                    FilterLabelView(
+                        filterLabel: "新入選",
+                        labelColor: isFilteredByNew ? .red : Color(.systemGray5)
+                    )
+                    .foregroundStyle(isFilteredByNew ? .launchScreenBackground : .primary)
+                    
                 }
                 .padding(.bottom, 8)
         }
@@ -58,7 +65,8 @@ struct CurrentlyFilteringView: View {
     CurrentlyFilteringView(
         isFilteredByDist: .constant([true, false, true, false, true]),
         isFilteredByCity: .constant([true, false, true, false]),
-        isFilteredBySus: .constant(true)
+        isFilteredBySus: .constant(true),
+        isFilteredByNew: .constant(true)
     )
     .frame(maxWidth: .infinity)
     .background(.gray)

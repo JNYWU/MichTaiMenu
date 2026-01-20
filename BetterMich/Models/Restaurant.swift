@@ -13,6 +13,7 @@ struct Restaurant: Hashable, Identifiable {
     var Distinction: Int
     var Sustainable: Bool
     var Bibendum: Bool
+    var IsNew: Bool
     var City: String
     var RestaurantType: String
     var Phone: String
@@ -21,12 +22,13 @@ struct Restaurant: Hashable, Identifiable {
     var Address: String
     var Description: String
 
-    init(id: Int, name: String, distinction: Int, sustainable: Bool, bibendum: Bool, city: String, restaurantType: String, phone: String, img: String, address: String, description: String) {
+    init(id: Int, name: String, distinction: Int, sustainable: Bool, bibendum: Bool, isNew: Bool, city: String, restaurantType: String, phone: String, img: String, address: String, description: String) {
         self.id = id
         self.Name = name
         self.Distinction = distinction
         self.Sustainable = sustainable
         self.Bibendum = bibendum
+        self.IsNew = isNew
         self.City = city
         self.RestaurantType = restaurantType
         self.Phone = phone
@@ -44,6 +46,7 @@ struct Restaurant: Hashable, Identifiable {
         
         self.Sustainable = raw[3] == "TRUE" ? true : false
         self.Bibendum = raw[4] == "TRUE" ? true : false
+        self.IsNew = false
         
         self.City = raw[6]
         self.RestaurantType = raw[8]

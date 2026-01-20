@@ -88,6 +88,7 @@ private func fetchSignedURL() async throws -> URL {
 
 private func mapRestaurant(dto: RestaurantDTO, id: Int) -> Restaurant {
     let meta = parseDistinction(award: dto.award, badge: dto.badge)
+    let isNew = parseNewBadge(badge: dto.badge)
     let city = parseCity(from: dto.address)
     let type = dto.type ?? "未知"
     let phone = dto.phone ?? ""
@@ -101,6 +102,7 @@ private func mapRestaurant(dto: RestaurantDTO, id: Int) -> Restaurant {
         distinction: meta.stars,
         sustainable: meta.sustainable,
         bibendum: meta.bibendum,
+        isNew: isNew,
         city: city,
         restaurantType: type,
         phone: phone,
@@ -136,6 +138,11 @@ private func parseCity(from address: String?) -> String {
     if containsAny(text, ["高雄", "kaohsiung"]) { return "高雄" }
     if containsAny(text, ["新竹", "hsinchu city", "hsinchu county"]) { return "新竹" }
     return "其他"
+}
+
+private func parseNewBadge(badge: String?) -> Bool {
+    let text = (badge ?? "").lowercased()
+    return containsAny(text, ["new", "新", "新入選", "新進"])
 }
 
 private func containsAny(_ text: String, _ patterns: [String]) -> Bool {

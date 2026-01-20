@@ -11,6 +11,7 @@ struct EmptyListView: View {
     @Binding var isFilteredByDist: [Bool]
     @Binding var isFilteredByCity: [Bool]
     @Binding var isFilteredBySus: Bool
+    @Binding var isFilteredByNew: Bool
     
     @Binding var isSortedByDist: Bool
     
@@ -37,7 +38,7 @@ struct EmptyListView: View {
                             }
                         }
                         
-                        if isFilteredByDist.contains(true) || isFilteredBySus {
+                    if isFilteredByDist.contains(true) || isFilteredBySus || isFilteredByNew {
                             Text("的")
                         }
                     }
@@ -51,6 +52,9 @@ struct EmptyListView: View {
                     
                     if isFilteredBySus {
                         FilterLabelView(filterLabel: "綠星", labelColor: .green, isFiltered: true)
+                    }
+                    if isFilteredByNew {
+                        FilterLabelView(filterLabel: "新入選", labelColor: .red, isFiltered: true)
                     }
                 }
                 
@@ -69,13 +73,14 @@ struct EmptyListView: View {
             }
             
             // show reset filter button
-            if isFilteredByCity.contains(true) || isFilteredByDist.contains(true) || isFilteredBySus {
+            if isFilteredByCity.contains(true) || isFilteredByDist.contains(true) || isFilteredBySus || isFilteredByNew {
                 Button(role: .destructive) {
                     
                     displayedRestaurants = sortRestaurants(restaurants: Restaurants, isSortedByDist: isSortedByDist)
                     isFilteredByDist = Array(repeating: false, count: 5)
                     isFilteredByCity = Array(repeating: false, count: 4)
                     isFilteredBySus = false
+                    isFilteredByNew = false
                     
                 } label: {
                     Text("清除篩選")

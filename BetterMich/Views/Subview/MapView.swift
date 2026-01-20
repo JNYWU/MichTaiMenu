@@ -58,6 +58,7 @@ struct AnnotatedItem: Identifiable {
         distinction: 1,
         sustainable: false,
         bibendum: false,
+        isNew: false,
         city: "台北",
         restaurantType: "現代料理",
         phone: "+886 2 1234 5678",

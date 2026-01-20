@@ -114,3 +114,15 @@ func sustainFilter(Restaurants: [Restaurant], isFilteredBySus: Bool) -> [Restaur
     
     return outputList
 }
+
+// function to filter New
+func newFilter(Restaurants: [Restaurant], isFilteredByNew: Bool) -> [Restaurant] {
+    
+    let outputList = Restaurants.filter({ $0.IsNew == true })
+    
+    if !isFilteredByNew {
+        return Restaurants
+    }
+    
+    return outputList
+}
