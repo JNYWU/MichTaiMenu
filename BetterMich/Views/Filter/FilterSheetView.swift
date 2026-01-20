@@ -63,10 +63,13 @@ struct FilterSheetView: View {
                             Image(systemName: tempSortedByDist ? "arrowshape.up.fill" : "arrowshape.down.fill")
                             Text("評鑑等級")
                         }
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .font(.subheadline)
+                        .foregroundStyle(.black)
                     }
                     .buttonStyle(.bordered)
 
+                    Divider()
+                    
                     sectionHeader("篩選")
                     sectionHeader("城市", isSubsection: true)
                     chipGrid(items: cityList, selected: $tempFilteredByCity, tint: .teal)
@@ -85,31 +88,32 @@ struct FilterSheetView: View {
             .navigationTitle("篩選")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button(role: .destructive) {
                         resetFilters()
-                        isPresented = false
                     } label: {
-                        HStack(spacing: 6) {
-                            Image(systemName: "xmark")
-                            Text("取消篩選")
-                        }
-                        .foregroundStyle(.red)
+                        Image(systemName: "arrow.trianglehead.2.clockwise")
+                            .font(.subheadline.bold())
                     }
+                    .buttonStyle(.borderedProminent)
+                    .tint(.red)
                 }
-                ToolbarItem(placement: .topBarTrailing) {
+                ToolbarItem(placement: .confirmationAction) {
                     Button {
-                        applyFilters()
                         isPresented = false
                     } label: {
-                        HStack(spacing: 6) {
-                            Image(systemName: "checkmark")
-                            Text("儲存篩選")
-                        }
-                        .foregroundStyle(.blue)
+                        Image(systemName: "checkmark")
+                            .font(.subheadline.bold())
                     }
+                    .buttonStyle(.borderedProminent)
+                    .tint(.blue)
                 }
             }
+            .onChange(of: tempSortedByDist) { _, _ in applyFilters() }
+            .onChange(of: tempFilteredByDist) { _, _ in applyFilters() }
+            .onChange(of: tempFilteredByCity) { _, _ in applyFilters() }
+            .onChange(of: tempFilteredBySus) { _, _ in applyFilters() }
+            .onChange(of: tempFilteredByNew) { _, _ in applyFilters() }
         }
     }
 
@@ -180,5 +184,57 @@ struct FilterSheetView: View {
         isFilteredByNew = false
         displayedRestaurants = sortRestaurants(restaurants: Restaurants, isSortedByDist: isSortedByDist)
         sortedRestaurants = displayedRestaurants
+        tempSortedByDist = isSortedByDist
+        tempFilteredByDist = isFilteredByDist
+        tempFilteredByCity = isFilteredByCity
+        tempFilteredBySus = isFilteredBySus
+        tempFilteredByNew = isFilteredByNew
     }
+}
+
+private struct FilterSheetPreviewHost: View {
+    @State private var restaurants: [Restaurant] = [
+        Restaurant(
+            id: 1,
+            name: "示範餐廳",
+            distinction: 1,
+            sustainable: false,
+            bibendum: false,
+            isNew: true,
+            city: "台北",
+            restaurantType: "現代料理",
+            phone: "+886 2 1234 5678",
+            img: "https://axwwgrkdco.cloudimg.io/v7/__gmpics3__/a2d64509aac140db8f1dee827c7ffa1c.jpeg?width=1000",
+            address: "台北市中正區",
+            description: "示範用餐廳描述"
+        )
+    ]
+    @State private var isSortedByDist = false
+    @State private var isFilteredByDist = Array(repeating: false, count: 5)
+    @State private var isFilteredByCity = Array(repeating: false, count: 6)
+    @State private var isFilteredBySus = false
+    @State private var isFilteredByNew = false
+    @State private var sortedRestaurants: [Restaurant] = []
+    @State private var filteredRestaurants: [Restaurant] = []
+    @State private var displayedRestaurants: [Restaurant] = []
+    @State private var isPresented = true
+
+    var body: some View {
+        FilterSheetView(
+            Restaurants: $restaurants,
+            isSortedByDist: $isSortedByDist,
+            isFilteredByDist: $isFilteredByDist,
+            isFilteredByCity: $isFilteredByCity,
+            isFilteredBySus: $isFilteredBySus,
+            isFilteredByNew: $isFilteredByNew,
+            sortedRestaurants: $sortedRestaurants,
+            filteredRestaurants: $filteredRestaurants,
+            displayedRestaurants: $displayedRestaurants,
+            isPresented: $isPresented
+        )
+    }
+}
+
+#Preview {
+    FilterSheetPreviewHost()
 }

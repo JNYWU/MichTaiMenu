@@ -96,6 +96,10 @@ struct ContentView: View {
                     displayedRestaurants: $displayedRestaurants,
                     isPresented: $showFilterSheet
                 )
+                .presentationDetents([.fraction(0.65)])
+                .presentationDragIndicator(.visible)
+                .presentationCornerRadius(28)
+                .presentationBackground(.regularMaterial)
             }
             .toolbar {
                 ToolbarItemGroup(placement: .topBarTrailing) {
