@@ -16,21 +16,7 @@ struct ContentView: View {
     @State private var displayedRestaurants: [Restaurant] = []
 
     @State private var hasLoaded = false
-        
-    var searchedRestaurants: [Restaurant] {
-        // if search field is empty, return original list
-        if searchText.isEmpty {
-            return displayedRestaurants
-        } else {
-            // filter restaurant name, city, and type
-            return displayedRestaurants.filter { restaurant in
-                let nameMatch = restaurant.Name.localizedCaseInsensitiveContains(searchText)
-                let cityMatch = restaurant.City.localizedCaseInsensitiveContains(searchText)
-                let typeMatch = restaurant.RestaurantType.localizedCaseInsensitiveContains(searchText)
-                return nameMatch || cityMatch || typeMatch
-            }
-        }
-    }
+    @State private var searchResults: [Restaurant] = []
     
     var body: some View {
         
@@ -40,9 +26,11 @@ struct ContentView: View {
             ZStack(alignment: .bottom) {
                 
                 ScrollView {
-                    ForEach(searchText.isEmpty ? displayedRestaurants : searchedRestaurants) { restaurant in
-                        NavigationLink(value: restaurant) {
-                            RestaurantRowView(restaurant: restaurant)
+                    LazyVStack(spacing: 8) {
+                        ForEach(searchText.isEmpty ? displayedRestaurants : searchResults) { restaurant in
+                            NavigationLink(value: restaurant) {
+                                RestaurantRowView(restaurant: restaurant)
+                            }
                         }
                     }
                 }
@@ -53,8 +41,8 @@ struct ContentView: View {
                 .overlay(
                     VStack {
                         if dataStore.hasLoaded && !dataStore.isLoading
-                            && (displayedRestaurants.isEmpty || searchedRestaurants.isEmpty) {
-                            EmptyListView(searchText: $searchText, Restaurants: $dataStore.restaurants, displayedRestaurants: $displayedRestaurants,  searchedRestaurants: searchedRestaurants, isFilteredByDist: $isFilteredByDist, isFilteredByCity: $isFilteredByCity, isFilteredBySus: $isFilteredBySus, isSortedByDist: $isSortedByDist)
+                            && (displayedRestaurants.isEmpty || searchResults.isEmpty) {
+                            EmptyListView(searchText: $searchText, Restaurants: $dataStore.restaurants, displayedRestaurants: $displayedRestaurants,  searchedRestaurants: searchResults, isFilteredByDist: $isFilteredByDist, isFilteredByCity: $isFilteredByCity, isFilteredBySus: $isFilteredBySus, isSortedByDist: $isSortedByDist)
                         }
                     }
                 )
@@ -123,12 +111,20 @@ struct ContentView: View {
                 hasLoaded = true
                 await dataStore.loadIfNeeded()
                 displayedRestaurants = sortRestaurants(restaurants: dataStore.restaurants, isSortedByDist: isSortedByDist)
+                updateSearchResults()
             }
         }
         .onChange(of: dataStore.restaurants) { _, newValue in
             if displayedRestaurants.isEmpty && !newValue.isEmpty {
                 displayedRestaurants = sortRestaurants(restaurants: newValue, isSortedByDist: isSortedByDist)
             }
+            updateSearchResults()
+        }
+        .onChange(of: searchText) { _, _ in
+            updateSearchResults()
+        }
+        .onChange(of: displayedRestaurants) { _, _ in
+            updateSearchResults()
         }
         .overlay {
             let needsInitialLoad = !dataStore.hasLoaded && dataStore.restaurants.isEmpty
@@ -140,6 +136,20 @@ struct ContentView: View {
             Button("確定", role: .cancel) {}
         } message: {
             Text(dataStore.loadError ?? "未知錯誤")
+        }
+    }
+
+    private func updateSearchResults() {
+        if searchText.isEmpty {
+            searchResults = displayedRestaurants
+            return
+        }
+        let keyword = searchText
+        searchResults = displayedRestaurants.filter { restaurant in
+            let nameMatch = restaurant.Name.localizedCaseInsensitiveContains(keyword)
+            let cityMatch = restaurant.City.localizedCaseInsensitiveContains(keyword)
+            let typeMatch = restaurant.RestaurantType.localizedCaseInsensitiveContains(keyword)
+            return nameMatch || cityMatch || typeMatch
         }
     }
 }
