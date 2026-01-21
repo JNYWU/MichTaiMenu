@@ -136,9 +136,13 @@ struct DetailedSheetView: View {
                 }
             }
         }
-        .navigationTitle(restaurant.Name)
         .navigationBarTitleDisplayMode(.inline)
-        
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                Text(restaurant.Name)
+                    .font(.title3).bold()
+            }
+        }
     }
 }
 
@@ -191,3 +195,4 @@ func getCoordinate (address: String) -> CLLocationCoordinate2D {
         description: "示範用餐廳描述"
     ))
 }
+
