@@ -90,7 +90,7 @@ private func mapRestaurant(dto: RestaurantDTO, id: Int) -> Restaurant {
     let meta = parseDistinction(award: dto.award, badge: dto.badge)
     let isNew = parseNewBadge(badge: dto.badge)
     let city = parseCity(from: dto.address)
-    let type = dto.type ?? "未知"
+    let type = dto.type ?? ""
     let phone = dto.phone ?? ""
     let imageURL = dto.imageURL ?? ""
     let address = dto.address ?? ""

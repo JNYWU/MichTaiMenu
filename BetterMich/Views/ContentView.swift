@@ -35,7 +35,7 @@ struct ContentView: View {
                             }
                         }
                     }
-                    .padding(.bottom, 100)
+                    .padding(.bottom)
                 }
                 .frame(maxWidth: .infinity)
                 .background(Color(UIColor.systemGroupedBackground))
@@ -49,35 +49,6 @@ struct ContentView: View {
                         }
                     }
                 )
-                
-                if (isFilteredByDist.contains(true) || isFilteredByCity.contains(true) || isFilteredBySus)
-                    && !displayedRestaurants.isEmpty {
-                    VStack {
-                        HStack(alignment: .center, spacing: 8) {
-                            CurrentlyFilteringView(isFilteredByDist: $isFilteredByDist, isFilteredByCity: $isFilteredByCity, isFilteredBySus: $isFilteredBySus, isFilteredByNew: $isFilteredByNew)
-                                .contentShape(Rectangle())
-                                .onTapGesture {}
-                            Button {
-                                displayedRestaurants = sortRestaurants(restaurants: dataStore.restaurants, isSortedByDist: isSortedByDist)
-                                isFilteredByDist = Array(repeating: false, count: 5)
-                                isFilteredByCity = Array(repeating: false, count: 6)
-                                isFilteredBySus = false
-                                isFilteredByNew = false
-                            } label: {
-                                Image(systemName: "arrow.2.circlepath")
-                                    .foregroundStyle(.red)
-                                    .imageScale(.medium)
-                                    .padding(6)
-                            }
-                        }
-                        .frame(maxWidth: .infinity)
-                        .padding(.bottom, 2)
-                        .adaptiveGlass(cornerRadius: 18)
-                        .cornerRadius(18)
-                        .padding(.horizontal, 16)
-                        .padding(.bottom, 8)
-                    }
-                }
             }
             .navigationTitle("米台目")
             .sheet(isPresented: $showAboutSheet) {
