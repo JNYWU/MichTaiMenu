@@ -131,59 +131,61 @@ struct FilterSheetView: View {
     }
 
     private func cityChipGrid(items: [String], selected: Binding<[Bool]>, tint: Color) -> some View {
-        let columns = Array(repeating: GridItem(.flexible(), spacing: 12, alignment: .leading), count: 3)
+        let columns = [
+            GridItem(.flexible(), spacing: 4, alignment: .leading),
+            GridItem(.flexible(), spacing: 4, alignment: .center),
+            GridItem(.flexible(), spacing: 4, alignment: .trailing)
+        ]
         return LazyVGrid(columns: columns, alignment: .leading, spacing: 8) {
             ForEach(items.indices, id: \.self) { index in
                 let isOn = index < selected.wrappedValue.count && selected.wrappedValue[index]
-                HStack {
-                    Button {
-                        if index < selected.wrappedValue.count {
-                            selected.wrappedValue[index].toggle()
-                        }
-                    } label: {
-                        Text(items[index])
-                            .font(.subheadline)
-                            .foregroundStyle(isOn ? .white : .primary)
-                            .frame(width: 80, height: 24, alignment: .center)
-                            .padding(.horizontal, 10)
-                            .padding(.vertical, 6)
-                            .background(isOn ? tint : Color(UIColor.systemGray4))
-                            .clipShape(Capsule())
+                Button {
+                    if index < selected.wrappedValue.count {
+                        selected.wrappedValue[index].toggle()
                     }
-                    .buttonStyle(.plain)
-                    .glassChip()
+                } label: {
+                    Text(items[index])
+                        .font(.subheadline)
+                        .foregroundStyle(isOn ? .white : .primary)
+                        .frame(width: 80, height: 24, alignment: .center)
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 6)
+                        .background(isOn ? tint : Color(UIColor.systemGray4))
+                        .clipShape(Capsule())
                 }
-                .frame(maxWidth: .infinity, alignment: .leading)
+                .buttonStyle(.plain)
+                .glassChip()
             }
         }
     }
 
     private func distChipGrid(selected: Binding<[Bool]>, isFilteredBySus: Binding<Bool>) -> some View {
-        let columns = Array(repeating: GridItem(.flexible(), spacing: 12, alignment: .leading), count: 3)
+        let columns = [
+            GridItem(.flexible(), spacing: 4, alignment: .leading),
+            GridItem(.flexible(), spacing: 4, alignment: .center),
+            GridItem(.flexible(), spacing: 4, alignment: .trailing)
+        ]
         let items = FilterSheetData.distItems
         return LazyVGrid(columns: columns, alignment: .leading, spacing: 8) {
             ForEach(items.indices, id: \.self) { index in
                 let item = items[index]
                 let isOn = FilterSheetDistinction.isItemSelected(item, selected: selected.wrappedValue, isFilteredBySus: isFilteredBySus.wrappedValue)
-                HStack {
-                    Button {
-                        var distState = selected.wrappedValue
-                        var susState = isFilteredBySus.wrappedValue
-                        FilterSheetDistinction.toggleItem(item, selected: &distState, isFilteredBySus: &susState)
-                        selected.wrappedValue = distState
-                        isFilteredBySus.wrappedValue = susState
-                    } label: {
-                        distItemView(item, isSelected: isOn)
-                            .frame(width: 80, height: 24, alignment: .center)
-                            .padding(.vertical, 6)
-                            .padding(.horizontal, 10)
-                            .background(isOn ? FilterSheetDistinction.selectedTint(item) : Color(UIColor.systemGray4))
-                            .clipShape(Capsule())
-                    }
-                    .buttonStyle(.plain)
-                    .glassChip()
+                Button {
+                    var distState = selected.wrappedValue
+                    var susState = isFilteredBySus.wrappedValue
+                    FilterSheetDistinction.toggleItem(item, selected: &distState, isFilteredBySus: &susState)
+                    selected.wrappedValue = distState
+                    isFilteredBySus.wrappedValue = susState
+                } label: {
+                    distItemView(item, isSelected: isOn)
+                        .frame(width: 80, height: 24, alignment: .center)
+                        .padding(.vertical, 6)
+                        .padding(.horizontal, 10)
+                        .background(isOn ? FilterSheetDistinction.selectedTint(item) : Color(UIColor.systemGray4))
+                        .clipShape(Capsule())
                 }
-                .frame(maxWidth: .infinity, alignment: .leading)
+                .buttonStyle(.plain)
+                .glassChip()
             }
         }
     }
