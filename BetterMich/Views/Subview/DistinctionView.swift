@@ -7,54 +7,87 @@ struct DistinctionView: View {
     var distinction: Int
     var bibendum: Bool
     var sustainable: Bool
+    var showOnlySustainable: Bool = false
+    var tintColor: Color
+    var sustainableTint: Color
+    
+    init(distinction: Int, bibendum: Bool, sustainable: Bool, showOnlySustainable: Bool = false, tintColor: Color = .red, sustainableTint: Color = .green) {
+        self.distinction = distinction
+        self.bibendum = bibendum
+        self.sustainable = sustainable
+        self.showOnlySustainable = showOnlySustainable
+        self.tintColor = tintColor
+        self.sustainableTint = sustainableTint
+    }
+    
+    init(sustainableOnly: Bool, sustainableTint: Color = .green) {
+        self.distinction = 0
+        self.bibendum = false
+        self.sustainable = sustainableOnly
+        self.showOnlySustainable = true
+        self.tintColor = .red
+        self.sustainableTint = sustainableTint
+    }
     
     var body: some View {
         HStack(spacing: 7) {
-            switch distinction {
-            case 1:
-                Image(.star)
-                    .foregroundStyle(.red)
-                
-            case 2:
-                HStack {
-                    Image(.star)
-                        .foregroundStyle(.red)
-                        .padding(.trailing, -9)
-                    Image(.star)
-                        .foregroundStyle(.red)
+            if showOnlySustainable {
+                if sustainable {
+                    Image(.greenstar)
+                        .foregroundColor(sustainableTint)
                 }
-                
-            case 3:
-                HStack {
+            } else {
+                switch distinction {
+                case 1:
                     Image(.star)
-                        .foregroundStyle(.red)
-                        .padding(.trailing, -9)
-
-                    Image(.star)
-                        .foregroundStyle(.red)
-                        .padding(.trailing, -9)
-
-                    Image(.star)
-                        .foregroundStyle(.red)
-                }
-                
-            case 0:
-                if bibendum == true {
-                    Image(.bibendum)
-                        .foregroundStyle(.red)
+                        .foregroundStyle(tintColor)
+                        .padding(.trailing, -3)
                     
-                } else {
-                    Image(.plate)
-                        .foregroundStyle(.red)
+                case 2:
+                    HStack {
+                        Image(.star)
+                            .foregroundStyle(tintColor)
+                            .padding(.trailing, -9)
+                        Image(.star)
+                            .foregroundStyle(tintColor)
+                            .padding(.trailing, -3)
+                    }
+                    
+                case 3:
+                    HStack {
+                        Image(.star)
+                            .foregroundStyle(tintColor)
+                            .padding(.trailing, -9)
+
+                        Image(.star)
+                            .foregroundStyle(tintColor)
+                            .padding(.trailing, -9)
+
+                        Image(.star)
+                            .foregroundStyle(tintColor)
+                            .padding(.trailing, -3)
+                    }
+                    
+                case 0:
+                    if bibendum == true {
+                        Image(.bibendum)
+                            .foregroundStyle(tintColor)
+                            .padding(.trailing, -3)
+                    } else {
+                        Image(.plate)
+                            .foregroundStyle(tintColor)
+                            .padding(.trailing, -3)
+                    }
+                    
+                default:
+                    Text("")
                 }
                 
-            default:
-                Text("")
-            }
-            
-            if sustainable {
-                Image(.greenstar)
-                    .foregroundColor(.green)
+                if sustainable {
+                    Image(.greenstar)
+                        .foregroundColor(sustainableTint)
+                        .padding(.trailing, -3)
+                }
             }
         }
     }

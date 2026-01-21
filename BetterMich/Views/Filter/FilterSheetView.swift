@@ -18,7 +18,7 @@ struct FilterSheetView: View {
     @State private var tempFilteredBySus: Bool
     @State private var tempFilteredByNew: Bool
 
-    private let cityList = ["台北", "新北", "台中", "台南", "高雄", "新竹"]
+    private let cityList = ["台北", "新北", "新竹", "台中", "台南", "高雄"]
     private let distList = ["三星", "二星", "一星", "必比登", "推薦"]
 
     init(
@@ -63,23 +63,26 @@ struct FilterSheetView: View {
                             Text("評鑑等級")
                         }
                         .font(.subheadline)
-                        .foregroundStyle(.black)
+                        .foregroundStyle(.primary)
+                        .frame(height: 24)
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 6)
+                        .background(Color(UIColor.systemGray5))
+                        .clipShape(Capsule())
                     }
-                    .buttonStyle(.bordered)
+                    .buttonStyle(.plain)
 
                     Divider()
                     
                     sectionHeader("篩選")
-                    sectionHeader("城市", isSubsection: true)
-                    chipGrid(items: cityList, selected: $tempFilteredByCity, tint: .teal)
-
-                    sectionHeader("評鑑等級", isSubsection: true)
-                    chipGrid(items: distList, selected: $tempFilteredByDist, tint: .red)
-
                     HStack(spacing: 12) {
-                        toggleChip(title: "綠星", isOn: $tempFilteredBySus, tint: .green, icon: "leaf.fill")
-                        toggleChip(title: "新入選", isOn: $tempFilteredByNew, tint: .red, icon: "sparkles.2")
+                        toggleChip(title: "新入選", isOn: $tempFilteredByNew, tint: .red, icon: "sparkles.2", fixedWidth: 75)
                     }
+                    sectionHeader("城市", isSubsection: true, systemImage: "building.2")
+                    cityChipGrid(items: cityList, selected: $tempFilteredByCity, tint: .teal)
+
+                    sectionHeader("評鑑等級", isSubsection: true, systemImage: "star.bubble")
+                    distChipGrid(selected: $tempFilteredByDist, isFilteredBySus: $tempFilteredBySus)
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 12)
@@ -115,14 +118,21 @@ struct FilterSheetView: View {
         }
     }
 
-    private func sectionHeader(_ text: String, isSubsection: Bool = false) -> some View {
-        Text(text)
-            .font(isSubsection ? .subheadline.bold() : .headline)
-            .foregroundStyle(isSubsection ? .secondary : .primary)
+    private func sectionHeader(_ text: String, isSubsection: Bool = false, systemImage: String? = nil) -> some View {
+        HStack(spacing: 6) {
+            if let systemImage {
+                Image(systemName: systemImage)
+                    .font(isSubsection ? .subheadline.bold() : .headline)
+                    .foregroundStyle(isSubsection ? Color(.darkGray) : .primary)
+            }
+            Text(text)
+                .font(isSubsection ? .subheadline.bold() : .headline)
+                .foregroundStyle(isSubsection ? Color(.darkGray) : .primary)
+        }
     }
 
-    private func chipGrid(items: [String], selected: Binding<[Bool]>, tint: Color) -> some View {
-        let columns = [GridItem(.adaptive(minimum: 80), spacing: 8, alignment: .leading)]
+    private func cityChipGrid(items: [String], selected: Binding<[Bool]>, tint: Color) -> some View {
+        let columns = Array(repeating: GridItem(.flexible(), spacing: 8, alignment: .leading), count: 3)
         return LazyVGrid(columns: columns, alignment: .leading, spacing: 8) {
             ForEach(items.indices, id: \.self) { index in
                 let isOn = index < selected.wrappedValue.count && selected.wrappedValue[index]
@@ -134,16 +144,112 @@ struct FilterSheetView: View {
                     Text(items[index])
                         .font(.subheadline)
                         .foregroundStyle(isOn ? .white : .primary)
+                        .frame(width: 75, height: 24, alignment: .center)
                         .padding(.horizontal, 10)
                         .padding(.vertical, 6)
                         .background(isOn ? tint : Color(UIColor.systemGray5))
                         .clipShape(Capsule())
                 }
+                .buttonStyle(.plain)
             }
         }
     }
 
-    private func toggleChip(title: String, isOn: Binding<Bool>, tint: Color, icon: String) -> some View {
+    private func distChipGrid(selected: Binding<[Bool]>, isFilteredBySus: Binding<Bool>) -> some View {
+        let columns = Array(repeating: GridItem(.flexible(), spacing: 8, alignment: .leading), count: 3)
+        let items: [DistFilterItem] = [.threeStars, .twoStars, .oneStar, .bibendum, .plate, .greenStar]
+        return LazyVGrid(columns: columns, alignment: .leading, spacing: 8) {
+            ForEach(items.indices, id: \.self) { index in
+                let item = items[index]
+                let isOn = isItemSelected(item, selected: selected, isFilteredBySus: isFilteredBySus)
+                Button {
+                    toggleItem(item, selected: selected, isFilteredBySus: isFilteredBySus)
+                } label: {
+                    distItemView(item, isSelected: isOn)
+                        .frame(width: 75, height: 24, alignment: .center)
+                        .padding(.vertical, 6)
+                        .padding(.horizontal, 10)
+                        .background(isOn ? selectedTint(item) : Color(UIColor.systemGray5))
+                        .clipShape(Capsule())
+                }
+                .buttonStyle(.plain)
+            }
+        }
+    }
+
+    private enum DistFilterItem {
+        case threeStars
+        case twoStars
+        case oneStar
+        case bibendum
+        case plate
+        case greenStar
+    }
+
+    private func selectedTint(_ item: DistFilterItem) -> Color {
+        switch item {
+        case .greenStar:
+            return .green
+        default:
+            return .red
+        }
+    }
+
+    private func isItemSelected(_ item: DistFilterItem, selected: Binding<[Bool]>, isFilteredBySus: Binding<Bool>) -> Bool {
+        switch item {
+        case .threeStars:
+            return selected.wrappedValue.count > 0 && selected.wrappedValue[0]
+        case .twoStars:
+            return selected.wrappedValue.count > 1 && selected.wrappedValue[1]
+        case .oneStar:
+            return selected.wrappedValue.count > 2 && selected.wrappedValue[2]
+        case .bibendum:
+            return selected.wrappedValue.count > 3 && selected.wrappedValue[3]
+        case .plate:
+            return selected.wrappedValue.count > 4 && selected.wrappedValue[4]
+        case .greenStar:
+            return isFilteredBySus.wrappedValue
+        }
+    }
+
+    private func toggleItem(_ item: DistFilterItem, selected: Binding<[Bool]>, isFilteredBySus: Binding<Bool>) {
+        switch item {
+        case .threeStars:
+            if selected.wrappedValue.count > 0 { selected.wrappedValue[0].toggle() }
+        case .twoStars:
+            if selected.wrappedValue.count > 1 { selected.wrappedValue[1].toggle() }
+        case .oneStar:
+            if selected.wrappedValue.count > 2 { selected.wrappedValue[2].toggle() }
+        case .bibendum:
+            if selected.wrappedValue.count > 3 { selected.wrappedValue[3].toggle() }
+        case .plate:
+            if selected.wrappedValue.count > 4 { selected.wrappedValue[4].toggle() }
+        case .greenStar:
+            isFilteredBySus.wrappedValue.toggle()
+        }
+    }
+
+    @ViewBuilder
+    private func distItemView(_ item: DistFilterItem, isSelected: Bool) -> some View {
+        let tint = isSelected ? Color.white : selectedTint(item)
+        let sustainableTint = isSelected ? Color.white : Color.green
+        switch item {
+        case .threeStars:
+            DistinctionView(distinction: 3, bibendum: false, sustainable: false, tintColor: tint)
+        case .twoStars:
+            DistinctionView(distinction: 2, bibendum: false, sustainable: false, tintColor: tint)
+        case .oneStar:
+            DistinctionView(distinction: 1, bibendum: false, sustainable: false, tintColor: tint)
+        case .bibendum:
+            DistinctionView(distinction: 0, bibendum: true, sustainable: false, tintColor: tint)
+        case .plate:
+            DistinctionView(distinction: 0, bibendum: false, sustainable: false, tintColor: tint)
+        case .greenStar:
+            DistinctionView(sustainableOnly: true, sustainableTint: sustainableTint)
+        }
+    }
+
+    private func toggleChip(title: String, isOn: Binding<Bool>, tint: Color, icon: String, fixedWidth: CGFloat? = nil) -> some View {
         Button {
             isOn.wrappedValue.toggle()
         } label: {
@@ -153,6 +259,7 @@ struct FilterSheetView: View {
             }
             .font(.subheadline)
             .foregroundStyle(isOn.wrappedValue ? .white : .primary)
+            .frame(width: fixedWidth, height: 24, alignment: .center)
             .padding(.horizontal, 10)
             .padding(.vertical, 6)
             .background(isOn.wrappedValue ? tint : Color(UIColor.systemGray5))
