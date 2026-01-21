@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		820240792AE1B44F0088A684 /* Algorithms in Frameworks */ = {isa = PBXBuildFile; productRef = 820240782AE1B44F0088A684 /* Algorithms */; };
-		83A1B0A22F01000200AA0001 /* FilterSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A1B0A12F01000200AA0001 /* FilterSheetView.swift */; };
 		8248DF372D55EC0800AA4752 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8248DF362D55EC0300AA4752 /* Config.swift */; };
 		825F48192AE573AB002BEE20 /* FilterMenuButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 825F48182AE573AB002BEE20 /* FilterMenuButtonView.swift */; };
 		825F481B2AE57804002BEE20 /* FilterFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 825F481A2AE57804002BEE20 /* FilterFunctions.swift */; };
@@ -29,10 +28,10 @@
 		82ECCAD62AEB9E4000A7841B /* DetailedSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82ECCAD52AEB9E4000A7841B /* DetailedSheetView.swift */; };
 		8300A0022F00000100AA0001 /* RemoteDataLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8300A0012F00000100AA0001 /* RemoteDataLoader.swift */; };
 		83A1B0A12F01000100AA0001 /* MichelinDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A1B0A02F01000100AA0001 /* MichelinDataStore.swift */; };
+		83A1B0A22F01000200AA0001 /* FilterSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A1B0A12F01000200AA0001 /* FilterSheetView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		83A1B0A12F01000200AA0001 /* FilterSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterSheetView.swift; sourceTree = "<group>"; };
 		8248DF362D55EC0300AA4752 /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		825F48182AE573AB002BEE20 /* FilterMenuButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterMenuButtonView.swift; sourceTree = "<group>"; };
 		825F481A2AE57804002BEE20 /* FilterFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterFunctions.swift; sourceTree = "<group>"; };
@@ -55,6 +54,7 @@
 		82ECCAD52AEB9E4000A7841B /* DetailedSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailedSheetView.swift; sourceTree = "<group>"; };
 		8300A0012F00000100AA0001 /* RemoteDataLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteDataLoader.swift; sourceTree = "<group>"; };
 		83A1B0A02F01000100AA0001 /* MichelinDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MichelinDataStore.swift; sourceTree = "<group>"; };
+		83A1B0A12F01000200AA0001 /* FilterSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterSheetView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -388,7 +388,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"BetterMich/Preview Content\"";
 				DEVELOPMENT_TEAM = 6WLWD6849M;
 				ENABLE_PREVIEWS = YES;
@@ -420,7 +420,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"BetterMich/Preview Content\"";
 				DEVELOPMENT_TEAM = 6WLWD6849M;
 				ENABLE_PREVIEWS = YES;

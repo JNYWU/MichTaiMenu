@@ -53,8 +53,7 @@ struct FilterSheetView: View {
 
     var body: some View {
         NavigationStack {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 16) {
+            VStack(alignment: .leading, spacing: 16) {
                     sectionHeader("排序")
                     Button {
                         tempSortedByDist.toggle()
@@ -81,10 +80,9 @@ struct FilterSheetView: View {
                         toggleChip(title: "綠星", isOn: $tempFilteredBySus, tint: .green, icon: "leaf.fill")
                         toggleChip(title: "新入選", isOn: $tempFilteredByNew, tint: .red, icon: "sparkles.2")
                     }
-                }
-                .padding(.horizontal, 16)
-                .padding(.vertical, 12)
             }
+            .padding(.horizontal, 16)
+            .padding(.vertical, 12)
             .navigationTitle("篩選")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
