@@ -12,14 +12,12 @@ struct FilterSheetView: View {
     @Binding var displayedRestaurants: [Restaurant]
     @Binding var isPresented: Bool
 
-    @State private var tempSortedByDist: Bool
-    @State private var tempFilteredByDist: [Bool]
-    @State private var tempFilteredByCity: [Bool]
-    @State private var tempFilteredBySus: Bool
-    @State private var tempFilteredByNew: Bool
+    @State var tempSortedByDist: Bool
+    @State var tempFilteredByDist: [Bool]
+    @State var tempFilteredByCity: [Bool]
+    @State var tempFilteredBySus: Bool
+    @State var tempFilteredByNew: Bool
 
-    private let cityList = ["台北", "新北", "新竹", "台中", "台南", "高雄"]
-    private let distList = ["三星", "二星", "一星", "必比登", "推薦"]
 
     init(
         Restaurants: Binding<[Restaurant]>,
@@ -65,21 +63,22 @@ struct FilterSheetView: View {
                         .font(.subheadline)
                         .foregroundStyle(.primary)
                         .frame(height: 24)
-                        .padding(.horizontal, 10)
+                        .padding(.horizontal, 12)
                         .padding(.vertical, 6)
                         .background(Color(UIColor.systemGray4))
                         .clipShape(Capsule())
                     }
                     .buttonStyle(.plain)
+                    .glassChip()
 
                     Divider()
                     
                     sectionHeader("篩選")
                     HStack(spacing: 12) {
-                        toggleChip(title: "新入選", isOn: $tempFilteredByNew, tint: .red, icon: "sparkles.2", fixedWidth: 75)
+                        toggleChip(title: "新入選", isOn: $tempFilteredByNew, tint: .red, icon: "sparkles.2", fixedWidth: 80)
                     }
                     sectionHeader("城市", isSubsection: true, systemImage: "building.2")
-                    cityChipGrid(items: cityList, selected: $tempFilteredByCity, tint: .teal)
+                    cityChipGrid(items: FilterSheetData.cityList, selected: $tempFilteredByCity, tint: .teal)
 
                     sectionHeader("評鑑等級", isSubsection: true, systemImage: "star.bubble")
                     distChipGrid(selected: $tempFilteredByDist, isFilteredBySus: $tempFilteredBySus)
@@ -132,106 +131,66 @@ struct FilterSheetView: View {
     }
 
     private func cityChipGrid(items: [String], selected: Binding<[Bool]>, tint: Color) -> some View {
-        let columns = Array(repeating: GridItem(.flexible(), spacing: 8, alignment: .leading), count: 3)
+        let columns = Array(repeating: GridItem(.flexible(), spacing: 12, alignment: .leading), count: 3)
         return LazyVGrid(columns: columns, alignment: .leading, spacing: 8) {
             ForEach(items.indices, id: \.self) { index in
                 let isOn = index < selected.wrappedValue.count && selected.wrappedValue[index]
-                Button {
-                    if index < selected.wrappedValue.count {
-                        selected.wrappedValue[index].toggle()
+                HStack {
+                    Button {
+                        if index < selected.wrappedValue.count {
+                            selected.wrappedValue[index].toggle()
+                        }
+                    } label: {
+                        Text(items[index])
+                            .font(.subheadline)
+                            .foregroundStyle(isOn ? .white : .primary)
+                            .frame(width: 80, height: 24, alignment: .center)
+                            .padding(.horizontal, 10)
+                            .padding(.vertical, 6)
+                            .background(isOn ? tint : Color(UIColor.systemGray4))
+                            .clipShape(Capsule())
                     }
-                } label: {
-                    Text(items[index])
-                        .font(.subheadline)
-                        .foregroundStyle(isOn ? .white : .primary)
-                        .frame(width: 75, height: 24, alignment: .center)
-                        .padding(.horizontal, 10)
-                        .padding(.vertical, 6)
-                        .background(isOn ? tint : Color(UIColor.systemGray4))
-                        .clipShape(Capsule())
+                    .buttonStyle(.plain)
+                    .glassChip()
                 }
-                .buttonStyle(.plain)
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
         }
     }
 
     private func distChipGrid(selected: Binding<[Bool]>, isFilteredBySus: Binding<Bool>) -> some View {
-        let columns = Array(repeating: GridItem(.flexible(), spacing: 8, alignment: .leading), count: 3)
-        let items: [DistFilterItem] = [.threeStars, .twoStars, .oneStar, .bibendum, .plate, .greenStar]
+        let columns = Array(repeating: GridItem(.flexible(), spacing: 12, alignment: .leading), count: 3)
+        let items = FilterSheetData.distItems
         return LazyVGrid(columns: columns, alignment: .leading, spacing: 8) {
             ForEach(items.indices, id: \.self) { index in
                 let item = items[index]
-                let isOn = isItemSelected(item, selected: selected, isFilteredBySus: isFilteredBySus)
-                Button {
-                    toggleItem(item, selected: selected, isFilteredBySus: isFilteredBySus)
-                } label: {
-                    distItemView(item, isSelected: isOn)
-                        .frame(width: 75, height: 24, alignment: .center)
-                        .padding(.vertical, 6)
-                        .padding(.horizontal, 10)
-                        .background(isOn ? selectedTint(item) : Color(UIColor.systemGray4))
-                        .clipShape(Capsule())
+                let isOn = FilterSheetDistinction.isItemSelected(item, selected: selected.wrappedValue, isFilteredBySus: isFilteredBySus.wrappedValue)
+                HStack {
+                    Button {
+                        var distState = selected.wrappedValue
+                        var susState = isFilteredBySus.wrappedValue
+                        FilterSheetDistinction.toggleItem(item, selected: &distState, isFilteredBySus: &susState)
+                        selected.wrappedValue = distState
+                        isFilteredBySus.wrappedValue = susState
+                    } label: {
+                        distItemView(item, isSelected: isOn)
+                            .frame(width: 80, height: 24, alignment: .center)
+                            .padding(.vertical, 6)
+                            .padding(.horizontal, 10)
+                            .background(isOn ? FilterSheetDistinction.selectedTint(item) : Color(UIColor.systemGray4))
+                            .clipShape(Capsule())
+                    }
+                    .buttonStyle(.plain)
+                    .glassChip()
                 }
-                .buttonStyle(.plain)
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
-        }
-    }
-
-    private enum DistFilterItem {
-        case threeStars
-        case twoStars
-        case oneStar
-        case bibendum
-        case plate
-        case greenStar
-    }
-
-    private func selectedTint(_ item: DistFilterItem) -> Color {
-        switch item {
-        case .greenStar:
-            return .green
-        default:
-            return .red
-        }
-    }
-
-    private func isItemSelected(_ item: DistFilterItem, selected: Binding<[Bool]>, isFilteredBySus: Binding<Bool>) -> Bool {
-        switch item {
-        case .threeStars:
-            return selected.wrappedValue.count > 0 && selected.wrappedValue[0]
-        case .twoStars:
-            return selected.wrappedValue.count > 1 && selected.wrappedValue[1]
-        case .oneStar:
-            return selected.wrappedValue.count > 2 && selected.wrappedValue[2]
-        case .bibendum:
-            return selected.wrappedValue.count > 3 && selected.wrappedValue[3]
-        case .plate:
-            return selected.wrappedValue.count > 4 && selected.wrappedValue[4]
-        case .greenStar:
-            return isFilteredBySus.wrappedValue
-        }
-    }
-
-    private func toggleItem(_ item: DistFilterItem, selected: Binding<[Bool]>, isFilteredBySus: Binding<Bool>) {
-        switch item {
-        case .threeStars:
-            if selected.wrappedValue.count > 0 { selected.wrappedValue[0].toggle() }
-        case .twoStars:
-            if selected.wrappedValue.count > 1 { selected.wrappedValue[1].toggle() }
-        case .oneStar:
-            if selected.wrappedValue.count > 2 { selected.wrappedValue[2].toggle() }
-        case .bibendum:
-            if selected.wrappedValue.count > 3 { selected.wrappedValue[3].toggle() }
-        case .plate:
-            if selected.wrappedValue.count > 4 { selected.wrappedValue[4].toggle() }
-        case .greenStar:
-            isFilteredBySus.wrappedValue.toggle()
         }
     }
 
     @ViewBuilder
     private func distItemView(_ item: DistFilterItem, isSelected: Bool) -> some View {
-        let tint = isSelected ? Color.white : selectedTint(item)
+        let tint = isSelected ? Color.white : FilterSheetDistinction.selectedTint(item)
         let sustainableTint = isSelected ? Color.white : Color.green
         switch item {
         case .threeStars:
@@ -265,36 +224,9 @@ struct FilterSheetView: View {
             .background(isOn.wrappedValue ? tint : Color(UIColor.systemGray4))
             .clipShape(Capsule())
         }
+        .glassChip()
     }
 
-    private func applyFilters() {
-        isSortedByDist = tempSortedByDist
-        isFilteredByDist = tempFilteredByDist
-        isFilteredByCity = tempFilteredByCity
-        isFilteredBySus = tempFilteredBySus
-        isFilteredByNew = tempFilteredByNew
-
-        filteredRestaurants = distFilter(allRestaurants: Restaurants, isFilteredByCity: isFilteredByCity, isFilteredByDist: isFilteredByDist)
-        filteredRestaurants = cityFilter(allRestaurants: filteredRestaurants, isFilteredByCity: isFilteredByCity, isFilteredByDist: isFilteredByDist)
-        filteredRestaurants = sustainFilter(Restaurants: filteredRestaurants, isFilteredBySus: isFilteredBySus)
-        filteredRestaurants = newFilter(Restaurants: filteredRestaurants, isFilteredByNew: isFilteredByNew)
-        displayedRestaurants = sortRestaurants(restaurants: filteredRestaurants, isSortedByDist: isSortedByDist)
-        sortedRestaurants = displayedRestaurants
-    }
-
-    private func resetFilters() {
-        isFilteredByDist = Array(repeating: false, count: distList.count)
-        isFilteredByCity = Array(repeating: false, count: cityList.count)
-        isFilteredBySus = false
-        isFilteredByNew = false
-        displayedRestaurants = sortRestaurants(restaurants: Restaurants, isSortedByDist: isSortedByDist)
-        sortedRestaurants = displayedRestaurants
-        tempSortedByDist = isSortedByDist
-        tempFilteredByDist = isFilteredByDist
-        tempFilteredByCity = isFilteredByCity
-        tempFilteredBySus = isFilteredBySus
-        tempFilteredByNew = isFilteredByNew
-    }
 }
 
 private struct FilterSheetPreviewHost: View {
@@ -315,8 +247,8 @@ private struct FilterSheetPreviewHost: View {
         )
     ]
     @State private var isSortedByDist = false
-    @State private var isFilteredByDist = Array(repeating: false, count: 5)
-    @State private var isFilteredByCity = Array(repeating: false, count: 6)
+    @State private var isFilteredByDist = Array(repeating: false, count: FilterSheetData.distList.count)
+    @State private var isFilteredByCity = Array(repeating: false, count: FilterSheetData.cityList.count)
     @State private var isFilteredBySus = false
     @State private var isFilteredByNew = false
     @State private var sortedRestaurants: [Restaurant] = []
@@ -349,4 +281,15 @@ private struct FilterSheetPreviewHost: View {
     FilterSheetPreviewHost()
         .preferredColorScheme(.dark)
 
+}
+
+private extension View {
+    @ViewBuilder
+    func glassChip() -> some View {
+        if #available(iOS 26.0, *) {
+            self.glassEffect(.regular, in: .capsule)
+        } else {
+            self
+        }
+    }
 }

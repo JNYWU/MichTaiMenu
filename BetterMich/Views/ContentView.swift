@@ -67,7 +67,7 @@ struct ContentView: View {
                     displayedRestaurants: $displayedRestaurants,
                     isPresented: $showFilterSheet
                 )
-                .presentationDetents([.fraction(0.65)])
+                .presentationDetents([.fraction(0.68)])
                 .presentationDragIndicator(.visible)
                 .presentationBackground(.regularMaterial)
             }

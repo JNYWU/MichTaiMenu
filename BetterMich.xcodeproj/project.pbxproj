@@ -29,10 +29,16 @@
 		8300A0022F00000100AA0001 /* RemoteDataLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8300A0012F00000100AA0001 /* RemoteDataLoader.swift */; };
 		83A1B0A12F01000100AA0001 /* MichelinDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A1B0A02F01000100AA0001 /* MichelinDataStore.swift */; };
 		83A1B0A22F01000200AA0001 /* FilterSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A1B0A12F01000200AA0001 /* FilterSheetView.swift */; };
+		83F0A0112F50000100AA0001 /* FilterSheetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 824B7A1A2F2120F70005BCDA /* FilterSheetData.swift */; };
+		83F0A0122F50000100AA0001 /* FilterSheetDistinction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 824B7A1B2F2120F70005BCDA /* FilterSheetDistinction.swift */; };
+		83F0A0132F50000100AA0001 /* FilterSheetLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 824B7A1C2F2120F70005BCDA /* FilterSheetLogic.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		8248DF362D55EC0300AA4752 /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
+		824B7A1A2F2120F70005BCDA /* FilterSheetData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterSheetData.swift; sourceTree = "<group>"; };
+		824B7A1B2F2120F70005BCDA /* FilterSheetDistinction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterSheetDistinction.swift; sourceTree = "<group>"; };
+		824B7A1C2F2120F70005BCDA /* FilterSheetLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterSheetLogic.swift; sourceTree = "<group>"; };
 		825F48182AE573AB002BEE20 /* FilterMenuButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterMenuButtonView.swift; sourceTree = "<group>"; };
 		825F481A2AE57804002BEE20 /* FilterFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterFunctions.swift; sourceTree = "<group>"; };
 		827BF62A2AE6343E0010FDCC /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
@@ -55,6 +61,9 @@
 		8300A0012F00000100AA0001 /* RemoteDataLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteDataLoader.swift; sourceTree = "<group>"; };
 		83A1B0A02F01000100AA0001 /* MichelinDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MichelinDataStore.swift; sourceTree = "<group>"; };
 		83A1B0A12F01000200AA0001 /* FilterSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterSheetView.swift; sourceTree = "<group>"; };
+		83F0A0012F50000100AA0001 /* FilterSheetData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterSheetData.swift; sourceTree = "<group>"; };
+		83F0A0022F50000100AA0001 /* FilterSheetDistinction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterSheetDistinction.swift; sourceTree = "<group>"; };
+		83F0A0032F50000100AA0001 /* FilterSheetLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterSheetLogic.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,11 +78,31 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		824B7A192F2120F70005BCDA /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				83F0A0012F50000100AA0001 /* FilterSheetData.swift */,
+				83F0A0022F50000100AA0001 /* FilterSheetDistinction.swift */,
+				83F0A0032F50000100AA0001 /* FilterSheetLogic.swift */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
+		824B7A202F2121A70005BCDA /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				824B7A1B2F2120F70005BCDA /* FilterSheetDistinction.swift */,
+				824B7A1C2F2120F70005BCDA /* FilterSheetLogic.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
 		82EA6BAF2AD7D9BF00D137E9 = {
 			isa = PBXGroup;
 			children = (
 				82EA6BBA2AD7D9BF00D137E9 /* BetterMich */,
 				82EA6BB92AD7D9BF00D137E9 /* Products */,
+				824B7A192F2120F70005BCDA /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -88,11 +117,12 @@
 		82EA6BBA2AD7D9BF00D137E9 /* BetterMich */ = {
 			isa = PBXGroup;
 			children = (
-				8292C2602AE2698A0037DA86 /* Info.plist */,
-				82EA6BBB2AD7D9BF00D137E9 /* BetterMichApp.swift */,
 				82EA6BCD2AD7DB0F00D137E9 /* Views */,
 				82EA6BCC2AD7DB0300D137E9 /* Models */,
+				824B7A202F2121A70005BCDA /* Helpers */,
 				82EA6BC92AD7D9D000D137E9 /* Data */,
+				8292C2602AE2698A0037DA86 /* Info.plist */,
+				82EA6BBB2AD7D9BF00D137E9 /* BetterMichApp.swift */,
 				82EA6BBF2AD7D9C000D137E9 /* Assets.xcassets */,
 				82EA6BC12AD7D9C000D137E9 /* Preview Content */,
 			);
@@ -111,6 +141,7 @@
 			isa = PBXGroup;
 			children = (
 				8248DF362D55EC0300AA4752 /* Config.swift */,
+				824B7A1A2F2120F70005BCDA /* FilterSheetData.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -242,6 +273,9 @@
 				83A1B0A22F01000200AA0001 /* FilterSheetView.swift in Sources */,
 				83A1B0A12F01000100AA0001 /* MichelinDataStore.swift in Sources */,
 				8300A0022F00000100AA0001 /* RemoteDataLoader.swift in Sources */,
+				83F0A0112F50000100AA0001 /* FilterSheetData.swift in Sources */,
+				83F0A0122F50000100AA0001 /* FilterSheetDistinction.swift in Sources */,
+				83F0A0132F50000100AA0001 /* FilterSheetLogic.swift in Sources */,
 				82EA6BBE2AD7D9BF00D137E9 /* ContentView.swift in Sources */,
 				82B6EFE52AE8EC0500725927 /* FilterLabelView.swift in Sources */,
 				82EA6BBC2AD7D9BF00D137E9 /* BetterMichApp.swift in Sources */,
