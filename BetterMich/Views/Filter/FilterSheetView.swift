@@ -67,7 +67,7 @@ struct FilterSheetView: View {
                         .frame(height: 24)
                         .padding(.horizontal, 10)
                         .padding(.vertical, 6)
-                        .background(Color(UIColor.systemGray5))
+                        .background(Color(UIColor.systemGray4))
                         .clipShape(Capsule())
                     }
                     .buttonStyle(.plain)
@@ -123,11 +123,11 @@ struct FilterSheetView: View {
             if let systemImage {
                 Image(systemName: systemImage)
                     .font(isSubsection ? .subheadline.bold() : .headline)
-                    .foregroundStyle(isSubsection ? Color(.darkGray) : .primary)
+                    .foregroundStyle(isSubsection ? .secondary : .primary)
             }
             Text(text)
                 .font(isSubsection ? .subheadline.bold() : .headline)
-                .foregroundStyle(isSubsection ? Color(.darkGray) : .primary)
+                .foregroundStyle(isSubsection ? .secondary : .primary)
         }
     }
 
@@ -147,7 +147,7 @@ struct FilterSheetView: View {
                         .frame(width: 75, height: 24, alignment: .center)
                         .padding(.horizontal, 10)
                         .padding(.vertical, 6)
-                        .background(isOn ? tint : Color(UIColor.systemGray5))
+                        .background(isOn ? tint : Color(UIColor.systemGray4))
                         .clipShape(Capsule())
                 }
                 .buttonStyle(.plain)
@@ -169,7 +169,7 @@ struct FilterSheetView: View {
                         .frame(width: 75, height: 24, alignment: .center)
                         .padding(.vertical, 6)
                         .padding(.horizontal, 10)
-                        .background(isOn ? selectedTint(item) : Color(UIColor.systemGray5))
+                        .background(isOn ? selectedTint(item) : Color(UIColor.systemGray4))
                         .clipShape(Capsule())
                 }
                 .buttonStyle(.plain)
@@ -262,7 +262,7 @@ struct FilterSheetView: View {
             .frame(width: fixedWidth, height: 24, alignment: .center)
             .padding(.horizontal, 10)
             .padding(.vertical, 6)
-            .background(isOn.wrappedValue ? tint : Color(UIColor.systemGray5))
+            .background(isOn.wrappedValue ? tint : Color(UIColor.systemGray4))
             .clipShape(Capsule())
         }
     }
@@ -342,4 +342,11 @@ private struct FilterSheetPreviewHost: View {
 
 #Preview {
     FilterSheetPreviewHost()
+        .preferredColorScheme(.light)
+}
+
+#Preview {
+    FilterSheetPreviewHost()
+        .preferredColorScheme(.dark)
+
 }
