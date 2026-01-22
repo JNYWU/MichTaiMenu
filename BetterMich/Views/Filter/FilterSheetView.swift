@@ -284,14 +284,3 @@ private struct FilterSheetPreviewHost: View {
         .preferredColorScheme(.dark)
 
 }
-
-private extension View {
-    @ViewBuilder
-    func glassChip() -> some View {
-        if #available(iOS 26.0, *) {
-            self.glassEffect(.regular, in: .capsule)
-        } else {
-            self
-        }
-    }
-}

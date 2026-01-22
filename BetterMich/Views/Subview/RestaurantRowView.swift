@@ -27,6 +27,7 @@ struct RestaurantRowView: View {
                         .padding(.vertical, 2)
                         .background(Color.red)
                         .clipShape(Capsule())
+                        .glassChip()
                     }
                 }
                 

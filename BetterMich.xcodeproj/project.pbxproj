@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		820240792AE1B44F0088A684 /* Algorithms in Frameworks */ = {isa = PBXBuildFile; productRef = 820240782AE1B44F0088A684 /* Algorithms */; };
 		8248DF372D55EC0800AA4752 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8248DF362D55EC0300AA4752 /* Config.swift */; };
+		824B7A222F220F9A0005BCDA /* GlassChipExtention.swift in Sources */ = {isa = PBXBuildFile; fileRef = 824B7A212F220F850005BCDA /* GlassChipExtention.swift */; };
+		824B7A242F225F320005BCDA /* MapViewHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 824B7A232F225F2D0005BCDA /* MapViewHelpers.swift */; };
 		825F48192AE573AB002BEE20 /* FilterMenuButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 825F48182AE573AB002BEE20 /* FilterMenuButtonView.swift */; };
 		825F481B2AE57804002BEE20 /* FilterFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 825F481A2AE57804002BEE20 /* FilterFunctions.swift */; };
 		827BF62B2AE6343E0010FDCC /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 827BF62A2AE6343E0010FDCC /* AboutView.swift */; };
@@ -39,6 +41,8 @@
 		824B7A1A2F2120F70005BCDA /* FilterSheetData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterSheetData.swift; sourceTree = "<group>"; };
 		824B7A1B2F2120F70005BCDA /* FilterSheetDistinction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterSheetDistinction.swift; sourceTree = "<group>"; };
 		824B7A1C2F2120F70005BCDA /* FilterSheetLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterSheetLogic.swift; sourceTree = "<group>"; };
+		824B7A212F220F850005BCDA /* GlassChipExtention.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlassChipExtention.swift; sourceTree = "<group>"; };
+		824B7A232F225F2D0005BCDA /* MapViewHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewHelpers.swift; sourceTree = "<group>"; };
 		825F48182AE573AB002BEE20 /* FilterMenuButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterMenuButtonView.swift; sourceTree = "<group>"; };
 		825F481A2AE57804002BEE20 /* FilterFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterFunctions.swift; sourceTree = "<group>"; };
 		827BF62A2AE6343E0010FDCC /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
@@ -91,6 +95,8 @@
 		824B7A202F2121A70005BCDA /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				824B7A232F225F2D0005BCDA /* MapViewHelpers.swift */,
+				824B7A212F220F850005BCDA /* GlassChipExtention.swift */,
 				824B7A1B2F2120F70005BCDA /* FilterSheetDistinction.swift */,
 				824B7A1C2F2120F70005BCDA /* FilterSheetLogic.swift */,
 			);
@@ -275,10 +281,12 @@
 				8300A0022F00000100AA0001 /* RemoteDataLoader.swift in Sources */,
 				83F0A0112F50000100AA0001 /* FilterSheetData.swift in Sources */,
 				83F0A0122F50000100AA0001 /* FilterSheetDistinction.swift in Sources */,
+				824B7A222F220F9A0005BCDA /* GlassChipExtention.swift in Sources */,
 				83F0A0132F50000100AA0001 /* FilterSheetLogic.swift in Sources */,
 				82EA6BBE2AD7D9BF00D137E9 /* ContentView.swift in Sources */,
 				82B6EFE52AE8EC0500725927 /* FilterLabelView.swift in Sources */,
 				82EA6BBC2AD7D9BF00D137E9 /* BetterMichApp.swift in Sources */,
+				824B7A242F225F320005BCDA /* MapViewHelpers.swift in Sources */,
 				82EA6BD32AD7E3D100D137E9 /* handleCSV.swift in Sources */,
 				827BF62B2AE6343E0010FDCC /* AboutView.swift in Sources */,
 				829E6D702AE7F1330026451B /* EmptyListView.swift in Sources */,
