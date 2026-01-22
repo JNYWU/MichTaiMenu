@@ -23,7 +23,8 @@ struct ContentView: View {
     var body: some View {
 
         NavigationStack {
-
+            
+            //MARK: 餐廳列表
             ScrollView {
                 LazyVStack(spacing: 8) {
                     ForEach(
@@ -40,7 +41,7 @@ struct ContentView: View {
             .frame(maxWidth: .infinity)
             .background(Color(UIColor.systemGroupedBackground))
 
-            // show empty list view
+            //MARK: 無符合篩選條件
             .overlay(
                 VStack {
                     if dataStore.hasLoaded && !dataStore.isLoading
@@ -62,9 +63,11 @@ struct ContentView: View {
                 }
             )
             .navigationTitle("米台目")
+            //MARK: 關於
             .sheet(isPresented: $showAboutSheet) {
                 AboutView()
             }
+            //MARK: 篩選
             .sheet(isPresented: $showFilterSheet) {
                 FilterSheetView(
                     Restaurants: $dataStore.restaurants,
@@ -82,6 +85,7 @@ struct ContentView: View {
                 .presentationDragIndicator(.hidden)
                 .presentationBackground(.thinMaterial)
             }
+            //MARK: toolbar
             .toolbar {
                 ToolbarItemGroup(placement: .topBarTrailing) {
                     HStack(spacing: 6) {
