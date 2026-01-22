@@ -1,4 +1,6 @@
 import CoreLocation
+import MapKit
+import UIKit
 
 func FormatAddress(address: String) -> String {
 
@@ -48,3 +50,39 @@ func getCoordinate(address: String) -> CLLocationCoordinate2D {
     return coord
 }
 
+// Open Apple Maps with URL
+func openMap(Address: String) {
+    UIApplication.shared.open(NSURL(string: "https://maps.apple.com/?address=\(Address)")! as URL)
+}
+
+// *Deprecated* Open Apple Maps with geocoder
+// Will only show the address but not the location information in Maps
+// Using URL is a better solution
+func openMapWithAddress(Address: String) {
+    
+    let geocoder = CLGeocoder()
+    
+    geocoder.geocodeAddressString(Address) { placemarks, error in
+        if let error = error {
+            print(error.localizedDescription)
+            return
+        }
+        
+        guard let placemark = placemarks?.first else {
+            return
+        }
+        
+        guard let lat = placemark.location?.coordinate.latitude else{return}
+        
+        guard let lon = placemark.location?.coordinate.longitude else{return}
+        
+        let coords = CLLocationCoordinate2DMake(lat, lon)
+        
+        let place = MKPlacemark(coordinate: coords)
+        
+        let mapItem = MKMapItem(placemark: place)
+        mapItem.name = placemark.name
+        mapItem.openInMaps(launchOptions: nil)
+    }
+    
+}
