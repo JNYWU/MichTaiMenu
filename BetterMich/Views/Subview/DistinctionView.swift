@@ -41,7 +41,6 @@ struct DistinctionView: View {
                 case 1:
                     Image(.star)
                         .foregroundStyle(tintColor)
-                        .padding(.trailing, -3)
                     
                 case 2:
                     HStack {
@@ -50,7 +49,6 @@ struct DistinctionView: View {
                             .padding(.trailing, -9)
                         Image(.star)
                             .foregroundStyle(tintColor)
-                            .padding(.trailing, -3)
                     }
                     
                 case 3:
@@ -65,18 +63,15 @@ struct DistinctionView: View {
 
                         Image(.star)
                             .foregroundStyle(tintColor)
-                            .padding(.trailing, -3)
                     }
                     
                 case 0:
                     if bibendum == true {
                         Image(.bibendum)
                             .foregroundStyle(tintColor)
-                            .padding(.trailing, -3)
                     } else {
                         Image(.plate)
                             .foregroundStyle(tintColor)
-                            .padding(.trailing, -3)
                     }
                     
                 default:
@@ -86,7 +81,6 @@ struct DistinctionView: View {
                 if sustainable {
                     Image(.greenstar)
                         .foregroundColor(sustainableTint)
-                        .padding(.trailing, -3)
                 }
             }
         }

@@ -15,6 +15,7 @@ struct RestaurantDTO: Codable {
     let phone: String?
     let badge: String?
     let award: [String]?
+    let sustainable: Bool?
     let address: String?
     let price: String?
     let type: String?
@@ -23,7 +24,7 @@ struct RestaurantDTO: Codable {
     let etl_dtm: String?
 
     enum CodingKeys: String, CodingKey {
-        case name, phone, badge, award, address, price, type, description, etl_dtm
+        case name, phone, badge, award, sustainable, address, price, type, description, etl_dtm
         case imageURL = "image_url"
     }
 }
@@ -96,11 +97,12 @@ private func mapRestaurant(dto: RestaurantDTO, id: Int) -> Restaurant {
     let address = dto.address ?? ""
     let description = dto.description ?? ""
 
+    let sustainable = dto.sustainable ?? meta.sustainable
     return Restaurant(
         id: id,
         name: dto.name,
         distinction: meta.stars,
-        sustainable: meta.sustainable,
+        sustainable: sustainable,
         bibendum: meta.bibendum,
         isNew: isNew,
         city: city,
