@@ -11,6 +11,7 @@
 		8248DF372D55EC0800AA4752 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8248DF362D55EC0300AA4752 /* Config.swift */; };
 		824B7A222F220F9A0005BCDA /* GlassChipExtention.swift in Sources */ = {isa = PBXBuildFile; fileRef = 824B7A212F220F850005BCDA /* GlassChipExtention.swift */; };
 		824B7A242F225F320005BCDA /* MapViewHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 824B7A232F225F2D0005BCDA /* MapViewHelpers.swift */; };
+		824B7A262F226A430005BCDA /* FormatPhoneNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 824B7A252F226A3B0005BCDA /* FormatPhoneNumber.swift */; };
 		825F48192AE573AB002BEE20 /* FilterMenuButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 825F48182AE573AB002BEE20 /* FilterMenuButtonView.swift */; };
 		825F481B2AE57804002BEE20 /* FilterFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 825F481A2AE57804002BEE20 /* FilterFunctions.swift */; };
 		827BF62B2AE6343E0010FDCC /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 827BF62A2AE6343E0010FDCC /* AboutView.swift */; };
@@ -43,6 +44,7 @@
 		824B7A1C2F2120F70005BCDA /* FilterSheetLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterSheetLogic.swift; sourceTree = "<group>"; };
 		824B7A212F220F850005BCDA /* GlassChipExtention.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlassChipExtention.swift; sourceTree = "<group>"; };
 		824B7A232F225F2D0005BCDA /* MapViewHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewHelpers.swift; sourceTree = "<group>"; };
+		824B7A252F226A3B0005BCDA /* FormatPhoneNumber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormatPhoneNumber.swift; sourceTree = "<group>"; };
 		825F48182AE573AB002BEE20 /* FilterMenuButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterMenuButtonView.swift; sourceTree = "<group>"; };
 		825F481A2AE57804002BEE20 /* FilterFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterFunctions.swift; sourceTree = "<group>"; };
 		827BF62A2AE6343E0010FDCC /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
@@ -95,6 +97,7 @@
 		824B7A202F2121A70005BCDA /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				824B7A252F226A3B0005BCDA /* FormatPhoneNumber.swift */,
 				824B7A232F225F2D0005BCDA /* MapViewHelpers.swift */,
 				824B7A212F220F850005BCDA /* GlassChipExtention.swift */,
 				824B7A1B2F2120F70005BCDA /* FilterSheetDistinction.swift */,
@@ -279,6 +282,7 @@
 				83A1B0A22F01000200AA0001 /* FilterSheetView.swift in Sources */,
 				83A1B0A12F01000100AA0001 /* MichelinDataStore.swift in Sources */,
 				8300A0022F00000100AA0001 /* RemoteDataLoader.swift in Sources */,
+				824B7A262F226A430005BCDA /* FormatPhoneNumber.swift in Sources */,
 				83F0A0112F50000100AA0001 /* FilterSheetData.swift in Sources */,
 				83F0A0122F50000100AA0001 /* FilterSheetDistinction.swift in Sources */,
 				824B7A222F220F9A0005BCDA /* GlassChipExtention.swift in Sources */,
