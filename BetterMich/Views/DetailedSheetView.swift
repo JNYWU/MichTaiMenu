@@ -33,16 +33,9 @@ struct DetailedSheetView: View {
                     .cornerRadius(20)
                     .padding(.trailing, 20)
 
-                    //MARK: 城市、評鑑等級
                     VStack(alignment: .leading, spacing: 6) {
-                        HStack {
-                            Text(restaurant.City)
-                                .font(.title3)
-
-                            Text(restaurant.RestaurantType)
-                                .font(.title3)
-                        }
-
+                        
+                        //MARK: 評鑑等級
                         HStack(spacing: 6) {
                             DistinctionView(
                                 distinction: restaurant.Distinction,
@@ -65,9 +58,53 @@ struct DetailedSheetView: View {
                                 .glassChip()
                             }
                         }
-
+                        
+                        //MARK: 城市
                         HStack {
+                            Text(restaurant.City)
+                                .font(.headline)
 
+                            Text(restaurant.RestaurantType)
+                                .font(.headline)
+                        }
+                        
+                        Spacer()
+
+                        //MARK: 造訪、喜愛
+                        HStack {
+                            Button {
+
+                            } label: {
+                                HStack {
+                                    Image(
+                                        systemName:
+                                            "figure.walk"
+                                    )
+                                    Text("曾造訪")
+                                }
+                                .frame(minWidth: 0, maxWidth: .infinity)
+                            }
+                            .foregroundStyle(.cyan)
+                            .buttonStyle(.bordered)
+                            .tint(.cyan)
+                            .glassChip()
+
+                            Button {
+
+                            } label: {
+                                HStack {
+                                    Image(
+                                        systemName:
+                                            "heart.fill"
+                                    )
+                                    Text("喜愛")
+                                }
+                                .frame(minWidth: 0, maxWidth: .infinity)
+                            }
+                            .foregroundStyle(.red)
+                            .buttonStyle(.bordered)
+                            .tint(.red)
+                            .glassChip()
                         }
                     }
                     .frame(
@@ -134,14 +171,13 @@ struct DetailedSheetView: View {
 
                         }
                         .frame(
-                            minWidth: /*@START_MENU_TOKEN@*/
-                                0 /*@END_MENU_TOKEN@*/,
+                            minWidth: 0,
                             maxWidth: .infinity,
                             alignment: .leading
                         )
 
                         Divider()
-                        
+
                         //MARK: 地址
                         VStack(alignment: .leading, spacing: 6) {
                             Label("地址", systemImage: "map")
@@ -149,8 +185,7 @@ struct DetailedSheetView: View {
                             Text(FormatAddress(address: restaurant.Address))
                         }
                         .frame(
-                            minWidth: /*@START_MENU_TOKEN@*/
-                                0 /*@END_MENU_TOKEN@*/,
+                            minWidth: 0,
                             maxWidth: .infinity,
                             alignment: .leading
                         )
@@ -163,7 +198,7 @@ struct DetailedSheetView: View {
                 Divider()
                     .padding(.horizontal, sectionHorizontalPadding)
                     .padding(.vertical, sectionVerticalPadding)
-                
+
                 //MARK: 地圖
                 MapView(restaurant: restaurant)
 
@@ -173,7 +208,7 @@ struct DetailedSheetView: View {
         .toolbar {
             ToolbarItem(placement: .principal) {
                 Text(restaurant.Name)
-                    .font(.title3).bold()
+                    .font(.title2).bold()
             }
         }
     }
