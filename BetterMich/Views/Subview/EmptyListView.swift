@@ -32,7 +32,7 @@ struct EmptyListView: View {
                         Text("位於")
                         
                         // show filtered cities
-                        ForEach(0 ..< cityList.count) { city in
+                        ForEach(cityList.indices, id: \.self) { city in
                             if city < isFilteredByCity.count, isFilteredByCity[city] {
                                 FilterLabelView(filterLabel: cityList[city], labelColor: .teal, isFiltered: true)
                             }
@@ -44,7 +44,7 @@ struct EmptyListView: View {
                     }
                     
                     // show filtered distinction
-                    ForEach(0 ..< distList.count) { dist in
+                    ForEach(distList.indices, id: \.self) { dist in
                         if dist < isFilteredByDist.count, isFilteredByDist[dist] {
                             FilterLabelView(filterLabel: distList[dist], labelColor: .red, isFiltered: true)
                         }
