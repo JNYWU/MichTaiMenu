@@ -68,8 +68,8 @@ struct ContentView: View {
                     isPresented: $showFilterSheet
                 )
                 .presentationDetents([.fraction(0.68)])
-                .presentationDragIndicator(.visible)
-                .presentationBackground(.regularMaterial)
+                .presentationDragIndicator(.hidden)
+                .presentationBackground(.thinMaterial)
             }
             .toolbar {
                 ToolbarItemGroup(placement: .topBarTrailing) {
