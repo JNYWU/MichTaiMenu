@@ -1,10 +1,23 @@
 import MapKit
+import SwiftData
 import SwiftUI
 
 struct RestaurantRowView: View {
 
     var restaurant: Restaurant
     @Environment(\.colorScheme) private var colorScheme
+    @Environment(\.modelContext) private var modelContext
+    @Query private var states: [RestaurantState]
+
+    init(restaurant: Restaurant) {
+        self.restaurant = restaurant
+        let restaurantId = restaurant.id
+        _states = Query(
+            filter: #Predicate<RestaurantState> {
+                $0.restaurantId == restaurantId
+            }
+        )
+    }
 
     var body: some View {
 
@@ -57,28 +70,33 @@ struct RestaurantRowView: View {
             HStack(spacing: 15) {
                 //MARK: 曾造訪
                 Button {
+                    toggleVisited()
                 } label: {
-                    Image(systemName: "figure.stand")
-                        .frame(width: 35, height: 35)
-                        
+                    Image(
+                        systemName: isVisited
+                            ? "figure.walk"
+                            : "figure.walk"
+                    )
+                    .frame(width: 35, height: 35)
                 }
-                .foregroundStyle(.cyan)
+                .foregroundStyle(isVisited ? .cyan : .secondary)
                 .buttonStyle(.bordered)
                 .frame(width: 35, height: 35)
-                .tint(.cyan)
+                .tint(isVisited ? .cyan : .gray)
                 .clipShape(Circle())
                 .glassChip()
 
                 //MARK: 喜愛
                 Button {
+                    toggleFavorite()
                 } label: {
-                    Image(systemName: "heart.fill")
+                    Image(systemName: isFavorite ? "heart.fill" : "heart")
                         .frame(width: 35, height: 35)
                 }
-                .foregroundStyle(.red)
+                .foregroundStyle(isFavorite ? .red : .secondary)
                 .buttonStyle(.bordered)
                 .frame(width: 35, height: 35)
-                .tint(.red)
+                .tint(isFavorite ? .red : .gray)
                 .clipShape(Circle())
                 .glassChip()
             }
@@ -90,6 +108,48 @@ struct RestaurantRowView: View {
         .padding(.horizontal)
         .padding(.bottom, 4)
 
+    }
+
+    private var isVisited: Bool {
+        states.first?.isVisited ?? false
+    }
+
+    private var isFavorite: Bool {
+        states.first?.isFavorite ?? false
+    }
+
+    private func toggleVisited() {
+        if let state = states.first {
+            state.isVisited.toggle()
+            cleanupIfNeeded(state)
+        } else {
+            modelContext.insert(
+                RestaurantState(
+                    restaurantId: restaurant.id,
+                    isVisited: true
+                )
+            )
+        }
+    }
+
+    private func toggleFavorite() {
+        if let state = states.first {
+            state.isFavorite.toggle()
+            cleanupIfNeeded(state)
+        } else {
+            modelContext.insert(
+                RestaurantState(
+                    restaurantId: restaurant.id,
+                    isFavorite: true
+                )
+            )
+        }
+    }
+
+    private func cleanupIfNeeded(_ state: RestaurantState) {
+        if !state.isVisited && !state.isFavorite {
+            modelContext.delete(state)
+        }
     }
 }
 
@@ -122,4 +182,5 @@ struct RestaurantRowView: View {
         .frame(maxWidth: .infinity)
         .background(Color(UIColor.systemGroupedBackground))
     }
+    .modelContainer(for: RestaurantState.self, inMemory: true)
 }

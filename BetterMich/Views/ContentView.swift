@@ -201,6 +201,7 @@ struct ContentView: View {
 #Preview {
     ContentView()
         .environmentObject(MichelinDataStore())
+        .modelContainer(for: RestaurantState.self, inMemory: true)
 }
 
 extension View {

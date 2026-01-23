@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftData
 
 struct Restaurant: Hashable, Identifiable {
     var id: Int
@@ -55,5 +56,18 @@ struct Restaurant: Hashable, Identifiable {
         self.IMG = raw[10]
         self.Address = raw[11]
         self.Description = raw[12]
+    }
+}
+
+@Model
+final class RestaurantState {
+    @Attribute(.unique) var restaurantId: Int
+    var isVisited: Bool
+    var isFavorite: Bool
+
+    init(restaurantId: Int, isVisited: Bool = false, isFavorite: Bool = false) {
+        self.restaurantId = restaurantId
+        self.isVisited = isVisited
+        self.isFavorite = isFavorite
     }
 }

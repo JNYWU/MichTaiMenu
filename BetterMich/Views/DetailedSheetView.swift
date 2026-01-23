@@ -1,4 +1,5 @@
 import MapKit
+import SwiftData
 import SwiftUI
 
 struct DetailedSheetView: View {
@@ -6,6 +7,18 @@ struct DetailedSheetView: View {
     var restaurant: Restaurant
     private let sectionHorizontalPadding: CGFloat = 12
     private let sectionVerticalPadding: CGFloat = 8
+    @Environment(\.modelContext) private var modelContext
+    @Query private var states: [RestaurantState]
+
+    init(restaurant: Restaurant) {
+        self.restaurant = restaurant
+        let restaurantId = restaurant.id
+        _states = Query(
+            filter: #Predicate<RestaurantState> {
+                $0.restaurantId == restaurantId
+            }
+        )
+    }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -73,37 +86,39 @@ struct DetailedSheetView: View {
                         //MARK: 造訪、喜愛
                         HStack {
                             Button {
-
+                                toggleVisited()
                             } label: {
                                 HStack {
                                     Image(
                                         systemName:
-                                            "figure.walk"
+                                            isVisited
+                                                ? "figure.walk.circle.fill"
+                                                : "figure.walk.circle"
                                     )
                                     Text("曾造訪")
                                 }
                                 .frame(minWidth: 0, maxWidth: .infinity)
                             }
-                            .foregroundStyle(.cyan)
+                            .foregroundStyle(isVisited ? .cyan : .secondary)
                             .buttonStyle(.bordered)
-                            .tint(.cyan)
+                            .tint(isVisited ? .cyan : .gray)
                             .glassChip()
 
                             Button {
-
+                                toggleFavorite()
                             } label: {
                                 HStack {
                                     Image(
                                         systemName:
-                                            "heart.fill"
+                                            isFavorite ? "heart.fill" : "heart"
                                     )
                                     Text("喜愛")
                                 }
                                 .frame(minWidth: 0, maxWidth: .infinity)
                             }
-                            .foregroundStyle(.red)
+                            .foregroundStyle(isFavorite ? .red : .secondary)
                             .buttonStyle(.bordered)
-                            .tint(.red)
+                            .tint(isFavorite ? .red : .gray)
                             .glassChip()
                         }
                     }
@@ -212,6 +227,48 @@ struct DetailedSheetView: View {
             }
         }
     }
+
+    private var isVisited: Bool {
+        states.first?.isVisited ?? false
+    }
+
+    private var isFavorite: Bool {
+        states.first?.isFavorite ?? false
+    }
+
+    private func toggleVisited() {
+        if let state = states.first {
+            state.isVisited.toggle()
+            cleanupIfNeeded(state)
+        } else {
+            modelContext.insert(
+                RestaurantState(
+                    restaurantId: restaurant.id,
+                    isVisited: true
+                )
+            )
+        }
+    }
+
+    private func toggleFavorite() {
+        if let state = states.first {
+            state.isFavorite.toggle()
+            cleanupIfNeeded(state)
+        } else {
+            modelContext.insert(
+                RestaurantState(
+                    restaurantId: restaurant.id,
+                    isFavorite: true
+                )
+            )
+        }
+    }
+
+    private func cleanupIfNeeded(_ state: RestaurantState) {
+        if !state.isVisited && !state.isFavorite {
+            modelContext.delete(state)
+        }
+    }
 }
 
 #Preview {
@@ -234,4 +291,5 @@ struct DetailedSheetView: View {
             )
         )
     }
+    .modelContainer(for: RestaurantState.self, inMemory: true)
 }
