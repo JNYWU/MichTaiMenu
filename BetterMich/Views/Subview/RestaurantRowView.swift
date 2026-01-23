@@ -74,15 +74,15 @@ struct RestaurantRowView: View {
                 } label: {
                     Image(
                         systemName: isVisited
-                            ? "figure.walk"
-                            : "figure.walk"
+                            ? "checkmark.seal.fill"
+                            : "checkmark.seal"
                     )
                     .frame(width: 35, height: 35)
                 }
-                .foregroundStyle(isVisited ? .cyan : .secondary)
+                .foregroundStyle(isVisited ? .teal : .secondary)
                 .buttonStyle(.bordered)
                 .frame(width: 35, height: 35)
-                .tint(isVisited ? .cyan : .gray)
+                .tint(isVisited ? .teal : .gray)
                 .clipShape(Circle())
                 .glassChip()
 

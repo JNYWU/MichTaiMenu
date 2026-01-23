@@ -47,7 +47,7 @@ struct DetailedSheetView: View {
                     .padding(.trailing, 20)
 
                     VStack(alignment: .leading, spacing: 6) {
-                        
+
                         //MARK: 評鑑等級
                         HStack(spacing: 6) {
                             DistinctionView(
@@ -71,7 +71,7 @@ struct DetailedSheetView: View {
                                 .glassChip()
                             }
                         }
-                        
+
                         //MARK: 城市
                         HStack {
                             Text(restaurant.City)
@@ -80,7 +80,7 @@ struct DetailedSheetView: View {
                             Text(restaurant.RestaurantType)
                                 .font(.headline)
                         }
-                        
+
                         Spacer()
 
                         //MARK: 造訪、喜愛
@@ -92,16 +92,16 @@ struct DetailedSheetView: View {
                                     Image(
                                         systemName:
                                             isVisited
-                                                ? "figure.walk"
-                                                : "figure.walk"
+                                            ? "checkmark.seal.fill"
+                                            : "checkmark.seal"
                                     )
                                     Text("曾造訪")
                                 }
                                 .frame(minWidth: 0, maxWidth: .infinity)
                             }
-                            .foregroundStyle(isVisited ? .cyan : .secondary)
+                            .foregroundStyle(isVisited ? .teal : .secondary)
                             .buttonStyle(.bordered)
-                            .tint(isVisited ? .cyan : .gray)
+                            .tint(isVisited ? .teal : .gray)
                             .glassChip()
 
                             Button {
