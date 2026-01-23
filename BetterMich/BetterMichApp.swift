@@ -13,7 +13,11 @@ struct BetterMichApp: App {
     @StateObject private var dataStore = MichelinDataStore()
     private let modelContainer: ModelContainer = {
         let schema = Schema([RestaurantState.self])
-        let config = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
+        let config = ModelConfiguration(
+            "RestaurantState-v2",
+            schema: schema,
+            isStoredInMemoryOnly: false
+        )
         do {
             return try ModelContainer(for: schema, configurations: [config])
         } catch {
