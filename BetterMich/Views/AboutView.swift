@@ -6,7 +6,7 @@ struct AboutView: View {
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject private var dataStore: MichelinDataStore
     @Query private var states: [RestaurantState]
-    @State private var legendMode: LegendMode = .legend
+    @AppStorage("aboutLegendMode") private var legendModeRawValue: String = LegendMode.legend.rawValue
 
     var body: some View {
 
@@ -52,7 +52,7 @@ struct AboutView: View {
 
                 HStack(spacing: 8) {
                     Button {
-                        legendMode = .legend
+                        legendModeRawValue = LegendMode.legend.rawValue
                     } label: {
                         Text("圖例")
                             .foregroundStyle(
@@ -65,7 +65,7 @@ struct AboutView: View {
                         .overlay(Color(.darkGray))
 
                     Button {
-                        legendMode = .visited
+                        legendModeRawValue = LegendMode.visited.rawValue
                     } label: {
                         Text("造訪")
                             .foregroundStyle(
@@ -164,7 +164,7 @@ struct AboutView: View {
 }
 
 extension AboutView {
-    fileprivate enum LegendMode {
+    fileprivate enum LegendMode: String {
         case legend
         case visited
     }
@@ -217,6 +217,12 @@ extension AboutView {
                 && !restaurant.Bibendum
                 && !restaurant.Sustainable
         }
+    }
+}
+
+private extension AboutView {
+    var legendMode: LegendMode {
+        LegendMode(rawValue: legendModeRawValue) ?? .legend
     }
 }
 

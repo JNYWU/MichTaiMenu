@@ -92,8 +92,8 @@ struct DetailedSheetView: View {
                                     Image(
                                         systemName:
                                             isVisited
-                                                ? "figure.walk.circle.fill"
-                                                : "figure.walk.circle"
+                                                ? "figure.walk"
+                                                : "figure.walk"
                                     )
                                     Text("曾造訪")
                                 }
