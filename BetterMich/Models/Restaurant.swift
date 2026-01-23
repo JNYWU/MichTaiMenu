@@ -61,12 +61,12 @@ struct Restaurant: Hashable, Identifiable {
 
 @Model
 final class RestaurantState {
-    @Attribute(.unique) var restaurantId: Int
+    @Attribute(.unique) var restaurantKey: String
     var isVisited: Bool
     var isFavorite: Bool
 
-    init(restaurantId: Int, isVisited: Bool = false, isFavorite: Bool = false) {
-        self.restaurantId = restaurantId
+    init(restaurantKey: String, isVisited: Bool = false, isFavorite: Bool = false) {
+        self.restaurantKey = restaurantKey
         self.isVisited = isVisited
         self.isFavorite = isFavorite
     }

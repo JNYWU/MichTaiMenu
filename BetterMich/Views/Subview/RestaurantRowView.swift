@@ -11,10 +11,10 @@ struct RestaurantRowView: View {
 
     init(restaurant: Restaurant) {
         self.restaurant = restaurant
-        let restaurantId = restaurant.id
+        let restaurantKey = restaurant.Name
         _states = Query(
             filter: #Predicate<RestaurantState> {
-                $0.restaurantId == restaurantId
+                $0.restaurantKey == restaurantKey
             }
         )
     }
@@ -125,7 +125,7 @@ struct RestaurantRowView: View {
         } else {
             modelContext.insert(
                 RestaurantState(
-                    restaurantId: restaurant.id,
+                    restaurantKey: restaurant.Name,
                     isVisited: true
                 )
             )
@@ -139,7 +139,7 @@ struct RestaurantRowView: View {
         } else {
             modelContext.insert(
                 RestaurantState(
-                    restaurantId: restaurant.id,
+                    restaurantKey: restaurant.Name,
                     isFavorite: true
                 )
             )
