@@ -53,7 +53,7 @@ struct AnnotatedItem: Identifiable {
 
 #Preview {
     MapView(restaurant: Restaurant(
-        id: 1,
+        id: "sample-1",
         name: "示範餐廳",
         distinction: 1,
         sustainable: false,

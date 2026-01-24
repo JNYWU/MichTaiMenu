@@ -191,13 +191,13 @@ extension AboutView {
     }
 
     fileprivate func visitedCount(_ category: LegendCategory) -> Int {
-        let names = Set(
+        let ids = Set(
             dataStore.restaurants
                 .filter { matchesCategory($0, category: category) }
-                .map { $0.Name }
+                .map { $0.id }
         )
         return states.filter {
-            $0.isVisited && names.contains($0.restaurantKey)
+            $0.isVisited && ids.contains($0.restaurantKey)
         }.count
     }
 

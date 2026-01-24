@@ -11,10 +11,12 @@ struct MichelinPayload: Codable {
 }
 
 struct RestaurantDTO: Codable {
+    let id: String?
     let name: String
     let phone: String?
     let badge: String?
     let award: [String]?
+    let awardHistory: [AwardHistoryItem]?
     let sustainable: Bool?
     let address: String?
     let price: String?
@@ -24,9 +26,14 @@ struct RestaurantDTO: Codable {
     let etl_dtm: String?
 
     enum CodingKeys: String, CodingKey {
-        case name, phone, badge, award, sustainable, address, price, type, description, etl_dtm
+        case id, name, phone, badge, award, awardHistory, sustainable, address, price, type, description, etl_dtm
         case imageURL = "image_url"
     }
+}
+
+struct AwardHistoryItem: Codable {
+    let award: [String]?
+    let at: String?
 }
 
 enum RemoteDataError: Error {
@@ -45,8 +52,8 @@ func fetchRemotePayload() async throws -> MichelinPayload {
 }
 
 func restaurantsFromPayload(_ payload: MichelinPayload) -> [Restaurant] {
-    payload.restaurants.enumerated().map { index, dto in
-        mapRestaurant(dto: dto, id: index + 1)
+    payload.restaurants.map { dto in
+        mapRestaurant(dto: dto)
     }
 }
 
@@ -87,7 +94,7 @@ private func fetchSignedURL() async throws -> URL {
     return finalURL
 }
 
-private func mapRestaurant(dto: RestaurantDTO, id: Int) -> Restaurant {
+private func mapRestaurant(dto: RestaurantDTO) -> Restaurant {
     let meta = parseDistinction(award: dto.award, badge: dto.badge)
     let isNew = parseNewBadge(badge: dto.badge)
     let city = parseCity(from: dto.address)
@@ -96,10 +103,11 @@ private func mapRestaurant(dto: RestaurantDTO, id: Int) -> Restaurant {
     let imageURL = dto.imageURL ?? ""
     let address = dto.address ?? ""
     let description = dto.description ?? ""
+    let restaurantId = normalizedId(from: dto)
 
     let sustainable = dto.sustainable ?? meta.sustainable
     return Restaurant(
-        id: id,
+        id: restaurantId,
         name: dto.name,
         distinction: meta.stars,
         sustainable: sustainable,
@@ -112,6 +120,14 @@ private func mapRestaurant(dto: RestaurantDTO, id: Int) -> Restaurant {
         address: address,
         description: description
     )
+}
+
+private func normalizedId(from dto: RestaurantDTO) -> String {
+    let trimmed = dto.id?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+    if !trimmed.isEmpty {
+        return trimmed
+    }
+    return dto.name
 }
 
 private func parseDistinction(award: [String]?, badge: String?) -> (stars: Int, bibendum: Bool, sustainable: Bool) {

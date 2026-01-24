@@ -1,31 +1,43 @@
 import SwiftUI
 import Algorithms
 
+private struct RestaurantSortKey: Comparable {
+    let distRank: Int
+    let bibRank: Int
+    let name: String
+    let id: String
+
+    static func < (lhs: RestaurantSortKey, rhs: RestaurantSortKey) -> Bool {
+        if lhs.distRank != rhs.distRank { return lhs.distRank < rhs.distRank }
+        if lhs.bibRank != rhs.bibRank { return lhs.bibRank < rhs.bibRank }
+        if lhs.name != rhs.name { return lhs.name < rhs.name }
+        return lhs.id < rhs.id
+    }
+}
+
+private func sortKey(for restaurant: Restaurant, isSortedByDist: Bool) -> RestaurantSortKey {
+    let distRank = isSortedByDist ? restaurant.Distinction : -restaurant.Distinction
+    let bibRank: Int
+    if restaurant.Distinction == 0 {
+        bibRank = restaurant.Bibendum
+            ? (isSortedByDist ? 1 : 0)
+            : (isSortedByDist ? 0 : 1)
+    } else {
+        bibRank = 0
+    }
+    return RestaurantSortKey(
+        distRank: distRank,
+        bibRank: bibRank,
+        name: restaurant.Name,
+        id: restaurant.id
+    )
+}
+
 // function for sorting restaurants
 func sortRestaurants(restaurants: [Restaurant], isSortedByDist: Bool) -> [Restaurant] {
-    
-    if !isSortedByDist {
-        return restaurants.sorted { (restaurant1, restaurant2) -> Bool in
-            
-            // when distinction is 0, sort by plate and bibendum
-            if restaurant1.Distinction == 0 && restaurant2.Distinction == 0 {
-                return restaurant1.Bibendum && !restaurant2.Bibendum
-            } else {
-                return restaurant1.Distinction > restaurant2.Distinction
-            }
-        }
-        
-    } else {
-        
-       return restaurants.sorted { (restaurant1, restaurant2) -> Bool in
-           
-            // reverse sort
-            if restaurant1.Distinction == 0 && restaurant2.Distinction == 0 {
-                return !restaurant1.Bibendum && restaurant2.Bibendum
-            } else {
-                return restaurant1.Distinction < restaurant2.Distinction
-            }
-        }
+    restaurants.sorted { left, right in
+        sortKey(for: left, isSortedByDist: isSortedByDist)
+            < sortKey(for: right, isSortedByDist: isSortedByDist)
     }
 }
 

@@ -1,8 +1,10 @@
+import SwiftData
 import SwiftUI
 
 struct ContentView: View {
 
     @EnvironmentObject private var dataStore: MichelinDataStore
+    @Environment(\.modelContext) private var modelContext: ModelContext
 
     @State var searchText = ""
     @State var isSortedByDist = false
@@ -19,6 +21,7 @@ struct ContentView: View {
 
     @State private var hasLoaded = false
     @State private var searchResults: [Restaurant] = []
+    @State private var didMigrateLegacyStates = false
 
     var body: some View {
 
@@ -134,6 +137,7 @@ struct ContentView: View {
             if !hasLoaded {
                 hasLoaded = true
                 await dataStore.loadIfNeeded()
+                migrateLegacyStatesIfNeeded()
                 displayedRestaurants = sortRestaurants(
                     restaurants: dataStore.restaurants,
                     isSortedByDist: isSortedByDist
@@ -194,6 +198,36 @@ struct ContentView: View {
             let typeMatch = restaurant.RestaurantType
                 .localizedCaseInsensitiveContains(keyword)
             return nameMatch || cityMatch || typeMatch
+        }
+    }
+
+    private func migrateLegacyStatesIfNeeded() {
+        guard !didMigrateLegacyStates else { return }
+        didMigrateLegacyStates = true
+        let restaurants = dataStore.restaurants
+        guard !restaurants.isEmpty else { return }
+        let nameToId = Dictionary(
+            restaurants.map { ($0.Name, $0.id) },
+            uniquingKeysWith: { first, _ in first }
+        )
+        let descriptor = FetchDescriptor<RestaurantState>()
+        guard let existingStates = try? modelContext.fetch(descriptor) else {
+            return
+        }
+        let statesByKey = Dictionary(
+            grouping: existingStates,
+            by: { $0.restaurantKey }
+        )
+        for state in existingStates {
+            guard let newId = nameToId[state.restaurantKey],
+                  newId != state.restaurantKey else { continue }
+            if let existing = statesByKey[newId]?.first {
+                existing.isVisited = existing.isVisited || state.isVisited
+                existing.isFavorite = existing.isFavorite || state.isFavorite
+                modelContext.delete(state)
+            } else {
+                state.restaurantKey = newId
+            }
         }
     }
 }

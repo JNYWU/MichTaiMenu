@@ -234,7 +234,7 @@ struct FilterSheetView: View {
 private struct FilterSheetPreviewHost: View {
     @State private var restaurants: [Restaurant] = [
         Restaurant(
-            id: 1,
+            id: "sample-1",
             name: "示範餐廳",
             distinction: 1,
             sustainable: false,

@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 struct Restaurant: Hashable, Identifiable {
-    var id: Int
+    var id: String
     var Name: String
     var Distinction: Int
     var Sustainable: Bool
@@ -23,7 +23,7 @@ struct Restaurant: Hashable, Identifiable {
     var Address: String
     var Description: String
 
-    init(id: Int, name: String, distinction: Int, sustainable: Bool, bibendum: Bool, isNew: Bool, city: String, restaurantType: String, phone: String, img: String, address: String, description: String) {
+    init(id: String, name: String, distinction: Int, sustainable: Bool, bibendum: Bool, isNew: Bool, city: String, restaurantType: String, phone: String, img: String, address: String, description: String) {
         self.id = id
         self.Name = name
         self.Distinction = distinction
@@ -40,7 +40,7 @@ struct Restaurant: Hashable, Identifiable {
     }
     
     init(raw:[String]) {
-        self.id = Int(raw[0])!
+        self.id = raw[0]
         self.Name = raw[1]
         
         self.Distinction = Int(raw[2])!
