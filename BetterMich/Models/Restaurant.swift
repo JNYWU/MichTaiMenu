@@ -22,8 +22,23 @@ struct Restaurant: Hashable, Identifiable {
     var IMG: String
     var Address: String
     var Description: String
+    var AwardHistory: [AwardHistoryEntry]
 
-    init(id: String, name: String, distinction: Int, sustainable: Bool, bibendum: Bool, isNew: Bool, city: String, restaurantType: String, phone: String, img: String, address: String, description: String) {
+    init(
+        id: String,
+        name: String,
+        distinction: Int,
+        sustainable: Bool,
+        bibendum: Bool,
+        isNew: Bool,
+        city: String,
+        restaurantType: String,
+        phone: String,
+        img: String,
+        address: String,
+        description: String,
+        awardHistory: [AwardHistoryEntry] = []
+    ) {
         self.id = id
         self.Name = name
         self.Distinction = distinction
@@ -37,6 +52,7 @@ struct Restaurant: Hashable, Identifiable {
         self.IMG = img
         self.Address = address
         self.Description = description
+        self.AwardHistory = awardHistory
     }
     
     init(raw:[String]) {
@@ -56,7 +72,16 @@ struct Restaurant: Hashable, Identifiable {
         self.IMG = raw[10]
         self.Address = raw[11]
         self.Description = raw[12]
+        self.AwardHistory = []
     }
+}
+
+struct AwardHistoryEntry: Hashable {
+    let year: String
+    let distinction: Int
+    let bibendum: Bool
+    let sustainable: Bool
+    let rawAwardText: String
 }
 
 @Model

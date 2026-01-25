@@ -7,6 +7,7 @@ struct DetailedSheetView: View {
     var restaurant: Restaurant
     private let sectionHorizontalPadding: CGFloat = 12
     private let sectionVerticalPadding: CGFloat = 8
+    @State private var showAwardHistory = false
     @Environment(\.modelContext) private var modelContext
     @Query private var states: [RestaurantState]
 
@@ -224,6 +225,17 @@ struct DetailedSheetView: View {
             ToolbarItem(placement: .principal) {
                 Text(restaurant.Name)
                     .font(.title2).bold()
+            }
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    showAwardHistory = true
+                } label: {
+                    Image(systemName: "chart.line.uptrend.xyaxis")
+                }
+                .popover(isPresented: $showAwardHistory, attachmentAnchor: .rect(.bounds), arrowEdge: .top) {
+                    AwardHistoryDialog(awardHistory: restaurant.AwardHistory)
+                        .presentationCompactAdaptation(.popover)
+                }
             }
         }
     }

@@ -41,6 +41,10 @@ final class MichelinDataStore: ObservableObject {
     private func loadFromCache() {
         guard let data = try? Data(contentsOf: cacheURL) else { return }
         guard let payload = try? JSONDecoder().decode(MichelinPayload.self, from: data) else { return }
+        let hasHistory = payload.restaurants.contains {
+            !($0.awardHistory?.isEmpty ?? true)
+        }
+        guard hasHistory else { return }
         restaurants = restaurantsFromPayload(payload)
         latestYearMonth = yearMonthString(from: payload.etl_dtm)
     }

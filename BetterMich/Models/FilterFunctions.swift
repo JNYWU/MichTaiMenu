@@ -4,12 +4,14 @@ import Algorithms
 private struct RestaurantSortKey: Comparable {
     let distRank: Int
     let bibRank: Int
+    let cityRank: Int
     let name: String
     let id: String
 
     static func < (lhs: RestaurantSortKey, rhs: RestaurantSortKey) -> Bool {
         if lhs.distRank != rhs.distRank { return lhs.distRank < rhs.distRank }
         if lhs.bibRank != rhs.bibRank { return lhs.bibRank < rhs.bibRank }
+        if lhs.cityRank != rhs.cityRank { return lhs.cityRank < rhs.cityRank }
         if lhs.name != rhs.name { return lhs.name < rhs.name }
         return lhs.id < rhs.id
     }
@@ -25,9 +27,12 @@ private func sortKey(for restaurant: Restaurant, isSortedByDist: Bool) -> Restau
     } else {
         bibRank = 0
     }
+    let cityOrder = FilterSheetData.cityList
+    let cityRank = cityOrder.firstIndex(of: restaurant.City) ?? Int.max
     return RestaurantSortKey(
         distRank: distRank,
         bibRank: bibRank,
+        cityRank: cityRank,
         name: restaurant.Name,
         id: restaurant.id
     )
