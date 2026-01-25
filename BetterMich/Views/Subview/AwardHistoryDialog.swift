@@ -15,15 +15,10 @@ struct AwardHistoryDialog: View {
                     .foregroundStyle(.secondary)
             } else {
                 ForEach(entries, id: \.self) { entry in
-                    HStack(spacing: 4) {
+                    HStack(spacing: 6) {
                         Text("\(entry.year)：")
                             .font(.subheadline.weight(.semibold))
                         Text("\(entry.distinction)")
-                        DistinctionView(
-                            distinction: 1,
-                            bibendum: false,
-                            sustainable: true
-                        )
                         DistinctionView(
                             distinction: entry.distinction,
                             bibendum: entry.bibendum,
@@ -33,8 +28,9 @@ struct AwardHistoryDialog: View {
                 }
             }
         }
-        .padding(16)
-        .frame(minWidth: 260)
+        .padding(.horizontal, 14)
+        .padding(.vertical, 10)
+        .frame(width: 240)
     }
 }
 

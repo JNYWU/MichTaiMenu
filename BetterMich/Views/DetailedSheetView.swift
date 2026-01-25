@@ -8,17 +8,8 @@ struct DetailedSheetView: View {
     private let sectionHorizontalPadding: CGFloat = 12
     private let sectionVerticalPadding: CGFloat = 8
     @State private var showAwardHistory = false
-    @Environment(\.modelContext) private var modelContext
-    @Query private var states: [RestaurantState]
-
-    init(restaurant: Restaurant) {
-        self.restaurant = restaurant
-        let restaurantKey = restaurant.id
-        _states = Query(
-            filter: #Predicate<RestaurantState> {
-                $0.restaurantKey == restaurantKey
-            }
-        )
+    private var isPreview: Bool {
+        ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1"
     }
 
     var body: some View {
@@ -85,42 +76,10 @@ struct DetailedSheetView: View {
                         Spacer()
 
                         //MARK: 造訪、喜愛
-                        HStack {
-                            Button {
-                                toggleVisited()
-                            } label: {
-                                HStack {
-                                    Image(
-                                        systemName:
-                                            isVisited
-                                            ? "checkmark.seal.fill"
-                                            : "checkmark.seal"
-                                    )
-                                    Text("曾造訪")
-                                }
-                                .frame(minWidth: 0, maxWidth: .infinity)
-                            }
-                            .foregroundStyle(isVisited ? .teal : .secondary)
-                            .buttonStyle(.bordered)
-                            .tint(isVisited ? .teal : .gray)
-                            .glassChip()
-
-                            Button {
-                                toggleFavorite()
-                            } label: {
-                                HStack {
-                                    Image(
-                                        systemName:
-                                            isFavorite ? "heart.fill" : "heart"
-                                    )
-                                    Text("喜愛")
-                                }
-                                .frame(minWidth: 0, maxWidth: .infinity)
-                            }
-                            .foregroundStyle(isFavorite ? .red : .secondary)
-                            .buttonStyle(.bordered)
-                            .tint(isFavorite ? .red : .gray)
-                            .glassChip()
+                        if isPreview {
+                            PreviewDetailStateButtons()
+                        } else {
+                            LiveDetailStateButtons(restaurantId: restaurant.id)
                         }
                     }
                     .frame(
@@ -232,11 +191,66 @@ struct DetailedSheetView: View {
                 } label: {
                     Image(systemName: "chart.line.uptrend.xyaxis")
                 }
-                .popover(isPresented: $showAwardHistory, attachmentAnchor: .rect(.bounds), arrowEdge: .top) {
-                    AwardHistoryDialog(awardHistory: restaurant.AwardHistory)
-                        .presentationCompactAdaptation(.popover)
-                }
             }
+        }
+        .popover(isPresented: $showAwardHistory) {
+            AwardHistoryDialog(awardHistory: restaurant.AwardHistory)
+                .presentationCompactAdaptation(.popover)
+        }
+    }
+}
+
+private struct LiveDetailStateButtons: View {
+    let restaurantId: String
+    @Environment(\.modelContext) private var modelContext
+    @Query private var states: [RestaurantState]
+
+    init(restaurantId: String) {
+        self.restaurantId = restaurantId
+        _states = Query(
+            filter: #Predicate<RestaurantState> {
+                $0.restaurantKey == restaurantId
+            }
+        )
+    }
+
+    var body: some View {
+        HStack {
+            Button {
+                toggleVisited()
+            } label: {
+                HStack {
+                    Image(
+                        systemName:
+                            isVisited
+                            ? "checkmark.seal.fill"
+                            : "checkmark.seal"
+                    )
+                    Text("曾造訪")
+                }
+                .frame(minWidth: 0, maxWidth: .infinity)
+            }
+            .foregroundStyle(isVisited ? .teal : .secondary)
+            .buttonStyle(.bordered)
+            .tint(isVisited ? .teal : .gray)
+            .glassChip()
+
+            Button {
+                toggleFavorite()
+            } label: {
+                HStack {
+                    Image(
+                        systemName:
+                            isFavorite ? "heart.fill" : "heart"
+                    )
+                    Text("喜愛")
+                }
+                .frame(minWidth: 0, maxWidth: .infinity)
+            }
+            .foregroundStyle(isFavorite ? .red : .secondary)
+            .buttonStyle(.bordered)
+            .tint(isFavorite ? .red : .gray)
+            .glassChip()
         }
     }
 
@@ -255,7 +269,7 @@ struct DetailedSheetView: View {
         } else {
             modelContext.insert(
                 RestaurantState(
-                    restaurantKey: restaurant.id,
+                    restaurantKey: restaurantId,
                     isVisited: true
                 )
             )
@@ -269,7 +283,7 @@ struct DetailedSheetView: View {
         } else {
             modelContext.insert(
                 RestaurantState(
-                    restaurantKey: restaurant.id,
+                    restaurantKey: restaurantId,
                     isFavorite: true
                 )
             )
@@ -279,6 +293,51 @@ struct DetailedSheetView: View {
     private func cleanupIfNeeded(_ state: RestaurantState) {
         if !state.isVisited && !state.isFavorite {
             modelContext.delete(state)
+        }
+    }
+}
+
+private struct PreviewDetailStateButtons: View {
+    @State private var isVisited = false
+    @State private var isFavorite = false
+
+    var body: some View {
+        HStack {
+            Button {
+                isVisited.toggle()
+            } label: {
+                HStack {
+                    Image(
+                        systemName:
+                            isVisited
+                            ? "checkmark.seal.fill"
+                            : "checkmark.seal"
+                    )
+                    Text("曾造訪")
+                }
+                .frame(minWidth: 0, maxWidth: .infinity)
+            }
+            .foregroundStyle(isVisited ? .teal : .secondary)
+            .buttonStyle(.bordered)
+            .tint(isVisited ? .teal : .gray)
+            .glassChip()
+
+            Button {
+                isFavorite.toggle()
+            } label: {
+                HStack {
+                    Image(
+                        systemName:
+                            isFavorite ? "heart.fill" : "heart"
+                    )
+                    Text("喜愛")
+                }
+                .frame(minWidth: 0, maxWidth: .infinity)
+            }
+            .foregroundStyle(isFavorite ? .red : .secondary)
+            .buttonStyle(.bordered)
+            .tint(isFavorite ? .red : .gray)
+            .glassChip()
         }
     }
 }

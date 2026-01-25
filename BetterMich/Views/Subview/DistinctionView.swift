@@ -34,43 +34,52 @@ struct DistinctionView: View {
             if showOnlySustainable {
                 if sustainable {
                     Image(.greenstar)
+                        .renderingMode(.template)
                         .foregroundColor(sustainableTint)
                 }
             } else {
                 switch distinction {
                 case 1:
                     Image(.star)
+                        .renderingMode(.template)
                         .foregroundStyle(tintColor)
                     
                 case 2:
                     HStack {
                         Image(.star)
+                            .renderingMode(.template)
                             .foregroundStyle(tintColor)
                             .padding(.trailing, -9)
                         Image(.star)
+                            .renderingMode(.template)
                             .foregroundStyle(tintColor)
                     }
                     
                 case 3:
                     HStack {
                         Image(.star)
+                            .renderingMode(.template)
                             .foregroundStyle(tintColor)
                             .padding(.trailing, -9)
 
                         Image(.star)
+                            .renderingMode(.template)
                             .foregroundStyle(tintColor)
                             .padding(.trailing, -9)
 
                         Image(.star)
+                            .renderingMode(.template)
                             .foregroundStyle(tintColor)
                     }
                     
                 case 0:
                     if bibendum == true {
                         Image(.bibendum)
+                            .renderingMode(.template)
                             .foregroundStyle(tintColor)
                     } else {
                         Image(.plate)
+                            .renderingMode(.template)
                             .foregroundStyle(tintColor)
                     }
                     
@@ -80,6 +89,7 @@ struct DistinctionView: View {
                 
                 if sustainable {
                     Image(.greenstar)
+                        .renderingMode(.template)
                         .foregroundColor(sustainableTint)
                 }
             }

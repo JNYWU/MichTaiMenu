@@ -6,17 +6,8 @@ struct RestaurantRowView: View {
 
     var restaurant: Restaurant
     @Environment(\.colorScheme) private var colorScheme
-    @Environment(\.modelContext) private var modelContext
-    @Query private var states: [RestaurantState]
-
-    init(restaurant: Restaurant) {
-        self.restaurant = restaurant
-        let restaurantKey = restaurant.id
-        _states = Query(
-            filter: #Predicate<RestaurantState> {
-                $0.restaurantKey == restaurantKey
-            }
-        )
+    private var isPreview: Bool {
+        ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1"
     }
 
     var body: some View {
@@ -67,38 +58,10 @@ struct RestaurantRowView: View {
 
             Spacer()
 
-            HStack(spacing: 15) {
-                //MARK: 曾造訪
-                Button {
-                    toggleVisited()
-                } label: {
-                    Image(
-                        systemName: isVisited
-                            ? "checkmark.seal.fill"
-                            : "checkmark.seal"
-                    )
-                    .frame(width: 35, height: 35)
-                }
-                .foregroundStyle(isVisited ? .teal : .secondary)
-                .buttonStyle(.bordered)
-                .frame(width: 35, height: 35)
-                .tint(isVisited ? .teal : .gray)
-                .clipShape(Circle())
-                .glassChip()
-
-                //MARK: 喜愛
-                Button {
-                    toggleFavorite()
-                } label: {
-                    Image(systemName: isFavorite ? "heart.fill" : "heart")
-                        .frame(width: 35, height: 35)
-                }
-                .foregroundStyle(isFavorite ? .red : .secondary)
-                .buttonStyle(.bordered)
-                .frame(width: 35, height: 35)
-                .tint(isFavorite ? .red : .gray)
-                .clipShape(Circle())
-                .glassChip()
+            if isPreview {
+                PreviewRowStateButtons()
+            } else {
+                LiveRowStateButtons(restaurantId: restaurant.id)
             }
         }
         .padding()
@@ -108,6 +71,56 @@ struct RestaurantRowView: View {
         .padding(.horizontal)
         .padding(.bottom, 4)
 
+    }
+
+}
+
+private struct LiveRowStateButtons: View {
+    let restaurantId: String
+    @Environment(\.modelContext) private var modelContext
+    @Query private var states: [RestaurantState]
+
+    init(restaurantId: String) {
+        self.restaurantId = restaurantId
+        _states = Query(
+            filter: #Predicate<RestaurantState> {
+                $0.restaurantKey == restaurantId
+            }
+        )
+    }
+
+    var body: some View {
+        HStack(spacing: 15) {
+            Button {
+                toggleVisited()
+            } label: {
+                Image(
+                    systemName: isVisited
+                        ? "checkmark.seal.fill"
+                        : "checkmark.seal"
+                )
+                .frame(width: 35, height: 35)
+            }
+            .foregroundStyle(isVisited ? .teal : .secondary)
+            .buttonStyle(.bordered)
+            .frame(width: 35, height: 35)
+            .tint(isVisited ? .teal : .gray)
+            .clipShape(Circle())
+            .glassChip()
+
+            Button {
+                toggleFavorite()
+            } label: {
+                Image(systemName: isFavorite ? "heart.fill" : "heart")
+                    .frame(width: 35, height: 35)
+            }
+            .foregroundStyle(isFavorite ? .red : .secondary)
+            .buttonStyle(.bordered)
+            .frame(width: 35, height: 35)
+            .tint(isFavorite ? .red : .gray)
+            .clipShape(Circle())
+            .glassChip()
+        }
     }
 
     private var isVisited: Bool {
@@ -125,7 +138,7 @@ struct RestaurantRowView: View {
         } else {
             modelContext.insert(
                 RestaurantState(
-                    restaurantKey: restaurant.id,
+                    restaurantKey: restaurantId,
                     isVisited: true
                 )
             )
@@ -139,7 +152,7 @@ struct RestaurantRowView: View {
         } else {
             modelContext.insert(
                 RestaurantState(
-                    restaurantKey: restaurant.id,
+                    restaurantKey: restaurantId,
                     isFavorite: true
                 )
             )
@@ -149,6 +162,45 @@ struct RestaurantRowView: View {
     private func cleanupIfNeeded(_ state: RestaurantState) {
         if !state.isVisited && !state.isFavorite {
             modelContext.delete(state)
+        }
+    }
+}
+
+private struct PreviewRowStateButtons: View {
+    @State private var isVisited = false
+    @State private var isFavorite = false
+
+    var body: some View {
+        HStack(spacing: 15) {
+            Button {
+                isVisited.toggle()
+            } label: {
+                Image(
+                    systemName: isVisited
+                        ? "checkmark.seal.fill"
+                        : "checkmark.seal"
+                )
+                .frame(width: 35, height: 35)
+            }
+            .foregroundStyle(isVisited ? .teal : .secondary)
+            .buttonStyle(.bordered)
+            .frame(width: 35, height: 35)
+            .tint(isVisited ? .teal : .gray)
+            .clipShape(Circle())
+            .glassChip()
+
+            Button {
+                isFavorite.toggle()
+            } label: {
+                Image(systemName: isFavorite ? "heart.fill" : "heart")
+                    .frame(width: 35, height: 35)
+            }
+            .foregroundStyle(isFavorite ? .red : .secondary)
+            .buttonStyle(.bordered)
+            .frame(width: 35, height: 35)
+            .tint(isFavorite ? .red : .gray)
+            .clipShape(Circle())
+            .glassChip()
         }
     }
 }
