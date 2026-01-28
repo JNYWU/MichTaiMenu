@@ -2,6 +2,7 @@ import SwiftUI
 
 struct AwardHistoryDialog: View {
     let awardHistory: [AwardHistoryEntry]
+    @State private var contentHeight: CGFloat = 0
 
     var body: some View {
         let entries = awardHistory.sorted {
@@ -18,7 +19,6 @@ struct AwardHistoryDialog: View {
                     HStack(spacing: 6) {
                         Text("\(entry.year)：")
                             .font(.subheadline.weight(.semibold))
-                        Text("\(entry.distinction)")
                         DistinctionView(
                             distinction: entry.distinction,
                             bibendum: entry.bibendum,
@@ -29,8 +29,30 @@ struct AwardHistoryDialog: View {
             }
         }
         .padding(.horizontal, 14)
-        .padding(.vertical, 10)
-        .frame(width: 240)
+        .padding(.vertical, 12)
+        .frame(minWidth: 260)
+        .background(
+            GeometryReader { proxy in
+                Color.clear
+                    .preference(
+                        key: AwardHistoryDialogHeightKey.self,
+                        value: proxy.size.height
+                    )
+            }
+        )
+        .onPreferenceChange(AwardHistoryDialogHeightKey.self) { height in
+            contentHeight = height
+        }
+        .frame(height: contentHeight == 0 ? nil : contentHeight)
+        .fixedSize(horizontal: false, vertical: true)
+    }
+}
+
+private struct AwardHistoryDialogHeightKey: PreferenceKey {
+    static var defaultValue: CGFloat = 0
+
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+        value = max(value, nextValue())
     }
 }
 

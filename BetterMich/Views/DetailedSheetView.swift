@@ -48,6 +48,22 @@ struct DetailedSheetView: View {
                                 sustainable: restaurant.Sustainable
                             )
                             .font(.title2)
+                            .background(.gray)
+                            .overlay(alignment: .bottom) {
+                                Color.clear
+                                    .frame(width: 1, height: 1)
+                                    .padding(.bottom, 20)
+                                    .popover(
+                                        isPresented: $showAwardHistory,
+                                        attachmentAnchor: .rect(.bounds),
+                                        arrowEdge: .top
+                                    ) {
+                                        AwardHistoryDialog(
+                                            awardHistory: restaurant.AwardHistory
+                                        )
+                                        .presentationCompactAdaptation(.popover)
+                                    }
+                            }
                             if restaurant.IsNew {
                                 HStack(spacing: 4) {
                                     Image(systemName: "sparkles.2")
@@ -192,10 +208,6 @@ struct DetailedSheetView: View {
                     Image(systemName: "chart.line.uptrend.xyaxis")
                 }
             }
-        }
-        .popover(isPresented: $showAwardHistory) {
-            AwardHistoryDialog(awardHistory: restaurant.AwardHistory)
-                .presentationCompactAdaptation(.popover)
         }
     }
 }
@@ -348,7 +360,7 @@ private struct PreviewDetailStateButtons: View {
             restaurant: Restaurant(
                 id: "sample-1",
                 name: "示範餐廳",
-                distinction: 1,
+                distinction: 3,
                 sustainable: false,
                 bibendum: false,
                 isNew: true,
