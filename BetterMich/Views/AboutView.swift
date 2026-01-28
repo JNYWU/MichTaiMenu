@@ -30,23 +30,25 @@ struct AboutView: View {
                     .font(.subheadline)
                     .foregroundStyle(Color(.secondaryLabel))
 
-                if dataStore.isLoading {
-                    ProgressView()
-                        .padding(.top, 4)
-                } else if dataStore.isLatest {
-                    Text("已是最新資料")
-                        .font(.caption)
-                        .foregroundStyle(Color(.secondaryLabel))
-                        .padding(.top, 4)
-                } else {
+                VStack(spacing: 4) {
                     Button {
                         Task { await dataStore.refresh() }
                     } label: {
                         Text("抓取最新資料")
                             .font(.caption)
                     }
-                    .padding(.top, 4)
+                    .opacity(dataStore.isLoading ? 0 : 1)
+                    .overlay {
+                        if dataStore.isLoading {
+                            ProgressView()
+                        }
+                    }
+                    Text("已是最新資料")
+                        .font(.caption)
+                        .foregroundStyle(Color(.secondaryLabel))
+                        .opacity(dataStore.isLatest ? 1 : 0)
                 }
+                .padding(.top, 4)
 
                 Divider().padding()
 

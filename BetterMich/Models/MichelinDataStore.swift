@@ -26,12 +26,17 @@ final class MichelinDataStore: ObservableObject {
     func refresh() async {
         isLoading = true
         loadError = nil
+        isLatest = false
         defer { isLoading = false }
         do {
+            let previousYearMonth = latestYearMonth
             let payload = try await fetchRemotePayload()
             restaurants = restaurantsFromPayload(payload)
-            latestYearMonth = yearMonthString(from: payload.etl_dtm)
-            isLatest = true
+            let currentYearMonth = yearMonthString(from: payload.etl_dtm)
+            latestYearMonth = currentYearMonth
+            isLatest =
+                previousYearMonth != nil
+                && previousYearMonth == currentYearMonth
             saveCache(payload)
         } catch {
             loadError = error.localizedDescription
