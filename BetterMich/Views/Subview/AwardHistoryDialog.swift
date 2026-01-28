@@ -8,29 +8,36 @@ struct AwardHistoryDialog: View {
         let entries = awardHistory.sorted {
             (Int($0.year) ?? 0) < (Int($1.year) ?? 0)
         }
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .center, spacing: 12) {
             Text("評鑑歷史")
                 .font(.headline)
+                .frame(maxWidth: .infinity, alignment: .center)
             if entries.isEmpty {
                 Text("尚無歷史資料")
                     .foregroundStyle(.secondary)
             } else {
-                ForEach(entries, id: \.self) { entry in
-                    HStack(spacing: 6) {
-                        Text("\(entry.year)：")
-                            .font(.subheadline.weight(.semibold))
-                        DistinctionView(
-                            distinction: entry.distinction,
-                            bibendum: entry.bibendum,
-                            sustainable: entry.sustainable
-                        )
+                Grid(horizontalSpacing: 6, verticalSpacing: 8) {
+                    ForEach(entries, id: \.self) { entry in
+                        GridRow {
+                            Text(entry.year)
+                                .font(.subheadline.weight(.semibold))
+                            Text("：")
+                                .font(.subheadline.weight(.semibold))
+                            DistinctionView(
+                                distinction: entry.distinction,
+                                bibendum: entry.bibendum,
+                                sustainable: entry.sustainable
+                            )
+                            .gridCellAnchor(.leading)
+                        }
                     }
                 }
+                .gridColumnAlignment(.leading)
             }
         }
         .padding(.horizontal, 14)
         .padding(.vertical, 12)
-        .frame(minWidth: 260)
+        .frame(minWidth: 240)
         .background(
             GeometryReader { proxy in
                 Color.clear

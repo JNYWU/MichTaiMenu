@@ -85,6 +85,7 @@ struct DistinctionView: View {
                 }
             }
         }
+        .padding(.leading, -2)
     }
 }
 

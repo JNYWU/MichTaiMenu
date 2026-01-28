@@ -50,8 +50,6 @@ struct DetailedSheetView: View {
                             .font(.title2)
                             .overlay(alignment: .bottom) {
                                 Color.clear
-                                    .frame(width: 1, height: 1)
-                                    .padding(.bottom, 20)
                                     .popover(
                                         isPresented: $showAwardHistory,
                                         attachmentAnchor: .rect(.bounds),
