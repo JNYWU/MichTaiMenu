@@ -48,7 +48,6 @@ struct DetailedSheetView: View {
                                 sustainable: restaurant.Sustainable
                             )
                             .font(.title2)
-                            .background(.gray)
                             .overlay(alignment: .bottom) {
                                 Color.clear
                                     .frame(width: 1, height: 1)

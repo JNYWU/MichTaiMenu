@@ -108,7 +108,7 @@ struct AboutView: View {
                     }
 
                     HStack {
-                        Image(.greenstar)
+                        Image("mich.greenstar")
                             .foregroundStyle(.green)
                         Spacer()
                         Text(legendText(.sustainable, fallback: "綠星"))
