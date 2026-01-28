@@ -81,7 +81,7 @@ struct DistinctionView: View {
                 if sustainable {
                     Image("mich.greenstar")
                         .foregroundColor(sustainableTint)
-                        .padding(.leading, -1)
+                        .padding(.leading, -3)
                 }
             }
         }
@@ -96,5 +96,8 @@ struct DistinctionView: View {
         DistinctionView(distinction: 0, bibendum: true, sustainable: true)
         DistinctionView(distinction: 0, bibendum: false, sustainable: true)
     }
+    .padding()
+    .background(Color(.secondarySystemBackground))
+    .clipShape(.rect(cornerRadius: 20))
 }
 

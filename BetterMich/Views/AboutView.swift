@@ -129,7 +129,7 @@ struct AboutView: View {
                             sustainable: false
                         )
                         Spacer()
-                        Text(legendText(.recommended, fallback: "推薦"))
+                        Text(legendText(.recommended, fallback: "入選"))
                     }
                 }
                 .padding(.trailing, 120)
