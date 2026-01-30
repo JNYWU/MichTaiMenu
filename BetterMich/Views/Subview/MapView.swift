@@ -4,12 +4,17 @@ import MapKit
 struct MapView: View {
     
     var restaurant: Restaurant
-    @State private var region: MKCoordinateRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 25.04841, longitude: 121.53301), span: MKCoordinateSpan(latitudeDelta: 1.0, longitudeDelta: 1.0))
+    @State private var position: MapCameraPosition = .region(
+        MKCoordinateRegion(
+            center: CLLocationCoordinate2D(latitude: 25.04841, longitude: 121.53301),
+            span: MKCoordinateSpan(latitudeDelta: 1.0, longitudeDelta: 1.0)
+        )
+    )
     @State private var annotatedItem: AnnotatedItem = AnnotatedItem(coordinate: CLLocationCoordinate2D(latitude: 25.04841, longitude: 121.53301))
     
     var body: some View {
-        Map(coordinateRegion: $region, interactionModes: [.zoom, .pan], annotationItems: [annotatedItem]) { item in
-            MapMarker(coordinate: item.coordinate)
+        Map(position: $position, interactionModes: [.zoom, .pan]) {
+            Marker("", coordinate: annotatedItem.coordinate)
         }
         .task {
             convertAddress(location: restaurant.Address)
@@ -39,7 +44,12 @@ struct MapView: View {
                 return
             }
             
-            self.region = MKCoordinateRegion(center: location.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.0015, longitudeDelta: 0.0015))
+            self.position = .region(
+                MKCoordinateRegion(
+                    center: location.coordinate,
+                    span: MKCoordinateSpan(latitudeDelta: 0.0015, longitudeDelta: 0.0015)
+                )
+            )
             
             self.annotatedItem = AnnotatedItem(coordinate: location.coordinate)
         })
