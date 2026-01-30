@@ -189,13 +189,11 @@ private func parseAwardHistory(_ items: [AwardHistoryItem]?) -> [AwardHistoryEnt
     return items.compactMap { item in
         guard let year = yearString(from: item.at) else { return nil }
         let meta = parseDistinction(award: item.award, badge: nil)
-        let rawText = (item.award ?? []).joined(separator: " / ")
         return AwardHistoryEntry(
             year: year,
             distinction: meta.stars,
             bibendum: meta.bibendum,
-            sustainable: meta.sustainable,
-            rawAwardText: rawText
+            sustainable: meta.sustainable
         )
     }
 }

@@ -81,7 +81,6 @@ struct AwardHistoryEntry: Hashable {
     let distinction: Int
     let bibendum: Bool
     let sustainable: Bool
-    let rawAwardText: String
 }
 
 @Model

@@ -103,36 +103,31 @@ private struct AwardHistoryDialogHeightKey: PreferenceKey {
                 year: "2018",
                 distinction: 1,
                 bibendum: false,
-                sustainable: false,
-                rawAwardText: "一星：高品質烹飪"
+                sustainable: false
             ),
             AwardHistoryEntry(
                 year: "2019",
                 distinction: 2,
                 bibendum: false,
-                sustainable: false,
-                rawAwardText: "二星：卓越烹飪"
+                sustainable: false
             ),
             AwardHistoryEntry(
                 year: "2021",
                 distinction: 3,
                 bibendum: false,
-                sustainable: false,
-                rawAwardText: "三星：卓越烹飪"
+                sustainable: false
             ),
             AwardHistoryEntry(
                 year: "2023",
                 distinction: 2,
                 bibendum: false,
-                sustainable: false,
-                rawAwardText: "三星：卓越烹飪"
+                sustainable: false
             ),
             AwardHistoryEntry(
                 year: "2024",
                 distinction: 0,
                 bibendum: false,
-                sustainable: false,
-                rawAwardText: "三星：卓越烹飪"
+                sustainable: false
             )
         ]
     )
