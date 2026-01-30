@@ -11,6 +11,9 @@ struct DetailedSheetView: View {
     private var isPreview: Bool {
         ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1"
     }
+    private var hasStarHistory: Bool {
+        restaurant.AwardHistory.contains { $0.distinction > 0 }
+    }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -198,11 +201,13 @@ struct DetailedSheetView: View {
                 Text(restaurant.Name)
                     .font(.title2).bold()
             }
-            ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                    showAwardHistory = true
-                } label: {
-                    Image(systemName: "chart.line.uptrend.xyaxis")
+            if hasStarHistory {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        showAwardHistory = true
+                    } label: {
+                        Image(systemName: "chart.line.uptrend.xyaxis")
+                    }
                 }
             }
         }
