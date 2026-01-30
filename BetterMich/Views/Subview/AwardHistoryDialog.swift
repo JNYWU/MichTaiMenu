@@ -17,12 +17,19 @@ struct AwardHistoryDialog: View {
                     .foregroundStyle(.secondary)
             } else {
                 Grid(horizontalSpacing: 6, verticalSpacing: 8) {
-                    ForEach(entries, id: \.self) { entry in
+                    ForEach(entries.indices, id: \.self) { index in
+                        let entry = entries[index]
+                        let previousEntry = index > 0 ? entries[index - 1] : nil
                         GridRow {
                             Text(entry.year)
                                 .font(.subheadline.weight(.semibold))
-                            Text("：")
-                                .font(.subheadline.weight(.semibold))
+                            Image(
+                                systemName: trendIconName(
+                                    current: entry,
+                                    previous: previousEntry
+                                )
+                            )
+                            .font(.subheadline.weight(.semibold))
                             DistinctionView(
                                 distinction: entry.distinction,
                                 bibendum: entry.bibendum,
@@ -55,6 +62,32 @@ struct AwardHistoryDialog: View {
     }
 }
 
+private func trendIconName(
+    current: AwardHistoryEntry,
+    previous: AwardHistoryEntry?
+) -> String {
+    guard let previous else { return "minus" }
+    let currentRank = awardRank(for: current)
+    let previousRank = awardRank(for: previous)
+    if currentRank > previousRank {
+        return "arrow.up.right"
+    }
+    if currentRank < previousRank {
+        return "arrow.down.right"
+    }
+    return "minus"
+}
+
+private func awardRank(for entry: AwardHistoryEntry) -> Int {
+    if entry.distinction > 0 {
+        return 100 + entry.distinction
+    }
+    if entry.bibendum {
+        return 50
+    }
+    return 0
+}
+
 private struct AwardHistoryDialogHeightKey: PreferenceKey {
     static var defaultValue: CGFloat = 0
 
@@ -81,8 +114,22 @@ private struct AwardHistoryDialogHeightKey: PreferenceKey {
                 rawAwardText: "二星：卓越烹飪"
             ),
             AwardHistoryEntry(
-                year: "2023",
+                year: "2021",
                 distinction: 3,
+                bibendum: false,
+                sustainable: false,
+                rawAwardText: "三星：卓越烹飪"
+            ),
+            AwardHistoryEntry(
+                year: "2023",
+                distinction: 2,
+                bibendum: false,
+                sustainable: false,
+                rawAwardText: "三星：卓越烹飪"
+            ),
+            AwardHistoryEntry(
+                year: "2024",
+                distinction: 0,
                 bibendum: false,
                 sustainable: false,
                 rawAwardText: "三星：卓越烹飪"
