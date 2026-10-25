@@ -74,3 +74,54 @@ final class RestaurantState {
         self.isFavorite = isFavorite
     }
 }
+
+enum RestaurantStateMutations {
+    @discardableResult
+    static func toggleVisited(
+        restaurantId: String,
+        state: RestaurantState?,
+        modelContext: ModelContext
+    ) -> RestaurantState? {
+        if let state {
+            state.isVisited.toggle()
+            return cleanupIfNeeded(state, modelContext: modelContext)
+        } else {
+            let state = RestaurantState(
+                restaurantKey: restaurantId,
+                isVisited: true
+            )
+            modelContext.insert(state)
+            return state
+        }
+    }
+
+    @discardableResult
+    static func toggleFavorite(
+        restaurantId: String,
+        state: RestaurantState?,
+        modelContext: ModelContext
+    ) -> RestaurantState? {
+        if let state {
+            state.isFavorite.toggle()
+            return cleanupIfNeeded(state, modelContext: modelContext)
+        } else {
+            let state = RestaurantState(
+                restaurantKey: restaurantId,
+                isFavorite: true
+            )
+            modelContext.insert(state)
+            return state
+        }
+    }
+
+    private static func cleanupIfNeeded(
+        _ state: RestaurantState,
+        modelContext: ModelContext
+    ) -> RestaurantState? {
+        if !state.isVisited && !state.isFavorite {
+            modelContext.delete(state)
+            return nil
+        }
+        return state
+    }
+}

@@ -4,7 +4,7 @@ import SwiftUI
 struct RestaurantRowView: View {
 
     var restaurant: Restaurant
-    @Environment(\.colorScheme) private var colorScheme
+    var state: RestaurantState? = nil
     private var isPreview: Bool {
         ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1"
     }
@@ -60,7 +60,10 @@ struct RestaurantRowView: View {
             if isPreview {
                 PreviewRowStateButtons()
             } else {
-                LiveRowStateButtons(restaurantId: restaurant.id)
+                LiveRowStateButtons(
+                    restaurantId: restaurant.id,
+                    state: state
+                )
             }
         }
         .padding()
@@ -76,17 +79,9 @@ struct RestaurantRowView: View {
 
 private struct LiveRowStateButtons: View {
     let restaurantId: String
+    let state: RestaurantState?
     @Environment(\.modelContext) private var modelContext
-    @Query private var states: [RestaurantState]
-
-    init(restaurantId: String) {
-        self.restaurantId = restaurantId
-        _states = Query(
-            filter: #Predicate<RestaurantState> {
-                $0.restaurantKey == restaurantId
-            }
-        )
-    }
+    @State private var insertedState: RestaurantState?
 
     var body: some View {
         HStack(spacing: 15) {
@@ -123,45 +118,31 @@ private struct LiveRowStateButtons: View {
     }
 
     private var isVisited: Bool {
-        states.first?.isVisited ?? false
+        effectiveState?.isVisited ?? false
     }
 
     private var isFavorite: Bool {
-        states.first?.isFavorite ?? false
+        effectiveState?.isFavorite ?? false
+    }
+
+    private var effectiveState: RestaurantState? {
+        state ?? insertedState
     }
 
     private func toggleVisited() {
-        if let state = states.first {
-            state.isVisited.toggle()
-            cleanupIfNeeded(state)
-        } else {
-            modelContext.insert(
-                RestaurantState(
-                    restaurantKey: restaurantId,
-                    isVisited: true
-                )
-            )
-        }
+        insertedState = RestaurantStateMutations.toggleVisited(
+            restaurantId: restaurantId,
+            state: effectiveState,
+            modelContext: modelContext
+        )
     }
 
     private func toggleFavorite() {
-        if let state = states.first {
-            state.isFavorite.toggle()
-            cleanupIfNeeded(state)
-        } else {
-            modelContext.insert(
-                RestaurantState(
-                    restaurantKey: restaurantId,
-                    isFavorite: true
-                )
-            )
-        }
-    }
-
-    private func cleanupIfNeeded(_ state: RestaurantState) {
-        if !state.isVisited && !state.isFavorite {
-            modelContext.delete(state)
-        }
+        insertedState = RestaurantStateMutations.toggleFavorite(
+            restaurantId: restaurantId,
+            state: effectiveState,
+            modelContext: modelContext
+        )
     }
 }
 

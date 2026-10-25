@@ -5,6 +5,7 @@ struct ContentView: View {
 
     @EnvironmentObject private var dataStore: MichelinDataStore
     @Environment(\.modelContext) private var modelContext: ModelContext
+    @Query private var restaurantStates: [RestaurantState]
 
     @State var searchText = ""
     @State var isSortedByDist = false
@@ -32,6 +33,7 @@ struct ContentView: View {
             restaurants: displayedRestaurants,
             searchText: searchText
         )
+        let statesByRestaurantId = restaurantStatesById
 
         NavigationStack {
             
@@ -40,7 +42,10 @@ struct ContentView: View {
                 LazyVStack(spacing: 8) {
                     ForEach(searchedRestaurants) { restaurant in
                         NavigationLink(value: restaurant) {
-                            RestaurantRowView(restaurant: restaurant)
+                            RestaurantRowView(
+                                restaurant: restaurant,
+                                state: statesByRestaurantId[restaurant.id]
+                            )
                         }
                     }
                 }
@@ -127,7 +132,10 @@ struct ContentView: View {
                 }
             }
             .navigationDestination(for: Restaurant.self) { restaurant in
-                DetailedSheetView(restaurant: restaurant)
+                DetailedSheetView(
+                    restaurant: restaurant,
+                    state: statesByRestaurantId[restaurant.id]
+                )
             }
         }
         .searchable(text: $searchText, prompt: "搜尋餐廳、城市、類型")
@@ -159,6 +167,13 @@ struct ContentView: View {
         } message: {
             Text(dataStore.loadError ?? "未知錯誤")
         }
+    }
+
+    private var restaurantStatesById: [String: RestaurantState] {
+        Dictionary(
+            restaurantStates.map { ($0.restaurantKey, $0) },
+            uniquingKeysWith: { first, _ in first }
+        )
     }
 
     private func migrateLegacyStatesIfNeeded() {
