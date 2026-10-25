@@ -5,6 +5,7 @@
 //  Created by 吳求元 on 2023/10/12.
 //
 
+import Foundation
 import SwiftData
 import SwiftUI
 
@@ -39,6 +40,14 @@ struct BetterMichApp: App {
             fatalError("Failed to create ModelContainer: \(error)")
         }
     }()
+
+    init() {
+        URLCache.shared = URLCache(
+            memoryCapacity: 20 * 1024 * 1024,
+            diskCapacity: 100 * 1024 * 1024,
+            diskPath: "BetterMichURLCache"
+        )
+    }
 
     var body: some Scene {
         WindowGroup {

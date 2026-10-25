@@ -1,16 +1,16 @@
 import Foundation
 
-struct SignedURLResponse: Decodable {
+struct SignedURLResponse: Decodable, Sendable {
     let url: String
 }
 
-struct MichelinPayload: Codable {
+struct MichelinPayload: Codable, Sendable {
     let etl_dtm: String
     let count: Int
     let restaurants: [RestaurantDTO]
 }
 
-struct RestaurantDTO: Codable {
+struct RestaurantDTO: Codable, Sendable {
     let id: String?
     let name: String
     let phone: String?
@@ -67,7 +67,7 @@ struct RestaurantDTO: Codable {
     }
 }
 
-struct AwardHistoryItem: Codable {
+struct AwardHistoryItem: Codable, Sendable {
     let award: [String]?
     let at: String?
 

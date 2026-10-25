@@ -18,7 +18,7 @@ struct Restaurant: Hashable, Identifiable {
     var City: String
     var RestaurantType: String
     var Phone: String
-    var hasPhone: Bool
+    var hasPhone: Bool { Phone.first == "+" }
     var IMG: String
     var Address: String
     var Description: String
@@ -48,31 +48,10 @@ struct Restaurant: Hashable, Identifiable {
         self.City = city
         self.RestaurantType = restaurantType
         self.Phone = phone
-        self.hasPhone = phone.first == "+"
         self.IMG = img
         self.Address = address
         self.Description = description
         self.AwardHistory = awardHistory
-    }
-    
-    init(raw:[String]) {
-        self.id = raw[0]
-        self.Name = raw[1]
-        
-        self.Distinction = Int(raw[2])!
-        
-        self.Sustainable = raw[3] == "TRUE" ? true : false
-        self.Bibendum = raw[4] == "TRUE" ? true : false
-        self.IsNew = false
-        
-        self.City = raw[6]
-        self.RestaurantType = raw[8]
-        self.Phone = raw[9]
-        self.hasPhone = true
-        self.IMG = raw[10]
-        self.Address = raw[11]
-        self.Description = raw[12]
-        self.AwardHistory = []
     }
 }
 
@@ -93,5 +72,57 @@ final class RestaurantState {
         self.restaurantKey = restaurantKey
         self.isVisited = isVisited
         self.isFavorite = isFavorite
+    }
+}
+
+@MainActor
+enum RestaurantStateMutations {
+    @discardableResult
+    static func toggleVisited(
+        restaurantId: String,
+        state: RestaurantState?,
+        modelContext: ModelContext
+    ) -> RestaurantState? {
+        if let state {
+            state.isVisited.toggle()
+            return cleanupIfNeeded(state, modelContext: modelContext)
+        } else {
+            let state = RestaurantState(
+                restaurantKey: restaurantId,
+                isVisited: true
+            )
+            modelContext.insert(state)
+            return state
+        }
+    }
+
+    @discardableResult
+    static func toggleFavorite(
+        restaurantId: String,
+        state: RestaurantState?,
+        modelContext: ModelContext
+    ) -> RestaurantState? {
+        if let state {
+            state.isFavorite.toggle()
+            return cleanupIfNeeded(state, modelContext: modelContext)
+        } else {
+            let state = RestaurantState(
+                restaurantKey: restaurantId,
+                isFavorite: true
+            )
+            modelContext.insert(state)
+            return state
+        }
+    }
+
+    private static func cleanupIfNeeded(
+        _ state: RestaurantState,
+        modelContext: ModelContext
+    ) -> RestaurantState? {
+        if !state.isVisited && !state.isFavorite {
+            modelContext.delete(state)
+            return nil
+        }
+        return state
     }
 }

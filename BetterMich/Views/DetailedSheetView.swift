@@ -1,10 +1,10 @@
-import MapKit
 import SwiftData
 import SwiftUI
 
 struct DetailedSheetView: View {
 
     var restaurant: Restaurant
+    var state: RestaurantState? = nil
     private let sectionHorizontalPadding: CGFloat = 12
     private let sectionVerticalPadding: CGFloat = 8
     @State private var showAwardHistory = false
@@ -95,7 +95,10 @@ struct DetailedSheetView: View {
                         if isPreview {
                             PreviewDetailStateButtons()
                         } else {
-                            LiveDetailStateButtons(restaurantId: restaurant.id)
+                            LiveDetailStateButtons(
+                                restaurantId: restaurant.id,
+                                state: state
+                            )
                         }
                     }
                     .frame(
@@ -126,7 +129,7 @@ struct DetailedSheetView: View {
                             Label("電話", systemImage: "phone")
                                 .font(.headline)
 
-                            if restaurant.Phone.first == "+" {
+                            if restaurant.hasPhone {
                                 Text(restaurant.Phone)
 
                                 // call button
@@ -216,17 +219,9 @@ struct DetailedSheetView: View {
 
 private struct LiveDetailStateButtons: View {
     let restaurantId: String
+    let state: RestaurantState?
     @Environment(\.modelContext) private var modelContext
-    @Query private var states: [RestaurantState]
-
-    init(restaurantId: String) {
-        self.restaurantId = restaurantId
-        _states = Query(
-            filter: #Predicate<RestaurantState> {
-                $0.restaurantKey == restaurantId
-            }
-        )
-    }
+    @State private var insertedState: RestaurantState?
 
     var body: some View {
         HStack {
@@ -269,45 +264,31 @@ private struct LiveDetailStateButtons: View {
     }
 
     private var isVisited: Bool {
-        states.first?.isVisited ?? false
+        effectiveState?.isVisited ?? false
     }
 
     private var isFavorite: Bool {
-        states.first?.isFavorite ?? false
+        effectiveState?.isFavorite ?? false
+    }
+
+    private var effectiveState: RestaurantState? {
+        state ?? insertedState
     }
 
     private func toggleVisited() {
-        if let state = states.first {
-            state.isVisited.toggle()
-            cleanupIfNeeded(state)
-        } else {
-            modelContext.insert(
-                RestaurantState(
-                    restaurantKey: restaurantId,
-                    isVisited: true
-                )
-            )
-        }
+        insertedState = RestaurantStateMutations.toggleVisited(
+            restaurantId: restaurantId,
+            state: effectiveState,
+            modelContext: modelContext
+        )
     }
 
     private func toggleFavorite() {
-        if let state = states.first {
-            state.isFavorite.toggle()
-            cleanupIfNeeded(state)
-        } else {
-            modelContext.insert(
-                RestaurantState(
-                    restaurantKey: restaurantId,
-                    isFavorite: true
-                )
-            )
-        }
-    }
-
-    private func cleanupIfNeeded(_ state: RestaurantState) {
-        if !state.isVisited && !state.isFavorite {
-            modelContext.delete(state)
-        }
+        insertedState = RestaurantStateMutations.toggleFavorite(
+            restaurantId: restaurantId,
+            state: effectiveState,
+            modelContext: modelContext
+        )
     }
 }
 

@@ -1,15 +1,11 @@
 import SwiftUI
 
 struct FilterSheetView: View {
-    @Binding var Restaurants: [Restaurant]
     @Binding var isSortedByDist: Bool
     @Binding var isFilteredByDist: [Bool]
     @Binding var isFilteredByCity: [Bool]
     @Binding var isFilteredBySus: Bool
     @Binding var isFilteredByNew: Bool
-    @Binding var sortedRestaurants: [Restaurant]
-    @Binding var filteredRestaurants: [Restaurant]
-    @Binding var displayedRestaurants: [Restaurant]
     @Binding var isPresented: Bool
 
     @State var tempSortedByDist: Bool
@@ -20,26 +16,18 @@ struct FilterSheetView: View {
 
 
     init(
-        Restaurants: Binding<[Restaurant]>,
         isSortedByDist: Binding<Bool>,
         isFilteredByDist: Binding<[Bool]>,
         isFilteredByCity: Binding<[Bool]>,
         isFilteredBySus: Binding<Bool>,
         isFilteredByNew: Binding<Bool>,
-        sortedRestaurants: Binding<[Restaurant]>,
-        filteredRestaurants: Binding<[Restaurant]>,
-        displayedRestaurants: Binding<[Restaurant]>,
         isPresented: Binding<Bool>
     ) {
-        self._Restaurants = Restaurants
         self._isSortedByDist = isSortedByDist
         self._isFilteredByDist = isFilteredByDist
         self._isFilteredByCity = isFilteredByCity
         self._isFilteredBySus = isFilteredBySus
         self._isFilteredByNew = isFilteredByNew
-        self._sortedRestaurants = sortedRestaurants
-        self._filteredRestaurants = filteredRestaurants
-        self._displayedRestaurants = displayedRestaurants
         self._isPresented = isPresented
 
         self._tempSortedByDist = State(initialValue: isSortedByDist.wrappedValue)
@@ -232,43 +220,20 @@ struct FilterSheetView: View {
 }
 
 private struct FilterSheetPreviewHost: View {
-    @State private var restaurants: [Restaurant] = [
-        Restaurant(
-            id: "sample-1",
-            name: "示範餐廳",
-            distinction: 1,
-            sustainable: false,
-            bibendum: false,
-            isNew: true,
-            city: "台北",
-            restaurantType: "現代料理",
-            phone: "+886 2 1234 5678",
-            img: "https://axwwgrkdco.cloudimg.io/v7/__gmpics3__/a2d64509aac140db8f1dee827c7ffa1c.jpeg?width=1000",
-            address: "台北市中正區",
-            description: "示範用餐廳描述"
-        )
-    ]
     @State private var isSortedByDist = false
     @State private var isFilteredByDist = Array(repeating: false, count: FilterSheetData.distList.count)
     @State private var isFilteredByCity = Array(repeating: false, count: FilterSheetData.cityList.count)
     @State private var isFilteredBySus = false
     @State private var isFilteredByNew = false
-    @State private var sortedRestaurants: [Restaurant] = []
-    @State private var filteredRestaurants: [Restaurant] = []
-    @State private var displayedRestaurants: [Restaurant] = []
     @State private var isPresented = true
 
     var body: some View {
         FilterSheetView(
-            Restaurants: $restaurants,
             isSortedByDist: $isSortedByDist,
             isFilteredByDist: $isFilteredByDist,
             isFilteredByCity: $isFilteredByCity,
             isFilteredBySus: $isFilteredBySus,
             isFilteredByNew: $isFilteredByNew,
-            sortedRestaurants: $sortedRestaurants,
-            filteredRestaurants: $filteredRestaurants,
-            displayedRestaurants: $displayedRestaurants,
             isPresented: $isPresented
         )
     }

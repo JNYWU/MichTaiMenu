@@ -5,6 +5,7 @@ struct ContentView: View {
 
     @EnvironmentObject private var dataStore: MichelinDataStore
     @Environment(\.modelContext) private var modelContext: ModelContext
+    @Query private var restaurantStates: [RestaurantState]
 
     @State var searchText = ""
     @State var isSortedByDist = false
@@ -15,27 +16,36 @@ struct ContentView: View {
     @State var showAboutSheet = false
     @State private var showFilterSheet = false
 
-    @State var sortedRestaurants: [Restaurant] = []
-    @State var filteredRestaurants: [Restaurant] = []
-    @State private var displayedRestaurants: [Restaurant] = []
-
     @State private var hasLoaded = false
-    @State private var searchResults: [Restaurant] = []
-    @State private var didMigrateLegacyStates = false
+    @AppStorage("didMigrateLegacyRestaurantStates")
+    private var didMigrateLegacyStates = false
 
     var body: some View {
+        let displayedRestaurants = makeDisplayedRestaurants(
+            restaurants: dataStore.restaurants,
+            isSortedByDist: isSortedByDist,
+            isFilteredByCity: isFilteredByCity,
+            isFilteredByDist: isFilteredByDist,
+            isFilteredBySus: isFilteredBySus,
+            isFilteredByNew: isFilteredByNew
+        )
+        let searchedRestaurants = makeSearchedRestaurants(
+            restaurants: displayedRestaurants,
+            searchText: searchText
+        )
+        let statesByRestaurantId = restaurantStatesById
 
         NavigationStack {
             
             //MARK: 餐廳列表
             ScrollView {
                 LazyVStack(spacing: 8) {
-                    ForEach(
-                        searchText.isEmpty
-                            ? displayedRestaurants : searchResults
-                    ) { restaurant in
+                    ForEach(searchedRestaurants) { restaurant in
                         NavigationLink(value: restaurant) {
-                            RestaurantRowView(restaurant: restaurant)
+                            RestaurantRowView(
+                                restaurant: restaurant,
+                                state: statesByRestaurantId[restaurant.id]
+                            )
                         }
                     }
                 }
@@ -48,14 +58,12 @@ struct ContentView: View {
             .overlay(
                 VStack {
                     if dataStore.hasLoaded && !dataStore.isLoading
-                        && (displayedRestaurants.isEmpty
-                            || searchResults.isEmpty)
+                        && searchedRestaurants.isEmpty
                     {
                         EmptyListView(
                             searchText: $searchText,
-                            Restaurants: $dataStore.restaurants,
-                            displayedRestaurants: $displayedRestaurants,
-                            searchedRestaurants: searchResults,
+                            displayedRestaurants: displayedRestaurants,
+                            searchedRestaurants: searchedRestaurants,
                             isFilteredByDist: $isFilteredByDist,
                             isFilteredByCity: $isFilteredByCity,
                             isFilteredBySus: $isFilteredBySus,
@@ -73,15 +81,11 @@ struct ContentView: View {
             //MARK: 篩選
             .sheet(isPresented: $showFilterSheet) {
                 FilterSheetView(
-                    Restaurants: $dataStore.restaurants,
                     isSortedByDist: $isSortedByDist,
                     isFilteredByDist: $isFilteredByDist,
                     isFilteredByCity: $isFilteredByCity,
                     isFilteredBySus: $isFilteredBySus,
                     isFilteredByNew: $isFilteredByNew,
-                    sortedRestaurants: $sortedRestaurants,
-                    filteredRestaurants: $filteredRestaurants,
-                    displayedRestaurants: $displayedRestaurants,
                     isPresented: $showFilterSheet
                 )
                 .presentationDetents([.fraction(0.68)])
@@ -128,7 +132,10 @@ struct ContentView: View {
                 }
             }
             .navigationDestination(for: Restaurant.self) { restaurant in
-                DetailedSheetView(restaurant: restaurant)
+                DetailedSheetView(
+                    restaurant: restaurant,
+                    state: statesByRestaurantId[restaurant.id]
+                )
             }
         }
         .searchable(text: $searchText, prompt: "搜尋餐廳、城市、類型")
@@ -138,27 +145,7 @@ struct ContentView: View {
                 hasLoaded = true
                 await dataStore.loadIfNeeded()
                 migrateLegacyStatesIfNeeded()
-                displayedRestaurants = sortRestaurants(
-                    restaurants: dataStore.restaurants,
-                    isSortedByDist: isSortedByDist
-                )
-                updateSearchResults()
             }
-        }
-        .onChange(of: dataStore.restaurants) { _, newValue in
-            if displayedRestaurants.isEmpty && !newValue.isEmpty {
-                displayedRestaurants = sortRestaurants(
-                    restaurants: newValue,
-                    isSortedByDist: isSortedByDist
-                )
-            }
-            updateSearchResults()
-        }
-        .onChange(of: searchText) { _, _ in
-            updateSearchResults()
-        }
-        .onChange(of: displayedRestaurants) { _, _ in
-            updateSearchResults()
         }
         .overlay {
             let needsInitialLoad =
@@ -182,28 +169,15 @@ struct ContentView: View {
         }
     }
 
-    private func updateSearchResults() {
-        if searchText.isEmpty {
-            searchResults = displayedRestaurants
-            return
-        }
-        let keyword = searchText
-        searchResults = displayedRestaurants.filter { restaurant in
-            let nameMatch = restaurant.Name.localizedCaseInsensitiveContains(
-                keyword
-            )
-            let cityMatch = restaurant.City.localizedCaseInsensitiveContains(
-                keyword
-            )
-            let typeMatch = restaurant.RestaurantType
-                .localizedCaseInsensitiveContains(keyword)
-            return nameMatch || cityMatch || typeMatch
-        }
+    private var restaurantStatesById: [String: RestaurantState] {
+        Dictionary(
+            restaurantStates.map { ($0.restaurantKey, $0) },
+            uniquingKeysWith: { first, _ in first }
+        )
     }
 
     private func migrateLegacyStatesIfNeeded() {
         guard !didMigrateLegacyStates else { return }
-        didMigrateLegacyStates = true
         let restaurants = dataStore.restaurants
         guard !restaurants.isEmpty else { return }
         let nameToId = Dictionary(
@@ -229,6 +203,7 @@ struct ContentView: View {
                 state.restaurantKey = newId
             }
         }
+        didMigrateLegacyStates = true
     }
 }
 
@@ -236,21 +211,4 @@ struct ContentView: View {
     ContentView()
         .environmentObject(MichelinDataStore())
         .modelContainer(for: RestaurantState.self, inMemory: true)
-}
-
-extension View {
-    @ViewBuilder
-    fileprivate func adaptiveGlass(cornerRadius: CGFloat) -> some View {
-        if #available(iOS 26.0, *) {
-            self.glassEffect(.regular, in: .rect(cornerRadius: cornerRadius))
-        } else {
-            self.background(
-                .ultraThinMaterial,
-                in: RoundedRectangle(
-                    cornerRadius: cornerRadius,
-                    style: .continuous
-                )
-            )
-        }
-    }
 }
