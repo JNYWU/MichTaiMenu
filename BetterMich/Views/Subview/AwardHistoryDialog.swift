@@ -2,24 +2,29 @@ import SwiftUI
 
 struct AwardHistoryDialog: View {
     let awardHistory: [AwardHistoryEntry]
+    private let sortedEntries: [AwardHistoryEntry]
     @State private var contentHeight: CGFloat = 0
 
-    var body: some View {
-        let entries = awardHistory.sorted {
+    init(awardHistory: [AwardHistoryEntry]) {
+        self.awardHistory = awardHistory
+        self.sortedEntries = awardHistory.sorted {
             (Int($0.year) ?? 0) < (Int($1.year) ?? 0)
         }
+    }
+
+    var body: some View {
         VStack(alignment: .center, spacing: 12) {
             Text("評鑑歷史")
                 .font(.headline)
                 .frame(maxWidth: .infinity, alignment: .center)
-            if entries.isEmpty {
+            if sortedEntries.isEmpty {
                 Text("尚無歷史資料")
                     .foregroundStyle(.secondary)
             } else {
                 Grid(horizontalSpacing: 6, verticalSpacing: 8) {
-                    ForEach(entries.indices, id: \.self) { index in
-                        let entry = entries[index]
-                        let previousEntry = index > 0 ? entries[index - 1] : nil
+                    ForEach(sortedEntries.indices, id: \.self) { index in
+                        let entry = sortedEntries[index]
+                        let previousEntry = index > 0 ? sortedEntries[index - 1] : nil
                         GridRow {
                             Text(entry.year)
                                 .font(.subheadline.weight(.semibold))

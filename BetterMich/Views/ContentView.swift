@@ -21,7 +21,8 @@ struct ContentView: View {
 
     @State private var hasLoaded = false
     @State private var searchResults: [Restaurant] = []
-    @State private var didMigrateLegacyStates = false
+    @AppStorage("didMigrateLegacyRestaurantStates")
+    private var didMigrateLegacyStates = false
 
     var body: some View {
 
@@ -203,7 +204,6 @@ struct ContentView: View {
 
     private func migrateLegacyStatesIfNeeded() {
         guard !didMigrateLegacyStates else { return }
-        didMigrateLegacyStates = true
         let restaurants = dataStore.restaurants
         guard !restaurants.isEmpty else { return }
         let nameToId = Dictionary(
@@ -229,6 +229,7 @@ struct ContentView: View {
                 state.restaurantKey = newId
             }
         }
+        didMigrateLegacyStates = true
     }
 }
 
@@ -236,21 +237,4 @@ struct ContentView: View {
     ContentView()
         .environmentObject(MichelinDataStore())
         .modelContainer(for: RestaurantState.self, inMemory: true)
-}
-
-extension View {
-    @ViewBuilder
-    fileprivate func adaptiveGlass(cornerRadius: CGFloat) -> some View {
-        if #available(iOS 26.0, *) {
-            self.glassEffect(.regular, in: .rect(cornerRadius: cornerRadius))
-        } else {
-            self.background(
-                .ultraThinMaterial,
-                in: RoundedRectangle(
-                    cornerRadius: cornerRadius,
-                    style: .continuous
-                )
-            )
-        }
-    }
 }

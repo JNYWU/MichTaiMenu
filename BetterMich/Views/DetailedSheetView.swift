@@ -126,7 +126,7 @@ struct DetailedSheetView: View {
                             Label("電話", systemImage: "phone")
                                 .font(.headline)
 
-                            if restaurant.Phone.first == "+" {
+                            if restaurant.hasPhone {
                                 Text(restaurant.Phone)
 
                                 // call button

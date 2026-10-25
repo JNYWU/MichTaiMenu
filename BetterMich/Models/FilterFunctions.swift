@@ -1,6 +1,3 @@
-import SwiftUI
-import Algorithms
-
 private struct RestaurantSortKey: Comparable {
     let distRank: Int
     let bibRank: Int
@@ -62,7 +59,8 @@ func cityFilter(allRestaurants: [Restaurant], isFilteredByCity: [Bool], isFilter
         return allRestaurants
     }
     
-    outputList = Array(outputList.uniqued())
+    var seenRestaurants = Set<Restaurant>()
+    outputList = outputList.filter { seenRestaurants.insert($0).inserted }
     
     return outputList
     
@@ -105,7 +103,8 @@ func distFilter(allRestaurants: [Restaurant], isFilteredByCity: [Bool], isFilter
         return allRestaurants
     }
     
-    outputList = Array(outputList.uniqued())
+    var seenRestaurants = Set<Restaurant>()
+    outputList = outputList.filter { seenRestaurants.insert($0).inserted }
     
     return outputList
 }
