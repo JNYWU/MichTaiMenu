@@ -1,3 +1,5 @@
+import Foundation
+
 private struct RestaurantSortKey: Comparable {
     let distRank: Int
     let bibRank: Int
