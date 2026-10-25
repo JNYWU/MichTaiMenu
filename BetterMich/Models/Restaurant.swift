@@ -75,6 +75,7 @@ final class RestaurantState {
     }
 }
 
+@MainActor
 enum RestaurantStateMutations {
     @discardableResult
     static func toggleVisited(
