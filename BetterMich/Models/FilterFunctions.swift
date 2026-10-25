@@ -14,6 +14,12 @@ private struct RestaurantSortKey: Comparable {
     }
 }
 
+private let cityRankByName: [String: Int] = Dictionary(
+    uniqueKeysWithValues: FilterSheetData.cityList.enumerated().map {
+        ($0.element, $0.offset)
+    }
+)
+
 private func sortKey(for restaurant: Restaurant, isSortedByDist: Bool) -> RestaurantSortKey {
     let distRank = isSortedByDist ? restaurant.Distinction : -restaurant.Distinction
     let bibRank: Int
@@ -24,8 +30,7 @@ private func sortKey(for restaurant: Restaurant, isSortedByDist: Bool) -> Restau
     } else {
         bibRank = 0
     }
-    let cityOrder = FilterSheetData.cityList
-    let cityRank = cityOrder.firstIndex(of: restaurant.City) ?? Int.max
+    let cityRank = cityRankByName[restaurant.City] ?? Int.max
     return RestaurantSortKey(
         distRank: distRank,
         bibRank: bibRank,
@@ -35,7 +40,6 @@ private func sortKey(for restaurant: Restaurant, isSortedByDist: Bool) -> Restau
     )
 }
 
-// function for sorting restaurants
 func sortRestaurants(restaurants: [Restaurant], isSortedByDist: Bool) -> [Restaurant] {
     restaurants.sorted { left, right in
         sortKey(for: left, isSortedByDist: isSortedByDist)
@@ -43,94 +47,74 @@ func sortRestaurants(restaurants: [Restaurant], isSortedByDist: Bool) -> [Restau
     }
 }
 
-// function to filter with cities
-func cityFilter(allRestaurants: [Restaurant], isFilteredByCity: [Bool], isFilteredByDist: [Bool]) -> [Restaurant] {
-    
-    var outputList: [Restaurant] = []
-    let cityList = FilterSheetData.cityList
-    
-    for (index, city) in cityList.enumerated() {
-        if index < isFilteredByCity.count, isFilteredByCity[index] {
-            outputList += allRestaurants.filter({ $0.City == city })
-        }
+func makeDisplayedRestaurants(
+    restaurants: [Restaurant],
+    isSortedByDist: Bool,
+    isFilteredByCity: [Bool],
+    isFilteredByDist: [Bool],
+    isFilteredBySus: Bool,
+    isFilteredByNew: Bool
+) -> [Restaurant] {
+    let filtered = restaurants.filter {
+        matchesFilters(
+            $0,
+            isFilteredByCity: isFilteredByCity,
+            isFilteredByDist: isFilteredByDist,
+            isFilteredBySus: isFilteredBySus,
+            isFilteredByNew: isFilteredByNew
+        )
     }
-    
-    if !isFilteredByCity.contains(true) {
-        return allRestaurants
-    }
-    
-    var seenRestaurants = Set<Restaurant>()
-    outputList = outputList.filter { seenRestaurants.insert($0).inserted }
-    
-    return outputList
-    
+    return sortRestaurants(restaurants: filtered, isSortedByDist: isSortedByDist)
 }
 
-// function to filter with distinctions
-func distFilter(allRestaurants: [Restaurant], isFilteredByCity: [Bool], isFilteredByDist: [Bool]) -> [Restaurant] {
-    
-    var outputList: [Restaurant] = []
-    
-    for filterOption in 0...4 {
-        if isFilteredByDist[filterOption] {
-            switch filterOption {
-                
-            // filter 3 stars
+func makeSearchedRestaurants(
+    restaurants: [Restaurant],
+    searchText: String
+) -> [Restaurant] {
+    guard !searchText.isEmpty else { return restaurants }
+    return restaurants.filter { restaurant in
+        restaurant.Name.localizedCaseInsensitiveContains(searchText)
+            || restaurant.City.localizedCaseInsensitiveContains(searchText)
+            || restaurant.RestaurantType.localizedCaseInsensitiveContains(searchText)
+    }
+}
+
+private func matchesFilters(
+    _ restaurant: Restaurant,
+    isFilteredByCity: [Bool],
+    isFilteredByDist: [Bool],
+    isFilteredBySus: Bool,
+    isFilteredByNew: Bool
+) -> Bool {
+    if isFilteredByCity.contains(true) {
+        let cityMatches = FilterSheetData.cityList.indices.contains(where: { index in
+            index < isFilteredByCity.count
+                && isFilteredByCity[index]
+                && restaurant.City == FilterSheetData.cityList[index]
+        })
+        if !cityMatches { return false }
+    }
+
+    if isFilteredByDist.contains(true) {
+        let distMatches = isFilteredByDist.indices.contains(where: { index in
+            guard isFilteredByDist[index] else { return false }
+            switch index {
             case 0:
-                outputList += allRestaurants.filter({ $0.Distinction == 3})
-               
-            // filter 2 stars
+                return restaurant.Distinction == 3
             case 1:
-                outputList += allRestaurants.filter({ $0.Distinction == 2})
-               
-            // filter 1 star
+                return restaurant.Distinction == 2
             case 2:
-                outputList += allRestaurants.filter({ $0.Distinction == 1})
-              
-            // filter Bibendum
+                return restaurant.Distinction == 1
             case 3:
-                outputList += allRestaurants.filter({ $0.Bibendum == true })
-
-            // filter Plate
+                return restaurant.Bibendum
             default:
-                outputList += allRestaurants.filter({ $0.Distinction == 0 && $0.Bibendum == false })
+                return restaurant.Distinction == 0 && !restaurant.Bibendum
             }
-        }
-        
+        })
+        if !distMatches { return false }
     }
-    
-    if !isFilteredByDist.contains(true) {
-        return allRestaurants
-    }
-    
-    var seenRestaurants = Set<Restaurant>()
-    outputList = outputList.filter { seenRestaurants.insert($0).inserted }
-    
-    return outputList
-}
 
-// function to filter Sustainable
-func sustainFilter(Restaurants: [Restaurant], isFilteredBySus: Bool) -> [Restaurant] {
-    
-    var outputList: [Restaurant] = []
-    
-    outputList = Restaurants.filter({ $0.Sustainable == true })
-    
-    if !isFilteredBySus {
-        return Restaurants
-    }
-    
-    return outputList
-}
-
-// function to filter New
-func newFilter(Restaurants: [Restaurant], isFilteredByNew: Bool) -> [Restaurant] {
-    
-    let outputList = Restaurants.filter({ $0.IsNew == true })
-    
-    if !isFilteredByNew {
-        return Restaurants
-    }
-    
-    return outputList
+    if isFilteredBySus && !restaurant.Sustainable { return false }
+    if isFilteredByNew && !restaurant.IsNew { return false }
+    return true
 }

@@ -45,6 +45,12 @@ struct MapView: View {
     
     @MainActor
     private func resolveLocation() async {
+        let cacheKey = "\(restaurant.id)|\(restaurant.Address)"
+        if let cachedResult = MapLookupCache.result(for: cacheKey) {
+            applyResolvedLocation(cachedResult)
+            return
+        }
+
         let geocoder = CLGeocoder()
         let address = restaurant.Address
         var addressCoordinate = fallbackCoordinate
@@ -85,9 +91,45 @@ struct MapView: View {
                 )
             }
         }
+        MapLookupCache.store(
+            MapLookupResult(coordinate: addressCoordinate, mapItem: mapItem),
+            for: cacheKey
+        )
         withAnimation(.easeInOut(duration: 0.25)) {
             shouldShowPin = true
         }
+    }
+
+    @MainActor
+    private func applyResolvedLocation(_ result: MapLookupResult) {
+        fallbackCoordinate = result.coordinate
+        mapItem = result.mapItem
+        let center = result.mapItem?.placemark.coordinate ?? result.coordinate
+        position = .region(
+            MKCoordinateRegion(
+                center: center,
+                span: MKCoordinateSpan(latitudeDelta: 0.0015, longitudeDelta: 0.0015)
+            )
+        )
+        shouldShowPin = true
+    }
+}
+
+private struct MapLookupResult {
+    let coordinate: CLLocationCoordinate2D
+    let mapItem: MKMapItem?
+}
+
+@MainActor
+private enum MapLookupCache {
+    private static var results: [String: MapLookupResult] = [:]
+
+    static func result(for key: String) -> MapLookupResult? {
+        results[key]
+    }
+
+    static func store(_ result: MapLookupResult, for key: String) {
+        results[key] = result
     }
 }
 
@@ -177,26 +219,18 @@ private func closestItem(
     from items: [MKMapItem],
     addressLocation: CLLocation
 ) -> MKMapItem? {
-    let sortedByDistance = items.sorted {
-        CLLocation(
-            latitude: $0.placemark.coordinate.latitude,
-            longitude: $0.placemark.coordinate.longitude
+    var nearest: (item: MKMapItem, distance: CLLocationDistance)?
+    for item in items {
+        let coordinate = item.placemark.coordinate
+        let distance = CLLocation(
+            latitude: coordinate.latitude,
+            longitude: coordinate.longitude
         ).distance(from: addressLocation)
-        < CLLocation(
-            latitude: $1.placemark.coordinate.latitude,
-            longitude: $1.placemark.coordinate.longitude
-        ).distance(from: addressLocation)
-    }
-    if let nearest = sortedByDistance.first {
-        let nearestDistance = CLLocation(
-            latitude: nearest.placemark.coordinate.latitude,
-            longitude: nearest.placemark.coordinate.longitude
-        ).distance(from: addressLocation)
-        if nearestDistance <= 1000 {
-            return nearest
+        if nearest == nil || distance < nearest!.distance {
+            nearest = (item, distance)
         }
     }
-    return sortedByDistance.first
+    return nearest?.item
 }
 
 private func normalizeText(_ text: String) -> String {

@@ -9,6 +9,8 @@ struct AboutView: View {
     @AppStorage("aboutLegendMode") private var legendModeRawValue: String = LegendMode.legend.rawValue
 
     var body: some View {
+        let counts: [LegendCategory: LegendCount] =
+            legendMode == .visited ? legendCounts() : [:]
 
         NavigationStack {
             ScrollView {
@@ -88,7 +90,7 @@ struct AboutView: View {
                             sustainable: false
                         )
                         Spacer()
-                        Text(legendText(.stars(3), fallback: "三星"))
+                        Text(legendText(.stars(3), fallback: "三星", counts: counts))
                     }
                     HStack {
                         DistinctionView(
@@ -97,7 +99,7 @@ struct AboutView: View {
                             sustainable: false
                         )
                         Spacer()
-                        Text(legendText(.stars(2), fallback: "二星"))
+                        Text(legendText(.stars(2), fallback: "二星", counts: counts))
                     }
                     HStack {
                         DistinctionView(
@@ -106,14 +108,14 @@ struct AboutView: View {
                             sustainable: false
                         )
                         Spacer()
-                        Text(legendText(.stars(1), fallback: "一星"))
+                        Text(legendText(.stars(1), fallback: "一星", counts: counts))
                     }
 
                     HStack {
                         Image("mich.greenstar")
                             .foregroundStyle(.green)
                         Spacer()
-                        Text(legendText(.sustainable, fallback: "綠星"))
+                        Text(legendText(.sustainable, fallback: "綠星", counts: counts))
                     }
                     HStack {
                         DistinctionView(
@@ -122,7 +124,7 @@ struct AboutView: View {
                             sustainable: false
                         )
                         Spacer()
-                        Text(legendText(.bibendum, fallback: "必比登"))
+                        Text(legendText(.bibendum, fallback: "必比登", counts: counts))
                     }
                     HStack {
                         DistinctionView(
@@ -131,7 +133,7 @@ struct AboutView: View {
                             sustainable: false
                         )
                         Spacer()
-                        Text(legendText(.recommended, fallback: "入選"))
+                        Text(legendText(.recommended, fallback: "入選", counts: counts))
                     }
                 }
                 .padding(.trailing, 120)
@@ -171,36 +173,54 @@ extension AboutView {
         case visited
     }
 
-    fileprivate enum LegendCategory {
+    fileprivate enum LegendCategory: Hashable {
         case stars(Int)
         case sustainable
         case bibendum
         case recommended
     }
 
-    fileprivate func legendText(_ category: LegendCategory, fallback: String)
-        -> String
-    {
+    fileprivate struct LegendCount {
+        var total = 0
+        var visited = 0
+    }
+
+    fileprivate func legendText(
+        _ category: LegendCategory,
+        fallback: String,
+        counts: [LegendCategory: LegendCount]
+    ) -> String {
         guard legendMode == .visited else { return fallback }
-        let total = totalCount(category)
-        let visited = visitedCount(category)
-        return "\(visited) / \(total)"
+        let count = counts[category] ?? LegendCount()
+        return "\(count.visited) / \(count.total)"
     }
 
-    fileprivate func totalCount(_ category: LegendCategory) -> Int {
-        dataStore.restaurants.filter { matchesCategory($0, category: category) }
-            .count
-    }
-
-    fileprivate func visitedCount(_ category: LegendCategory) -> Int {
-        let ids = Set(
-            dataStore.restaurants
-                .filter { matchesCategory($0, category: category) }
-                .map { $0.id }
+    fileprivate func legendCounts() -> [LegendCategory: LegendCount] {
+        let categories: [LegendCategory] = [
+            .stars(3),
+            .stars(2),
+            .stars(1),
+            .sustainable,
+            .bibendum,
+            .recommended
+        ]
+        let visitedIds = Set(
+            states
+                .filter { $0.isVisited }
+                .map { $0.restaurantKey }
         )
-        return states.filter {
-            $0.isVisited && ids.contains($0.restaurantKey)
-        }.count
+        var counts = Dictionary(
+            uniqueKeysWithValues: categories.map { ($0, LegendCount()) }
+        )
+        for restaurant in dataStore.restaurants {
+            for category in categories where matchesCategory(restaurant, category: category) {
+                counts[category, default: LegendCount()].total += 1
+                if visitedIds.contains(restaurant.id) {
+                    counts[category, default: LegendCount()].visited += 1
+                }
+            }
+        }
+        return counts
     }
 
     fileprivate func matchesCategory(

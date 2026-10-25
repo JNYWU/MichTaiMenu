@@ -4,8 +4,7 @@ struct EmptyListView: View {
     
     @Binding var searchText: String
     
-    @Binding var Restaurants: [Restaurant]
-    @Binding var displayedRestaurants: [Restaurant]
+    var displayedRestaurants: [Restaurant]
     var searchedRestaurants: [Restaurant]
         
     @Binding var isFilteredByDist: [Bool]
@@ -76,7 +75,6 @@ struct EmptyListView: View {
             if isFilteredByCity.contains(true) || isFilteredByDist.contains(true) || isFilteredBySus || isFilteredByNew {
                 Button(role: .destructive) {
                     
-                    displayedRestaurants = sortRestaurants(restaurants: Restaurants, isSortedByDist: isSortedByDist)
                     isFilteredByDist = Array(repeating: false, count: 5)
                     isFilteredByCity = Array(repeating: false, count: 6)
                     isFilteredBySus = false

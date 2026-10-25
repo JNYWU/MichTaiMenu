@@ -15,26 +15,30 @@ struct ContentView: View {
     @State var showAboutSheet = false
     @State private var showFilterSheet = false
 
-    @State var sortedRestaurants: [Restaurant] = []
-    @State var filteredRestaurants: [Restaurant] = []
-    @State private var displayedRestaurants: [Restaurant] = []
-
     @State private var hasLoaded = false
-    @State private var searchResults: [Restaurant] = []
     @AppStorage("didMigrateLegacyRestaurantStates")
     private var didMigrateLegacyStates = false
 
     var body: some View {
+        let displayedRestaurants = makeDisplayedRestaurants(
+            restaurants: dataStore.restaurants,
+            isSortedByDist: isSortedByDist,
+            isFilteredByCity: isFilteredByCity,
+            isFilteredByDist: isFilteredByDist,
+            isFilteredBySus: isFilteredBySus,
+            isFilteredByNew: isFilteredByNew
+        )
+        let searchedRestaurants = makeSearchedRestaurants(
+            restaurants: displayedRestaurants,
+            searchText: searchText
+        )
 
         NavigationStack {
             
             //MARK: 餐廳列表
             ScrollView {
                 LazyVStack(spacing: 8) {
-                    ForEach(
-                        searchText.isEmpty
-                            ? displayedRestaurants : searchResults
-                    ) { restaurant in
+                    ForEach(searchedRestaurants) { restaurant in
                         NavigationLink(value: restaurant) {
                             RestaurantRowView(restaurant: restaurant)
                         }
@@ -49,14 +53,12 @@ struct ContentView: View {
             .overlay(
                 VStack {
                     if dataStore.hasLoaded && !dataStore.isLoading
-                        && (displayedRestaurants.isEmpty
-                            || searchResults.isEmpty)
+                        && searchedRestaurants.isEmpty
                     {
                         EmptyListView(
                             searchText: $searchText,
-                            Restaurants: $dataStore.restaurants,
-                            displayedRestaurants: $displayedRestaurants,
-                            searchedRestaurants: searchResults,
+                            displayedRestaurants: displayedRestaurants,
+                            searchedRestaurants: searchedRestaurants,
                             isFilteredByDist: $isFilteredByDist,
                             isFilteredByCity: $isFilteredByCity,
                             isFilteredBySus: $isFilteredBySus,
@@ -74,15 +76,11 @@ struct ContentView: View {
             //MARK: 篩選
             .sheet(isPresented: $showFilterSheet) {
                 FilterSheetView(
-                    Restaurants: $dataStore.restaurants,
                     isSortedByDist: $isSortedByDist,
                     isFilteredByDist: $isFilteredByDist,
                     isFilteredByCity: $isFilteredByCity,
                     isFilteredBySus: $isFilteredBySus,
                     isFilteredByNew: $isFilteredByNew,
-                    sortedRestaurants: $sortedRestaurants,
-                    filteredRestaurants: $filteredRestaurants,
-                    displayedRestaurants: $displayedRestaurants,
                     isPresented: $showFilterSheet
                 )
                 .presentationDetents([.fraction(0.68)])
@@ -139,27 +137,7 @@ struct ContentView: View {
                 hasLoaded = true
                 await dataStore.loadIfNeeded()
                 migrateLegacyStatesIfNeeded()
-                displayedRestaurants = sortRestaurants(
-                    restaurants: dataStore.restaurants,
-                    isSortedByDist: isSortedByDist
-                )
-                updateSearchResults()
             }
-        }
-        .onChange(of: dataStore.restaurants) { _, newValue in
-            if displayedRestaurants.isEmpty && !newValue.isEmpty {
-                displayedRestaurants = sortRestaurants(
-                    restaurants: newValue,
-                    isSortedByDist: isSortedByDist
-                )
-            }
-            updateSearchResults()
-        }
-        .onChange(of: searchText) { _, _ in
-            updateSearchResults()
-        }
-        .onChange(of: displayedRestaurants) { _, _ in
-            updateSearchResults()
         }
         .overlay {
             let needsInitialLoad =
@@ -180,25 +158,6 @@ struct ContentView: View {
             Button("確定", role: .cancel) {}
         } message: {
             Text(dataStore.loadError ?? "未知錯誤")
-        }
-    }
-
-    private func updateSearchResults() {
-        if searchText.isEmpty {
-            searchResults = displayedRestaurants
-            return
-        }
-        let keyword = searchText
-        searchResults = displayedRestaurants.filter { restaurant in
-            let nameMatch = restaurant.Name.localizedCaseInsensitiveContains(
-                keyword
-            )
-            let cityMatch = restaurant.City.localizedCaseInsensitiveContains(
-                keyword
-            )
-            let typeMatch = restaurant.RestaurantType
-                .localizedCaseInsensitiveContains(keyword)
-            return nameMatch || cityMatch || typeMatch
         }
     }
 
