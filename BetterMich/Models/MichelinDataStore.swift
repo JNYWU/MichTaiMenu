@@ -17,7 +17,7 @@ final class MichelinDataStore: ObservableObject {
     func loadIfNeeded() async {
         if hasLoaded { return }
         defer { hasLoaded = true }
-        loadFromCache()
+        await loadFromCache()
         if restaurants.isEmpty {
             await refresh()
         }
@@ -37,26 +37,48 @@ final class MichelinDataStore: ObservableObject {
             isLatest =
                 previousYearMonth != nil
                 && previousYearMonth == currentYearMonth
-            saveCache(payload)
+            await saveCache(payload)
         } catch {
             loadError = error.localizedDescription
         }
     }
 
-    private func loadFromCache() {
-        guard let data = try? Data(contentsOf: cacheURL) else { return }
-        guard let payload = try? JSONDecoder().decode(MichelinPayload.self, from: data) else { return }
-        let hasHistory = payload.restaurants.contains {
-            !($0.awardHistory?.isEmpty ?? true)
+    private func loadFromCache() async {
+        guard let payload = await MichelinCache.loadPayload(from: cacheURL) else {
+            return
         }
-        guard hasHistory else { return }
         restaurants = restaurantsFromPayload(payload)
         latestYearMonth = yearMonthString(from: payload.etl_dtm)
     }
 
-    private func saveCache(_ payload: MichelinPayload) {
-        if let data = try? JSONEncoder().encode(payload) {
-            try? data.write(to: cacheURL, options: [.atomic])
-        }
+    private func saveCache(_ payload: MichelinPayload) async {
+        await MichelinCache.save(payload, to: cacheURL)
+    }
+}
+
+private enum MichelinCache {
+    static func loadPayload(from cacheURL: URL) async -> MichelinPayload? {
+        await Task.detached(priority: .utility) {
+            guard let data = try? Data(contentsOf: cacheURL),
+                  let payload = try? JSONDecoder().decode(
+                    MichelinPayload.self,
+                    from: data
+                  )
+            else {
+                return nil
+            }
+            let hasHistory = payload.restaurants.contains {
+                !($0.awardHistory?.isEmpty ?? true)
+            }
+            return hasHistory ? payload : nil
+        }.value
+    }
+
+    static func save(_ payload: MichelinPayload, to cacheURL: URL) async {
+        await Task.detached(priority: .utility) {
+            if let data = try? JSONEncoder().encode(payload) {
+                try? data.write(to: cacheURL, options: [.atomic])
+            }
+        }.value
     }
 }
